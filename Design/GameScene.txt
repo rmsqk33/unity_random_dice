@@ -1,0 +1,11 @@
+GameScene
+
+GameManager - 
+UnitManager
+Unit - Monster, Dice
+Skill - 
+Status Control - Solo, Multiple
+
+UI - HUD - ?
+
+Server - Player(DiceList, Level, Icon... etc)
