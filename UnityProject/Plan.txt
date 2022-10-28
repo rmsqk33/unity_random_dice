@@ -1,0 +1,15 @@
+	<GameScene>
+- GameObjects-
+0. GameManager
+- MemberKeyworld
+HUD, UI, Field, Dice, PlayerInfo... etc
+- Funtion
+SetField, SetPlayerInfo(==teaminfo), 
+
+1. Field
+- MemberKeyword
+BackGround
+DiceList(Use Dice Sommon Point - Transform/Position)
+DiceList is Twice(Player, Team)
+- Funtion
+For the time being, Nothing

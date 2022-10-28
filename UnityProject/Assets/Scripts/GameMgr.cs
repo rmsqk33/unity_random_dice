@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RandomDice;
 
 public class GameMgr : Singleton<GameMgr>
 {
-    // Start is called before the first frame update
+// - Member Variable
+    private GameObject _field;
+
+// - Method
+    /// Awake is called when the script instance is being loaded.
+    void Awake()
+    {
+    }
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -19,5 +26,20 @@ public class GameMgr : Singleton<GameMgr>
     public void Temp()
     {
 
+    }
+
+    public void SetField(FieldNumber fieldnumber)
+    {
+        switch (fieldnumber)
+        {
+            case FieldNumber.Normal :
+            {
+                return;
+            }
+            default:
+            {
+                return;
+            }
+        }
     }
 }
