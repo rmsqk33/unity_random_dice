@@ -1860,7 +1860,7 @@ GameObject:
   - component: {fileID: 5082606244561307949}
   - component: {fileID: 5082606244561307948}
   m_Layer: 6
-  m_Name: Field_Normal
+  m_Name: Field_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1990,7 +1990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8218212492740444917}
   m_Layer: 6
-  m_Name: TempDiceArray
+  m_Name: TeampDiceArray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

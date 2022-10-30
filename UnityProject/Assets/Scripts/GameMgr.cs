@@ -6,16 +6,20 @@ using RandomDice;
 public class GameMgr : Singleton<GameMgr>
 {
 // - Member Variable
-    private GameObject _field;
+    // - Field ID, Object
+    private int _fieldID = 0;
+    public GameObject _field;
 
 // - Method
     /// Awake is called when the script instance is being loaded.
     void Awake()
     {
+        // - Get FieldID
+        _fieldID = 0;
     }
     void Start()
     {
-        
+        SetField(FieldNumber.Normal);
     }
 
     void Update()
@@ -23,23 +27,13 @@ public class GameMgr : Singleton<GameMgr>
         
     }
 
-    public void Temp()
-    {
-
-    }
-
     public void SetField(FieldNumber fieldnumber)
     {
-        switch (fieldnumber)
-        {
-            case FieldNumber.Normal :
-            {
-                return;
-            }
-            default:
-            {
-                return;
-            }
-        }
+        // - SetFieldName
+        string FieldName = "Prefabs/Field_"+((int)fieldnumber).ToString();
+        // - Load Field Prefab as GameObject
+        GameObject field = Resources.Load(FieldName) as GameObject;
+        // - Instantiate Prefab
+        Instantiate(field, _field.transform);
     }
 }

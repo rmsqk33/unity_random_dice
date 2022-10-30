@@ -1,15 +1,21 @@
 	<GameScene>
 - GameObjects-
 0. GameManager
-- MemberKeyworld
+- MemberKeyword
 HUD, UI, Field, Dice, PlayerInfo... etc
 - Funtion
 SetField, SetPlayerInfo(==teaminfo), 
 
 1. Field
 - MemberKeyword
-BackGround
+Sprite - BackGround, SpawnRoad, DiceBackground
 DiceList(Use Dice Sommon Point - Transform/Position)
 DiceList is Twice(Player, Team)
 - Funtion
 For the time being, Nothing
+
+2. UIManager
+HUD / UI TwoType Method
+- MemberKeyword
+Sprite - HUD(Stage, ), UI(Dice, PlayerIcon, Emoji)
+- Funtion
