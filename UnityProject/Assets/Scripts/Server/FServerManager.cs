@@ -73,7 +73,7 @@ public class FServerManager : Singleton<FServerManager>
             m_Thread.Abort();
     }
 
-    public void ConnectServer()
+    public bool ConnectServer()
     {
         try
         {
@@ -86,7 +86,10 @@ public class FServerManager : Singleton<FServerManager>
         catch(Exception e)
         {
             Debug.Log("Server Connect Fail: " + e);
+            return false;
         }
+
+        return true;
     }
 
     void ReceiveMessage()
