@@ -74,6 +74,10 @@ public class LoginScene : MonoBehaviour
                 while (watch.ElapsedMilliseconds < PreWorkMinSec * 1000) ;
                 AddMainThreadFunc(OnCompletePreWork);
             }
+            else
+            {
+                AddMainThreadFunc(OnFailPreWork);
+            }
             watch.Stop();
         });
         thread.Start();
@@ -89,5 +93,19 @@ public class LoginScene : MonoBehaviour
             LoginButton.gameObject.SetActive(true);
             LoadingUI.SetActive(false);
         }
+    }
+
+    void OnFailPreWork()
+    {
+        string preWorkType = m_PreWorkMap.Keys.First();
+        FDataNode node = FDataCenter.Instance.GetDataNodeWithQuery("PreWorkList.PreWork@type=" + preWorkType);
+        
+        string title = node.GetStringAttr("errorTitle");
+        string msg = node.GetStringAttr("errorMsg");
+        FPopupManager.Instance.OpenMsgPopup(title, msg, () => {
+            Application.Quit();     
+        });
+
+        LoadingUI.SetActive(false);
     }
 }
