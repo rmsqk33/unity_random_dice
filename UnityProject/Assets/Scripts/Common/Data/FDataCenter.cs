@@ -9,45 +9,31 @@ using UnityEngine;
 public class FDataCenter : FNonObjectSingleton<FDataCenter>
 {
     FDataNode m_RootNode = new FDataNode();
-    string m_DataPath = Application.dataPath + "/Data";
 
     [RuntimeInitializeOnLoadMethod]
     static void Initialize() 
     {
-        Instance.ParseDirectory(Instance.m_DataPath + "/PreLoadData");
+        Instance.ParseXML("Data/PreLoadData");
     }
 
     public bool LoadData()
     {
-        ParseDirectory(m_DataPath + "/PostLoadData");
+        ParseXML("Data/PostLoadData");
         return true;
-    }
-
-    void ParseDirectory(in string InDirPath)
-    {
-        DirectoryInfo root = new DirectoryInfo(InDirPath);
-        foreach(DirectoryInfo dir in root.GetDirectories())
-        {
-            ParseDirectory(dir.FullName);
-        }
-
-        foreach (FileInfo info in root.GetFiles())
-        {
-            if (info.Extension != ".xml")
-                continue;
-            
-            ParseXML(info.FullName);
-        }
     }
 
     void ParseXML(in string InPath)
     {
-        XmlDocument xmlDocument = new XmlDocument();
-        xmlDocument.Load(InPath);
+        TextAsset[] textAssetList = Resources.LoadAll<TextAsset>(InPath);
+        foreach(TextAsset textAsset in textAssetList)
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(textAsset.text);
 
-        FDataNode newNode = new FDataNode();
-        newNode.ParseXmlData(xmlDocument.FirstChild);
-        m_RootNode.AddChild(newNode);        
+            FDataNode newNode = new FDataNode();
+            newNode.ParseXmlData(xmlDocument.FirstChild);
+            m_RootNode.AddChild(newNode);
+        }
     }
 
     public FDataNode GetDataNodeWithQuery(in string InQuery)
