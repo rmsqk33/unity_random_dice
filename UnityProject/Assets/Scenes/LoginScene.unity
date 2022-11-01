@@ -1261,7 +1261,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: -341136259
   m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &790205994
@@ -1382,7 +1382,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1763993975
   m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &877978064
