@@ -32,6 +32,7 @@ public class LoginScene : MonoBehaviour
         LoadingMsg = LoadingUI.GetComponentInChildren<TextMeshProUGUI>(true);
 
         AddPreWork("serverConnect", FServerManager.Instance.ConnectServer);
+        AddPreWork("dataParse", FDataCenter.Instance.LoadData);
 
         LoadPreWork();
     }

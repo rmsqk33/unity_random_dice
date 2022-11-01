@@ -9,11 +9,18 @@ using UnityEngine;
 public class FDataCenter : FNonObjectSingleton<FDataCenter>
 {
     FDataNode m_RootNode = new FDataNode();
+    string m_DataPath = Application.dataPath + "/Data";
 
     [RuntimeInitializeOnLoadMethod]
     static void Initialize() 
     {
-        Instance.ParseDirectory(Application.dataPath + "/Data");
+        Instance.ParseDirectory(Instance.m_DataPath + "/PreLoadData");
+    }
+
+    public bool LoadData()
+    {
+        ParseDirectory(m_DataPath + "/PostLoadData");
+        return true;
     }
 
     void ParseDirectory(in string InDirPath)
