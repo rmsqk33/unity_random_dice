@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Field : MonoBehaviour
+namespace RandomDice
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Field : MonoBehaviour
     {
-        
-    }
+    // - Member Variable
+        // - SpawnPoint
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    // - Mothod
+        /// Awake is called when the script instance is being loaded.
+        void Awake()
+        {
+            
+        }
+        // Update is called once per frame
+        void Update()
+        {
+            
+        }
     }
 }
