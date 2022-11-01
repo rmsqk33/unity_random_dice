@@ -22,11 +22,11 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
 
     FMsgPopup CreateMsgPopup()
     {
-        GameObject popup = Resources.Load<GameObject>("Prefab/Popup/MsgPopup");
+        GameObject popup = Resources.Load<GameObject>("Prefabs/Popup/MsgPopup");
         if (popup == null)
             return null;
 
-        GameObject canvas = GameObject.Find("Canvas");
+        GameObject canvas = GameObject.Find("UI");
         if (canvas == null)
         {
             GameObject.Destroy(popup);

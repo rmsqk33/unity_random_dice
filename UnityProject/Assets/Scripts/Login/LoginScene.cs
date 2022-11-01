@@ -14,7 +14,7 @@ using UnityEngine.UI;
 public class LoginScene : MonoBehaviour
 {
     [SerializeField]
-    float PreWorkMinSec = 0f; // »çÀü ÀÛ¾÷Áß UI ÃÖ¼Ò Ç¥½Ã½Ã°£
+    float PreWorkMinSec = 0f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ UI ï¿½Ö¼ï¿½ Ç¥ï¿½Ã½Ã°ï¿½
     [SerializeField]
     Button LoginButton;
     [SerializeField]
