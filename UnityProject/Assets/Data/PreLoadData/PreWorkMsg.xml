@@ -1,4 +1,0 @@
-<PreWorkList>
-	<PreWork type="serverConnect" loadingMsg="네트워크 환경을 체크 중..." errorTitle="서버 오류" errorMsg="서버에 연결할 수 없습니다."></PreWork>
-	<PreWork type="dataParse" loadingMsg="데이터 읽는 중..." errorTitle="데이터 오류" errorMsg="데이터가 올바르지 않습니다."></PreWork>
-</PreWorkList>
