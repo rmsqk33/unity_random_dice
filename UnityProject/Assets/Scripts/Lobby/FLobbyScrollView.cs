@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class FLobbyScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField]
-    FMainMenu MainMenu = null;
+    FMainMenuUI MainMenu = null;
     [SerializeField]
     float ViewChangeDistance; // 해당 거리이상 드래그 시 메뉴 변경
     [SerializeField]

@@ -45,4 +45,50 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
     {
         return m_RootNode.GetDataNodesWithQuery(InQuery);
     }
+
+    public int GetIntAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return 0;
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetIntAttr(attrName);
+    }
+
+    public bool GetBoolAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return false;
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetBoolAttr(attrName);
+    }
+
+    public double GetDoubleAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return 0f;
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetDoubleAttr(attrName);
+    }
+
+    public string GetStringAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return "";
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetStringAttr(attrName);
+    }
+
+    string GetAttrNameInQuery(in string InQuery)
+    {
+        int attrIndex = InQuery.LastIndexOf('@');
+        return InQuery.Substring(attrIndex + 1, InQuery.Length - attrIndex - 1);
+    }
 }

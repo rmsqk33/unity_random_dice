@@ -13,7 +13,7 @@ public class FMainMenuButton : MonoBehaviour
     Animator m_Animator = null;
     Button m_Button = null;
 
-    private void Start()
+    private void Awake()
     {
         m_Animator = GetComponent<Animator>();
         m_Button = GetComponent<Button>();
