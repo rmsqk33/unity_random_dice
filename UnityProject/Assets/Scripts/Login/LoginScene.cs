@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginScene : MonoBehaviour
@@ -104,7 +105,8 @@ public class LoginScene : MonoBehaviour
         string title = node.GetStringAttr("errorTitle");
         string msg = node.GetStringAttr("errorMsg");
         FPopupManager.Instance.OpenMsgPopup(title, msg, () => {
-            Application.Quit();     
+            SceneManager.LoadScene("LobbyScene");
+            //Application.Quit();     
         });
 
         LoadingUI.SetActive(false);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -57,8 +58,8 @@ public class FDataNode
         int nextQueryIndex = InQuery.IndexOf('.');
         string query = nextQueryIndex == -1 ? InQuery : InQuery.Substring(0, nextQueryIndex);
 
-        char[] delimeters = { '@', '=' };
-        string[] nodeQuerys = query.Split(delimeters);
+        char[] delimeters = {'[', '@', '=', ']'};
+        string[] nodeQuerys = query.Split(delimeters, StringSplitOptions.RemoveEmptyEntries);
         string nodeName = nodeQuerys[0];
         string attrName = 1 < nodeQuerys.Length ? nodeQuerys[1] : null;
         string attrValue = 2 < nodeQuerys.Length ? nodeQuerys[2] : null;
@@ -69,7 +70,7 @@ public class FDataNode
         {
             foreach (FDataNode node in m_ChildNodes[nodeName])
             {
-                if (attrName != null)
+                if (attrName != null && attrValue != null)
                 {
                     if (node.GetStringAttr(attrName) != attrValue)
                         continue;
