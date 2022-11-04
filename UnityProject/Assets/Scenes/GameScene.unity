@@ -629,7 +629,7 @@ MonoBehaviour:
   m_text: "\uC6E8\uC774\uBE0C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aa47dc0d7c4b3a242b1f543a5cd88615, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 805a03f317676e6478e0aa0a2da0bc97, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: d27a7a28a85e19b468f3879591bd0bbf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
