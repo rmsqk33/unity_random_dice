@@ -1,0 +1,3 @@
+<DiceList>
+	<Dice id="1" icon="Sprite/Dice/Dice_FIRE" eyeColor="255,0,0" grade="1"></Dice>
+</DiceList>

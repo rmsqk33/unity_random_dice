@@ -1,0 +1,14 @@
+<DiceGradeList>
+	<DiceGrade grade="1" invenSlotImage="" startLevel="5" >
+		<Level level="1" exp="2"></Level>
+		<Level level="2" exp="2"></Level>
+		<Level level="3" exp="2"></Level>
+		<Level level="4" exp="2"></Level>
+		<Level level="5" exp="10"></Level>
+		<Level level="6" exp="100"></Level>
+		<Level level="7" exp="1000"></Level>
+		<Level level="8" exp="2000"></Level>
+		<Level level="9" exp="4000"></Level>
+		<Level level="10" exp="8000"></Level>
+	</DiceGrade>
+</DiceGradeList>
