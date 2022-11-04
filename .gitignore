@@ -10,7 +10,8 @@ UnityProject/Builds/
 UnityProject/Logs/
 UnityProject/MemoryCaptures/
 UnityProject/UserSettings/
-UnityProject/Assets/TextMesh Pro/
+UnityProject/Assets/**/TextMesh Pro
+UnityProject/**/test_BurstDebugInformation_DoNotShip
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

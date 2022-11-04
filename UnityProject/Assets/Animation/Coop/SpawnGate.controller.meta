@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:UnityProject/Assets/Animation/Coop/SpawnGate.controller.meta
 guid: a47d644ad8c8a2e4b879a5ab06699a90
+========
+guid: ef6285efa87e1da46a036cb17779a6dd
+>>>>>>>> main:UnityProject/Assets/Animation/Lobby/MainMenuAnim.controller.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 9100000

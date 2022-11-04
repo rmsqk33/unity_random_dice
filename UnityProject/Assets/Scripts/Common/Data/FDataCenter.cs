@@ -9,45 +9,31 @@ using UnityEngine;
 public class FDataCenter : FNonObjectSingleton<FDataCenter>
 {
     FDataNode m_RootNode = new FDataNode();
-    string m_DataPath = Application.dataPath + "/Data";
 
     [RuntimeInitializeOnLoadMethod]
     static void Initialize() 
     {
-        Instance.ParseDirectory(Instance.m_DataPath + "/PreLoadData");
+        Instance.ParseXML("Data/PreLoadData");
     }
 
     public bool LoadData()
     {
-        ParseDirectory(m_DataPath + "/PostLoadData");
+        ParseXML("Data/PostLoadData");
         return true;
-    }
-
-    void ParseDirectory(in string InDirPath)
-    {
-        DirectoryInfo root = new DirectoryInfo(InDirPath);
-        foreach(DirectoryInfo dir in root.GetDirectories())
-        {
-            ParseDirectory(dir.FullName);
-        }
-
-        foreach (FileInfo info in root.GetFiles())
-        {
-            if (info.Extension != ".xml")
-                continue;
-            
-            ParseXML(info.FullName);
-        }
     }
 
     void ParseXML(in string InPath)
     {
-        XmlDocument xmlDocument = new XmlDocument();
-        xmlDocument.Load(InPath);
+        TextAsset[] textAssetList = Resources.LoadAll<TextAsset>(InPath);
+        foreach(TextAsset textAsset in textAssetList)
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(textAsset.text);
 
-        FDataNode newNode = new FDataNode();
-        newNode.ParseXmlData(xmlDocument.FirstChild);
-        m_RootNode.AddChild(newNode);        
+            FDataNode newNode = new FDataNode();
+            newNode.ParseXmlData(xmlDocument.FirstChild);
+            m_RootNode.AddChild(newNode);
+        }
     }
 
     public FDataNode GetDataNodeWithQuery(in string InQuery)
@@ -58,5 +44,51 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
     public List<FDataNode> GetDataNodesWithQuery(in string InQuery)
     {
         return m_RootNode.GetDataNodesWithQuery(InQuery);
+    }
+
+    public int GetIntAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return 0;
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetIntAttr(attrName);
+    }
+
+    public bool GetBoolAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return false;
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetBoolAttr(attrName);
+    }
+
+    public double GetDoubleAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return 0f;
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetDoubleAttr(attrName);
+    }
+
+    public string GetStringAttribute(in string InQuery)
+    {
+        FDataNode node = GetDataNodeWithQuery(InQuery);
+        if (node == null)
+            return "";
+
+        string attrName = GetAttrNameInQuery(InQuery);
+        return node.GetStringAttr(attrName);
+    }
+
+    string GetAttrNameInQuery(in string InQuery)
+    {
+        int attrIndex = InQuery.LastIndexOf('@');
+        return InQuery.Substring(attrIndex + 1, InQuery.Length - attrIndex - 1);
     }
 }

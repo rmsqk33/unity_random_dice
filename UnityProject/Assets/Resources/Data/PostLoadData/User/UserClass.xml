@@ -1,0 +1,12 @@
+<UserClass>
+    <Class class="1" icon="Sprite/UserClassIcon/class icon_1" exp="1000"></Class>
+    <Class class="2" icon="Sprite/UserClassIcon/class icon_2" exp="1000"></Class>
+    <Class class="3" icon="Sprite/UserClassIcon/class icon_3" exp="1000"></Class>
+    <Class class="4" icon="Sprite/UserClassIcon/class icon_4" exp="1000"></Class>
+    <Class class="5" icon="Sprite/UserClassIcon/class icon_5" exp="1000"></Class>
+    <Class class="6" icon="Sprite/UserClassIcon/class icon_6" exp="1000"></Class>
+    <Class class="7" icon="Sprite/UserClassIcon/class icon_7" exp="1000"></Class>
+    <Class class="8" icon="Sprite/UserClassIcon/class icon_8" exp="1000"></Class>
+    <Class class="9" icon="Sprite/UserClassIcon/class icon_9" exp="1000"></Class>
+    <Class class="10" icon="Sprite/UserClassIcon/class icon_10" exp="1000"></Class>
+</UserClass>
