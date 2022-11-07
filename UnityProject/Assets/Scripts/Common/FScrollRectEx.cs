@@ -44,6 +44,7 @@ namespace UnityEngine.UI
 
             if(m_NotiParent)
             {
+
                 if (m_ParentScrollRect != null)
                     m_ParentScrollRect.OnBeginDrag(eventData);
 

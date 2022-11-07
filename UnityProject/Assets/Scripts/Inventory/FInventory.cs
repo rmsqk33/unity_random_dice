@@ -14,9 +14,9 @@ public class FInventory : MonoBehaviour
     [SerializeField]
     Transform DisableDiceListObject;
     [SerializeField]
-    FInvenDiceSlot DiceSlotPrefab;
+    FDiceSlot DiceSlotPrefab;
     [SerializeField]
-    FInvenDisableDiceSlot DisableDiceSlotPrefab;
+    FDisableDiceSlot DisableDiceSlotPrefab;
     [SerializeField]
     int DiceXCount;
     [SerializeField]
@@ -24,8 +24,8 @@ public class FInventory : MonoBehaviour
     [SerializeField]
     int DiceBottomSpace;
 
-    Dictionary<int, FInvenDiceSlot> m_DiceMap = new Dictionary<int, FInvenDiceSlot>();
-    Dictionary<int, FInvenDisableDiceSlot> m_DisableDiceList = new Dictionary<int, FInvenDisableDiceSlot>();
+    Dictionary<int, FDiceSlot> m_DiceMap = new Dictionary<int, FDiceSlot>();
+    Dictionary<int, FDisableDiceSlot> m_DisableDiceList = new Dictionary<int, FDisableDiceSlot>();
 
 #if DEBUG
     private void Start()
@@ -60,7 +60,7 @@ public class FInventory : MonoBehaviour
         if (m_DiceMap.ContainsKey(InData.ID))
             return;
 
-        FInvenDiceSlot slot = Instantiate(DiceSlotPrefab, DiceListObject);
+        FDiceSlot slot = Instantiate(DiceSlotPrefab, DiceListObject);
         slot.Init(InData, InAcquiredDiceData);
 
         m_DiceMap.Add(slot.ID, slot);
@@ -75,7 +75,7 @@ public class FInventory : MonoBehaviour
         if (m_DisableDiceList.ContainsKey(InData.ID))
             return;
 
-        FInvenDisableDiceSlot slot = Instantiate(DisableDiceSlotPrefab, DisableDiceListObject);
+        FDisableDiceSlot slot = Instantiate(DisableDiceSlotPrefab, DisableDiceListObject);
         slot.Init(InData);
 
         m_DisableDiceList.Add(InData.ID, slot);

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class FInvenDisableDiceSlot : MonoBehaviour
+public class FDisableDiceSlot : MonoBehaviour
 {
     [SerializeField]
     Image Background;
