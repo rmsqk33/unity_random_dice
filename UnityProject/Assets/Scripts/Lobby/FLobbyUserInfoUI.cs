@@ -8,44 +8,57 @@ using UnityEngine.UI;
 
 public class FLobbyUserInfoUI : MonoBehaviour
 {
+    [SerializeField]
     TextMeshProUGUI m_Name = null;
+    [SerializeField]
     TextMeshProUGUI m_Gold = null;
+    [SerializeField]
     TextMeshProUGUI m_Dia = null;
+    [SerializeField]
     TextMeshProUGUI m_Exp = null;
+    [SerializeField]
     TextMeshProUGUI m_Level = null;
+    [SerializeField]
     Image m_ClassIcon = null;
+    [SerializeField]
     Transform m_ExpGauge = null;
 
     int m_CurrentExp = 0;
     int m_MaxExp = 0;
 
-    private void Awake()
+    private void start()
     {
-        Transform Top = transform.Find("Top");
-        m_Name = Top.Find("Name").GetComponent<TextMeshProUGUI>();
-        m_Gold = Top.Find("Gold").GetComponentInChildren<TextMeshProUGUI>();
-        m_Dia = Top.Find("Dia").GetComponentInChildren<TextMeshProUGUI>();
-
-        Transform Exp = transform.Find("Exp");
-        m_Exp = Exp.GetComponentInChildren<TextMeshProUGUI>();
-        m_ExpGauge = Exp.Find("Gauge");
-
-        Transform Class = transform.Find("Class");
-        m_Level = Class.Find("ClassNum").GetComponentInChildren<TextMeshProUGUI>();
-        m_ClassIcon = Class.Find("Icon").GetComponentInChildren<Image>();
+        InitUserInfo();
     }
 
-    public string Name { set { m_Name.text = value; }}
-    public int Gold { set { m_Gold.text = value.ToString(); }}
-    public int Dia { set { m_Dia.text = value.ToString(); }}
-    public int Level 
+    public void InitUserInfo()
     {
-        set 
-        { 
+        Name = FUserDataController.Instance.Name;
+        Gold = FUserDataController.Instance.Gold;
+        Dia = FUserDataController.Instance.Dia;
+        Level = FUserDataController.Instance.Level;
+        SetExp(FUserDataController.Instance.Exp, FUserDataController.Instance.MaxExp);
+    }
+
+    public string Name { set { m_Name.text = value; } }
+    public int Gold { set { m_Gold.text = value.ToString(); } }
+    public int Dia { set { m_Dia.text = value.ToString(); } }
+    public int Level
+    {
+        set
+        {
             m_Level.text = value.ToString();
-            FDataNode node = FDataCenter.Instance.GetDataNodeWithQuery("UserClass.Class@class=" + value.ToString());
-            if (node != null)
-                m_ClassIcon.sprite = Resources.Load<Sprite>(node.GetStringAttr("icon"));
+            Sprite classIcon = Resources.Load<Sprite>(FDataCenter.Instance.GetStringAttribute("UserClass.Class[@class=" + m_Level + "]@icon"));
+            if (classIcon != null)
+                ClassIcon = classIcon;
+        }
+    }
+
+    public Sprite ClassIcon
+    {
+        set
+        {
+            m_ClassIcon.sprite = value;
         }
     }
 
@@ -65,6 +78,13 @@ public class FLobbyUserInfoUI : MonoBehaviour
             m_MaxExp = value;
             UpdateExp();
         }
+    }
+
+    public void SetExp(int InExp, int InMaxExp)
+    {
+        m_CurrentExp = Mathf.Min(InExp, InMaxExp);
+        m_MaxExp = InMaxExp;
+        UpdateExp();
     }
 
     void UpdateExp()

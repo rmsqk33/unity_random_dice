@@ -12,6 +12,7 @@ public class FDataNode
         public int IntValue;
         public double DoubleValue;
         public bool BoolValue;
+        public Color ColorValue;
     }
 
     Dictionary<string, List<FDataNode>> m_ChildNodes = new Dictionary<string, List<FDataNode>>();
@@ -51,6 +52,15 @@ public class FDataNode
             return m_DataAttributes[InName].BoolValue;
 
         return false;
+    }
+
+    public Color GetColorAttr(in string InName)
+    {
+        Color color = new Color();
+        if (m_DataAttributes.ContainsKey(InName))
+            color = m_DataAttributes[InName].ColorValue;
+
+        return color;
     }
 
     public FDataNode GetDataNodeWithQuery(in string InQuery)
@@ -115,16 +125,28 @@ public class FDataNode
                 }
 
                 if (nextQueryIndex == -1)
-                {
                     retNodeList.Add(node);
-                    break;
-                }
 
-                retNodeList.AddRange(node.GetDataNodesWithQuery(InQuery.Substring(nextQueryIndex + 1, InQuery.Length - nextQueryIndex)));
+                retNodeList.AddRange(node.GetDataNodesWithQuery(InQuery.Substring(nextQueryIndex + 1, InQuery.Length - nextQueryIndex - 1)));
             }
         }
 
         return retNodeList;
+    }
+
+    public delegate void ForeachChildNodesFunc(in FDataNode InNode);
+    public void ForeachChildNodes(in string InName, in ForeachChildNodesFunc InFunc)
+    {
+        if (m_ChildNodes.ContainsKey(InName) == false)
+            return;
+
+        foreach (FDataNode node in m_ChildNodes[InName])
+        {
+            if(node.Name == InName)
+            {
+                InFunc(node);
+            }
+        }
     }
 
     public void AddChild(in FDataNode InChild)
@@ -167,6 +189,7 @@ public class FDataNode
             if (bool.TryParse(attr.Value, out newAttr.BoolValue)) { }
             else if (int.TryParse(attr.Value, out newAttr.IntValue)) { }
             else if (double.TryParse(attr.Value, out newAttr.DoubleValue)) { }
+            else if (ColorUtility.TryParseHtmlString(attr.Value, out newAttr.ColorValue)) { }
             
             newAttr.StrValue = attr.Value;
 

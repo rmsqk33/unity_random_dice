@@ -10,15 +10,19 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
 {
     FDataNode m_RootNode = new FDataNode();
 
-    [RuntimeInitializeOnLoadMethod]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Initialize() 
     {
         Instance.ParseXML("Data/PreLoadData");
+        Instance.LoadData();
     }
 
     public bool LoadData()
     {
         ParseXML("Data/PostLoadData");
+
+        FDiceDataManager.Instance.Initialize();
+
         return true;
     }
 
