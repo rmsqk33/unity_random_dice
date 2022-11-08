@@ -23,7 +23,8 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     
     string m_Name = new string("");
     Dictionary<int, FDice> m_AcquiredDiceMap = new Dictionary<int, FDice>();
-    int[,] m_DicePreset;
+    int[,] m_DicePresetIDList;
+    int m_SelectedPresetIndex = 0;
 
     public int Level { get { return m_Level; } }
     public int Gold { get { return m_Gold; } }
@@ -31,6 +32,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     public int Exp { get { return m_Exp; } }
     public int MaxExp { get { return m_MaxExp; } }
     public int Critical { get { return m_Critical; } }
+    public int SelectedPresetIndex { get { return m_SelectedPresetIndex; } }
     public string Name { get { return m_Name; } }
 
 #if DEBUG
@@ -43,11 +45,12 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         testPacket.level = 3;
         testPacket.dia = 30000;
         testPacket.gold = 30000;
+        testPacket.selectedPresetIndex = 0;
         for(int i = 0; i < 5; ++i)
         {
             for(int j = 0; j < 5; ++j)
             {
-                testPacket.dicePreset[i, j] = (i + j + 1) % 5;
+                testPacket.dicePreset[i, j] = (i + j) % 5 + 1;
             }
         }
         
@@ -66,11 +69,46 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     {
         InitLobbyUserInfoUI(InPacket);
         InitInventory(InPacket);
+        InitPreset(InPacket);
     }
 
-    public FDice? FindAcquiredDice(in int InID)
+    public FDice? FindAcquiredDice(int InID)
     {
         return m_AcquiredDiceMap.ContainsKey(InID) ? m_AcquiredDiceMap[InID] : null;
+    }
+
+    public delegate void ForeachDicePresetHandle(int InID);
+    public void ForeachDicePreset(int InIndex, in ForeachDicePresetHandle InFunc)
+    {
+        for(int i = 0; i < m_DicePresetIDList.GetLength(0); ++i)
+        {
+            InFunc(m_DicePresetIDList[InIndex, i]);
+        }
+    }
+
+    public void SetPresetList(int InIndex)
+    {
+        if (m_SelectedPresetIndex == InIndex)
+            return;
+
+        m_SelectedPresetIndex = InIndex;
+
+        FDicePreset dicePresetUI = FindDicePreset();
+        if (dicePresetUI != null)
+        {
+            dicePresetUI.SetPresetList(InIndex);
+        }
+    }
+
+    public void SetPreset(int InID, int InIndex)
+    {
+        m_DicePresetIDList[m_SelectedPresetIndex, InIndex] = InID;
+
+        FDicePreset dicePresetUI = FindDicePreset();
+        if (dicePresetUI != null)
+        {
+            dicePresetUI.SetPreset(InID, InIndex);
+        }
     }
 
     void InitLobbyUserInfoUI(in S_USER_DATA InPacket)
@@ -91,8 +129,6 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     void InitInventory(in S_USER_DATA InPacket)
     {
-        m_DicePreset = InPacket.dicePreset.Clone() as int[,];
-
         foreach(S_USER_DATA.S_DICE_DATA diceData in InPacket.diceDataList)
         {
             if (diceData.id != 0)
@@ -102,11 +138,19 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         }
 
         FInventory inventory = FindInventoryUI();
-        if(inventory != null)
+        if (inventory != null)
         {
             inventory.Critical = Critical;
             inventory.InitDiceSlot();
         }
+    }
+
+    void InitPreset(in S_USER_DATA InPacket)
+    {
+        m_DicePresetIDList = InPacket.dicePreset.Clone() as int[,];
+        m_SelectedPresetIndex = InPacket.selectedPresetIndex;
+
+        SetPresetList(m_SelectedPresetIndex);
     }
 
     void AddAcquiredDice(int InID, int InExp, int InLevel)
@@ -121,20 +165,29 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         AddCritical(InID, InLevel);
     }
 
-    FLobbyUserInfoUI FindLobbyUserInfoUI()
+    FInventory FindInventoryUI()
     {
-        GameObject userInfoUI = GameObject.Find("UserInfoUI");
-        if (userInfoUI != null)
-            return userInfoUI.GetComponent<FLobbyUserInfoUI>();
+        GameObject gameObject = GameObject.Find("Inventory");
+        if (gameObject != null)
+            return gameObject.GetComponent<FInventory>();
 
         return null;
     }
 
-    FInventory FindInventoryUI()
+    FLobbyUserInfoUI FindLobbyUserInfoUI()
     {
-        GameObject userInfoUI = GameObject.Find("Inventory");
-        if (userInfoUI != null)
-            return userInfoUI.GetComponent<FInventory>();
+        GameObject gameObject = GameObject.Find("UserInfoUI");
+        if (gameObject != null)
+            return gameObject.GetComponent<FLobbyUserInfoUI>();
+
+        return null;
+    }
+
+    FDicePreset FindDicePreset()
+    {
+        GameObject gameObject = GameObject.Find("DicePreset");
+        if (gameObject != null)
+            return gameObject.GetComponent<FDicePreset>();
 
         return null;
     }

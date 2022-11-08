@@ -25,10 +25,10 @@ public class FDisableDiceSlot : MonoBehaviour
     public void Init(in FDiceData InData)
     {
         ID = InData.ID;
-        DiceIcon_L.enabled = InData.Grade == DiceGrade.DICE_GRADE_LEGEND;
-        DiceIcon.enabled = InData.Grade != DiceGrade.DICE_GRADE_LEGEND;
+        DiceIcon_L.gameObject.SetActive(InData.Grade == DiceGrade.DICE_GRADE_LEGEND);
+        DiceIcon.gameObject.SetActive(InData.Grade != DiceGrade.DICE_GRADE_LEGEND);
 
-        if (DiceIcon_L.enabled)
+        if (DiceIcon_L.IsActive())
             DiceIcon_L.sprite = Resources.Load<Sprite>(InData.DisableIconPath);
         else
             DiceIcon.sprite = Resources.Load<Sprite>(InData.DisableIconPath);

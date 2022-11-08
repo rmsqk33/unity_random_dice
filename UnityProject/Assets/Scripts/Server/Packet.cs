@@ -213,6 +213,8 @@ namespace Packet
 
 		public int[,] dicePreset = new int[5,5];
 
+		public int selectedPresetIndex;
+
 		public S_USER_DATA()
 		{
 			for(int i = 0; i < 50; ++i)
@@ -234,6 +236,7 @@ namespace Packet
 				size += diceDataList[i].GetSize();
 			}
 			size += sizeof(int) * 25;
+			size += sizeof(int);
 			return size;
 		}
 
@@ -263,6 +266,7 @@ namespace Packet
 					InBuffer.AddRange(BitConverter.GetBytes(dicePreset[i,j]));
 				}
 			}
+			InBuffer.AddRange(BitConverter.GetBytes(selectedPresetIndex));
 		}
 
 		public int Deserialize(in byte[] InBuffer, int offset = 0)
@@ -285,6 +289,8 @@ namespace Packet
 			}
 			Buffer.BlockCopy(InBuffer, offset, dicePreset, 0, sizeof(int) * 25);
 			offset += sizeof(int) * 25;
+			selectedPresetIndex = BitConverter.ToInt32(InBuffer, offset);
+			offset += sizeof(int);
 			return offset;
 		}
 

@@ -49,10 +49,10 @@ public class FDiceSlot : MonoBehaviour
         Level = InDice.level;
         DiceEye.color = InDiceData.Color;
      
-        DiceIcon_L.enabled = InDiceData.Grade == DiceGrade.DICE_GRADE_LEGEND;
-        DiceIcon.enabled = InDiceData.Grade != DiceGrade.DICE_GRADE_LEGEND;
+        DiceIcon_L.gameObject.SetActive(InDiceData.Grade == DiceGrade.DICE_GRADE_LEGEND);
+        DiceIcon.gameObject.SetActive(InDiceData.Grade != DiceGrade.DICE_GRADE_LEGEND);
 
-        if (DiceIcon_L.enabled)
+        if (DiceIcon_L.IsActive())
             DiceIcon_L.sprite = Resources.Load<Sprite>(InDiceData.IconPath);
         else
             DiceIcon.sprite = Resources.Load<Sprite>(InDiceData.IconPath);
