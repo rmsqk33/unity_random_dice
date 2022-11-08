@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using RandomDice;
 
 public class FDiceSlot : MonoBehaviour
 {
@@ -48,10 +49,10 @@ public class FDiceSlot : MonoBehaviour
         Level = InDice.level;
         DiceEye.color = InDiceData.Color;
      
-        DiceIcon_L.enabled = InDiceData.Grade == 4;
-        DiceIcon.enabled = InDiceData.Grade != 4;
+        DiceIcon_L.enabled = InDiceData.Grade == DiceGrade.DICE_GRADE_LEGEND;
+        DiceIcon.enabled = InDiceData.Grade != DiceGrade.DICE_GRADE_LEGEND;
 
-        if (InDiceData.Grade == 4)
+        if (DiceIcon_L.enabled)
             DiceIcon_L.sprite = Resources.Load<Sprite>(InDiceData.IconPath);
         else
             DiceIcon.sprite = Resources.Load<Sprite>(InDiceData.IconPath);

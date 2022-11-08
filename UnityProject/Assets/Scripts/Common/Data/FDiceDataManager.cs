@@ -1,3 +1,4 @@
+using RandomDice;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -7,7 +8,7 @@ using UnityEngine;
 public struct FDiceData
 {
     public int ID;
-    public int Grade;
+    public DiceGrade Grade;
     public string Name;
     public string Description;
     public string IconPath;
@@ -24,7 +25,7 @@ public struct FDiceLevelData
 
 public struct FDiceGradeData
 {
-    public int Grade;
+    public DiceGrade Grade;
     public string GradeName;
     public string BackgroundPath;
     public int InitialLevel;
@@ -35,7 +36,7 @@ public struct FDiceGradeData
 public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
 {
     Dictionary<int, FDiceData> m_DiceDataMap = new Dictionary<int, FDiceData>();
-    Dictionary<int, FDiceGradeData> m_DiceGradeDataMap = new Dictionary<int, FDiceGradeData>();
+    Dictionary<DiceGrade, FDiceGradeData> m_DiceGradeDataMap = new Dictionary<DiceGrade, FDiceGradeData>();
 
     public void Initialize()
     {
@@ -44,7 +45,7 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
         {
             FDiceData data = new FDiceData();
             data.ID = node.GetIntAttr("id");
-            data.Grade = node.GetIntAttr("grade");
+            data.Grade = (DiceGrade)node.GetIntAttr("grade");
             data.Name = node.GetStringAttr("name");
             data.Description = node.GetStringAttr("description");
             data.IconPath = node.GetStringAttr("icon");
@@ -58,7 +59,7 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
         foreach (FDataNode node in diceGradeDataNodes)
         {
             FDiceGradeData gradeData = new FDiceGradeData();
-            gradeData.Grade = node.GetIntAttr("grade");
+            gradeData.Grade = (DiceGrade)node.GetIntAttr("grade");
             gradeData.GradeName = node.GetStringAttr("name");
             gradeData.BackgroundPath = node.GetStringAttr("invenSlotImage");
             gradeData.InitialLevel = node.GetIntAttr("initialLevel");
@@ -105,7 +106,7 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
         return null;
     }
 
-    public FDiceGradeData? FindGradeData(int InGrade)
+    public FDiceGradeData? FindGradeData(DiceGrade InGrade)
     {
         if(m_DiceGradeDataMap.ContainsKey(InGrade))
         {

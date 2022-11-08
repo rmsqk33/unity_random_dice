@@ -30,7 +30,7 @@ public class FDiceInfoPopup : FPopupBase
     [SerializeField]
     Button m_UseBtn;
 
-    int m_ID;
+    int m_ID = 0;
 
     public delegate void ButtonHandler(int InID);
     ButtonHandler m_UpgradeBtnHandler;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using RandomDice;
 
 public class FDisableDiceSlot : MonoBehaviour
 {
@@ -24,10 +25,10 @@ public class FDisableDiceSlot : MonoBehaviour
     public void Init(in FDiceData InData)
     {
         ID = InData.ID;
-        DiceIcon_L.enabled = InData.Grade == 4;
-        DiceIcon.enabled = InData.Grade != 4;
+        DiceIcon_L.enabled = InData.Grade == DiceGrade.DICE_GRADE_LEGEND;
+        DiceIcon.enabled = InData.Grade != DiceGrade.DICE_GRADE_LEGEND;
 
-        if (InData.Grade == 4)
+        if (DiceIcon_L.enabled)
             DiceIcon_L.sprite = Resources.Load<Sprite>(InData.DisableIconPath);
         else
             DiceIcon.sprite = Resources.Load<Sprite>(InData.DisableIconPath);
