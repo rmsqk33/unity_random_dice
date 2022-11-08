@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct FDiceData
@@ -8,6 +9,7 @@ public struct FDiceData
     public int ID;
     public int Grade;
     public string Name;
+    public string Description;
     public string IconPath;
     public string DisableIconPath;
     public Color Color;
@@ -17,6 +19,7 @@ public struct FDiceLevelData
 {
     public int Level;
     public int MaxExp;
+    public int GoldCost;
 }
 
 public struct FDiceGradeData
@@ -43,6 +46,7 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
             data.ID = node.GetIntAttr("id");
             data.Grade = node.GetIntAttr("grade");
             data.Name = node.GetStringAttr("name");
+            data.Description = node.GetStringAttr("description");
             data.IconPath = node.GetStringAttr("icon");
             data.DisableIconPath = node.GetStringAttr("disableIcon");
             data.Color = node.GetColorAttr("color");
@@ -65,6 +69,7 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
                 FDiceLevelData levelData = new FDiceLevelData();
                 levelData.Level = InNode.GetIntAttr("level");
                 levelData.MaxExp = InNode.GetIntAttr("exp");
+                levelData.GoldCost = InNode.GetIntAttr("goldCost");
 
                 gradeData.LevelDataMap.Add(levelData.Level, levelData);
             });

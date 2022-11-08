@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class FMsgPopup : MonoBehaviour
+public class FMsgPopup : FPopupBase
 {
     [SerializeField]
     TextMeshProUGUI TitleTextMesh;

@@ -62,6 +62,7 @@ public class FInventory : MonoBehaviour
 
         FDiceSlot slot = Instantiate(DiceSlotPrefab, DiceListObject);
         slot.Init(InData, InAcquiredDiceData);
+        slot.OnClickHandler = OnClickAcquiredDiceSlot;
 
         m_DiceMap.Add(slot.ID, slot);
 
@@ -77,6 +78,7 @@ public class FInventory : MonoBehaviour
 
         FDisableDiceSlot slot = Instantiate(DisableDiceSlotPrefab, DisableDiceListObject);
         slot.Init(InData);
+        slot.OnClickHandler = OnClickDisableDiceSlot;
 
         m_DisableDiceList.Add(InData.ID, slot);
     }
@@ -88,5 +90,31 @@ public class FInventory : MonoBehaviour
             Destroy(m_DisableDiceList[InID]);
             m_DisableDiceList.Remove(InID);
         }
+    }
+
+    public void OnClickAcquiredDiceSlot(int InID)
+    {
+        if (m_DiceMap.ContainsKey(InID))
+        {
+            FPopupManager.Instance.OpenAcquiredDiceInfoPopup(InID, OnClickUpgrade, OnClickUse);
+        }
+    }
+
+    public void OnClickDisableDiceSlot(int InID)
+    {
+        if (m_DisableDiceList.ContainsKey(InID))
+        {
+            FPopupManager.Instance.OpenDisableDiceInfoPopup(InID);
+        }
+    }
+
+    public void OnClickUpgrade(int InID)
+    {
+
+    }
+
+    public void OnClickUse(int InID)
+    {
+
     }
 }

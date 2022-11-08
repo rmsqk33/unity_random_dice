@@ -26,6 +26,22 @@ public class FDiceSlot : MonoBehaviour
     int m_CurrentExp = 0;
     int m_MaxExp = 0;
 
+    public int Level { set { LevelText.text = value.ToString(); } }
+    public int ID { get; set; }
+
+    public delegate void ClickHandler(int InID);
+    ClickHandler m_ClickHandler;
+    public ClickHandler OnClickHandler { set { m_ClickHandler = value; } }
+
+    public int CurrentExp
+    {
+        set
+        {
+            m_CurrentExp = value;
+            UpdateExp();
+        }
+    }
+
     public void Init(in FDiceData InDiceData, in FDice InDice)
     {
         ID = InDice.id;
@@ -53,18 +69,6 @@ public class FDiceSlot : MonoBehaviour
         }
     }
 
-    public int Level { set { LevelText.text = value.ToString(); } }
-    public int ID { get; set; }
-
-    public int CurrentExp
-    {
-        set
-        {
-            m_CurrentExp = value;
-            UpdateExp();
-        }
-    }
-
     public void SetExp(int InExp, int InMax)
     {
         m_CurrentExp = Mathf.Min(InExp, InMax);
@@ -81,5 +85,10 @@ public class FDiceSlot : MonoBehaviour
         ExpText.text = m_CurrentExp.ToString() + "/" + m_MaxExp.ToString();
 
         LevelUpIcon.enabled = m_MaxExp == m_CurrentExp;
+    }
+
+    public void OnClickSlot()
+    {
+        m_ClickHandler(ID);
     }
 }
