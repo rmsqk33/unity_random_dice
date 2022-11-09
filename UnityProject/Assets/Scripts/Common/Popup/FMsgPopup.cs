@@ -24,7 +24,7 @@ public class FMsgPopup : FPopupBase
         if (m_OKButtonHandler != null)
             m_OKButtonHandler();
 
-        Visible = false;
+        FPopupManager.Instance.ClosePopup();
     }
 
 }

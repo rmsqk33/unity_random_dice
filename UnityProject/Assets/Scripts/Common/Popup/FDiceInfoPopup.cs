@@ -119,6 +119,6 @@ public class FDiceInfoPopup : FPopupBase
 
     public void OnClose()
     {
-        Destroy(this.gameObject);
+        FPopupManager.Instance.ClosePopup();
     }
 }

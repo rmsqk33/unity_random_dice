@@ -52,6 +52,15 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         m_Popup = popup;
     }
 
+    public void ClosePopup()
+    {
+        if(m_Popup != null)
+        {
+            m_Popup.Close();
+            m_Popup = null;
+        }
+    }
+
     GameObject CreatePopup(in string InPath)
     {
         GameObject popup = Resources.Load<GameObject>(InPath);
