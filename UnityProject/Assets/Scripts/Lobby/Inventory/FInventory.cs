@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class FInventory : MonoBehaviour
+public class FInventory : FLobbyScrollMenuBase
 {
     [SerializeField]
     TextMeshProUGUI CriticalText;
