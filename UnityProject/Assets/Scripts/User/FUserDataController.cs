@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using Packet;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
             }
         }
         
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < 10; ++i)
         {
             testPacket.diceDataList[i].id = i + 1;
             testPacket.diceDataList[i].count = 200;
@@ -102,13 +103,27 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     public void SetPreset(int InID, int InIndex)
     {
-        m_DicePresetIDList[m_SelectedPresetIndex, InIndex] = InID;
-
         FDicePreset dicePresetUI = FindDicePreset();
-        if (dicePresetUI != null)
+        int prevIndex = GetDicePresetIndex(InID, m_SelectedPresetIndex);
+        if (prevIndex != -1)
         {
-            dicePresetUI.SetPreset(InID, InIndex);
+            int prevDiceID = m_DicePresetIDList[m_SelectedPresetIndex, InIndex];
+            m_DicePresetIDList[m_SelectedPresetIndex, prevIndex] = prevDiceID;
+            dicePresetUI.SetPreset(prevDiceID, prevIndex);
         }
+
+        m_DicePresetIDList[m_SelectedPresetIndex, InIndex] = InID;
+        dicePresetUI.SetPreset(InID, InIndex);
+    }
+
+    int GetDicePresetIndex(int InID, int InIndex)
+    {
+        for(int i = 0; i < m_DicePresetIDList.GetLength(0); ++i)
+        {
+            if (m_DicePresetIDList[InIndex, i] == InID)
+                return i;
+        }
+        return -1;
     }
 
     void InitLobbyUserInfoUI(in S_USER_DATA InPacket)

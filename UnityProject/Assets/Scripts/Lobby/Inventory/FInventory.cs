@@ -8,21 +8,21 @@ using UnityEngine.UIElements;
 public class FInventory : FLobbyScrollMenuBase
 {
     [SerializeField]
-    TextMeshProUGUI CriticalText;
+    TextMeshProUGUI m_CriticalText;
     [SerializeField]
-    Transform DiceListObject;
+    Transform m_DiceListUI;
     [SerializeField]
-    Transform DisableDiceListObject;
+    Transform m_DisableDiceListUI;
     [SerializeField]
-    FDiceSlot DiceSlotPrefab;
+    FDiceSlot m_DiceSlotPrefab;
     [SerializeField]
-    FDisableDiceSlot DisableDiceSlotPrefab;
+    FDisableDiceSlot m_DisableDiceSlotPrefab;
     [SerializeField]
-    int DiceXCount;
+    Transform m_PresetRegistUI;
     [SerializeField]
-    int DiceSideSpace;
-    [SerializeField]
-    int DiceBottomSpace;
+    GameObject m_DiceScrollView;
+
+    int m_SelectedDiceID = 0;
 
     Dictionary<int, FDiceSlot> m_DiceMap = new Dictionary<int, FDiceSlot>();
     Dictionary<int, FDisableDiceSlot> m_DisableDiceList = new Dictionary<int, FDisableDiceSlot>();
@@ -34,6 +34,12 @@ public class FInventory : FLobbyScrollMenuBase
         InitDiceSlot();
     }
 #endif
+
+    public override void OnDeactive()
+    {
+        base.OnDeactive();
+        SetPresetRegistActive(false);
+    }
 
     public void InitDiceSlot()
     {
@@ -47,7 +53,7 @@ public class FInventory : FLobbyScrollMenuBase
         });
     }
     
-    public int Critical { set { CriticalText.text = value.ToString() + "%"; } }
+    public int Critical { set { m_CriticalText.text = value.ToString() + "%"; } }
 
     public void AcquireDice(in FDiceData InData, in FDice InAcquiredDiceData)
     {
@@ -55,12 +61,34 @@ public class FInventory : FLobbyScrollMenuBase
         RemoveDisableDice(InData.ID);
     }
 
+    public void OnClickUpgrade()
+    {
+
+    }
+
+    public void OnClickPresetRegist()
+    {
+        SetPresetRegistActive(true);
+        FPopupManager.Instance.ClosePopup();
+    }
+
+    public void OnClickPresetRegistCancel()
+    {
+        SetPresetRegistActive(false);
+    }
+
+    public void OnChangeDiceInPreset(int InIndex)
+    {
+        FUserDataController.Instance.SetPreset(m_SelectedDiceID, InIndex);
+        SetPresetRegistActive(false);
+    }
+
     void AddDice(in FDiceData InData, in FDice InAcquiredDiceData)
     {
         if (m_DiceMap.ContainsKey(InData.ID))
             return;
 
-        FDiceSlot slot = Instantiate(DiceSlotPrefab, DiceListObject);
+        FDiceSlot slot = Instantiate(m_DiceSlotPrefab, m_DiceListUI);
         slot.Init(InData, InAcquiredDiceData);
         slot.OnClickHandler = OnClickAcquiredDiceSlot;
 
@@ -76,7 +104,7 @@ public class FInventory : FLobbyScrollMenuBase
         if (m_DisableDiceList.ContainsKey(InData.ID))
             return;
 
-        FDisableDiceSlot slot = Instantiate(DisableDiceSlotPrefab, DisableDiceListObject);
+        FDisableDiceSlot slot = Instantiate(m_DisableDiceSlotPrefab, m_DisableDiceListUI);
         slot.Init(InData);
         slot.OnClickHandler = OnClickDisableDiceSlot;
 
@@ -92,15 +120,16 @@ public class FInventory : FLobbyScrollMenuBase
         }
     }
 
-    public void OnClickAcquiredDiceSlot(int InID)
+    void OnClickAcquiredDiceSlot(int InID)
     {
         if (m_DiceMap.ContainsKey(InID))
         {
-            FPopupManager.Instance.OpenAcquiredDiceInfoPopup(InID, OnClickUpgrade, OnClickUse);
+            m_SelectedDiceID = InID;
+            FPopupManager.Instance.OpenAcquiredDiceInfoPopup(InID, OnClickUpgrade, OnClickPresetRegist);
         }
     }
 
-    public void OnClickDisableDiceSlot(int InID)
+    void OnClickDisableDiceSlot(int InID)
     {
         if (m_DisableDiceList.ContainsKey(InID))
         {
@@ -108,13 +137,34 @@ public class FInventory : FLobbyScrollMenuBase
         }
     }
 
-    public void OnClickUpgrade(int InID)
+    void SetPresetRegistActive(bool InActive)
     {
+        FDicePreset presetUI = FindDicePreset();
+        if (presetUI != null)
+            presetUI.SetPresetRegistActive(InActive);
 
+        m_DiceScrollView.SetActive(!InActive);
+
+        if(InActive)
+        {
+            FDiceSlot slot = m_PresetRegistUI.Find("DiceSlot").GetComponent<FDiceSlot>();
+
+            FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(m_SelectedDiceID);
+            FDice? dice = FUserDataController.Instance.FindAcquiredDice(m_SelectedDiceID);
+            if(diceData != null && dice != null)
+            {
+                slot.Init(diceData.Value, dice.Value);
+            }
+        }
+        m_PresetRegistUI.gameObject.SetActive(InActive);
     }
 
-    public void OnClickUse(int InID)
+    FDicePreset FindDicePreset()
     {
+        GameObject gameObject = GameObject.Find("DicePreset");
+        if (gameObject != null)
+            return gameObject.GetComponent<FDicePreset>();
 
+        return null;
     }
 }

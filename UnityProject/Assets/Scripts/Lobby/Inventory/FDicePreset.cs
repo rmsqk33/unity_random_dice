@@ -47,6 +47,14 @@ public class FDicePreset : MonoBehaviour
         FUserDataController.Instance.SetPresetList(InIndex);
     }
 
+    public void SetPresetRegistActive(bool InActive)
+    {
+        foreach(FDicePresetSlot slot in m_SlotList)
+        {
+            slot.SetPresetRegistActive(InActive);
+        }
+    }
+
     void SelectTab(int InIndex)
     {
         m_TabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");

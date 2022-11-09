@@ -58,10 +58,13 @@ public class FLobbyScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     {
         if(0 <= InIndex && InIndex < m_ScrollMenuList.Count)
         {
-            if (m_CurrentViewIndex != -1)
-                m_ScrollMenuList[m_CurrentViewIndex].OnDeactive();
+            if(m_CurrentViewIndex != InIndex)
+            {
+                if (m_CurrentViewIndex != -1)
+                    m_ScrollMenuList[m_CurrentViewIndex].OnDeactive();
 
-            m_ScrollMenuList[InIndex].OnActive();
+                m_ScrollMenuList[InIndex].OnActive();
+            }
 
             m_PrevViewPosition.x = m_ScrollRect.content.anchoredPosition.x;
             m_MoveViewPosition.x = m_ScrollMenuList[InIndex].GetComponent<RectTransform>().anchoredPosition.x * -1;

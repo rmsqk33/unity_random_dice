@@ -13,6 +13,8 @@ public class FDicePresetSlot : MonoBehaviour
     Image m_DiceIcon_L;
     [SerializeField]
     TextMeshProUGUI m_Level;
+    [SerializeField]
+    Image m_PresetRegistGuide;
 
     public void SetSlot(in FDice InSlot)
     {
@@ -28,5 +30,12 @@ public class FDicePresetSlot : MonoBehaviour
             m_DiceIcon.sprite = Resources.Load<Sprite>(diceData.Value.IconPath);
 
         m_Level.text = InSlot.level.ToString();
+    }
+
+
+    public void SetPresetRegistActive(bool InActive)
+    {
+        m_PresetRegistGuide.gameObject.SetActive(InActive);
+        GetComponent<Button>().interactable = InActive;
     }
 }
