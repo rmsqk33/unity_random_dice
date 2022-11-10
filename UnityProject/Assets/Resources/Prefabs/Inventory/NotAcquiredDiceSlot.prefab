@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1913915485796868371}
   - component: {fileID: 1958078391066506851}
   m_Layer: 5
-  m_Name: DisableDiceSlot
+  m_Name: NotAcquiredDiceSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

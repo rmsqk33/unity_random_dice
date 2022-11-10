@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using RandomDice;
 
-public class FDiceSlot : MonoBehaviour
+public class FAcquiredDiceSlot : MonoBehaviour
 {
     [SerializeField]
     Image Background;

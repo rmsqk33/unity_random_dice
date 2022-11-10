@@ -22,7 +22,8 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
         ParseXML("Data/PostLoadData");
 
         FDiceDataManager.Instance.Initialize();
-
+        FBattleFieldDataManager.Instance.Initialize();
+        
         return true;
     }
 

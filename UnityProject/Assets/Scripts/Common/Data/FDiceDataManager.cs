@@ -12,7 +12,7 @@ public struct FDiceData
     public string Name;
     public string Description;
     public string IconPath;
-    public string DisableIconPath;
+    public string notAcquiredIconPath;
     public Color Color;
 }
 
@@ -49,7 +49,7 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
             data.Name = node.GetStringAttr("name");
             data.Description = node.GetStringAttr("description");
             data.IconPath = node.GetStringAttr("icon");
-            data.DisableIconPath = node.GetStringAttr("disableIcon");
+            data.notAcquiredIconPath = node.GetStringAttr("notAcquiredIcon");
             data.Color = node.GetColorAttr("color");
 
             m_DiceDataMap.Add(data.ID, data);

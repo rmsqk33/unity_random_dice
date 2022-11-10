@@ -1,13 +1,16 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FDicePreset : MonoBehaviour
+public class FBattleFieldPreset : MonoBehaviour
 {
     [SerializeField]
     List<Button> m_TabList;
     [SerializeField]
-    List<FDicePresetSlot> m_SlotList;
+    Image m_BattleFieldImage;
+    [SerializeField]
+    TextMeshProUGUI m_BattleFieldName;
 
     int m_SelectedPresetIndex = 0;
 
@@ -21,24 +24,20 @@ public class FDicePreset : MonoBehaviour
         UnselectTab(m_SelectedPresetIndex);
         SelectTab(InPresetIndex);
 
-        m_SelectedPresetIndex = InPresetIndex;
+        int battleFieldID = FUserDataController.Instance.GetBattleFieldPresetID(InPresetIndex);
+        SetBattleFieldPreset(battleFieldID);
 
-        int i = 0;
-        FUserDataController.Instance.ForeachDicePreset(InPresetIndex, (int InID) => 
-        {
-            FDice? dice = FUserDataController.Instance.FindAcquiredDice(InID);
-            if (dice != null)
-                m_SlotList[i].SetSlot(dice.Value);
-           
-            ++i;
-        });
+        m_SelectedPresetIndex = InPresetIndex;
     }
 
-    public void SetDicePreset(int InID, int InIndex)
+    public void SetBattleFieldPreset(int InID)
     {
-        FDice? dice = FUserDataController.Instance.FindAcquiredDice(InID);
-        if (dice != null)
-            m_SlotList[InIndex].SetSlot(dice.Value);
+        FBattleFieldData? battleFieldData = FBattleFieldDataManager.Instance.FindBattleFieldData(InID);
+        if (battleFieldData != null)
+        {
+            m_BattleFieldName.text = battleFieldData.Value.Name;
+            m_BattleFieldImage.sprite = Resources.Load<Sprite>(battleFieldData.Value.SkinImage);
+        }
     }
 
     public void OnClickTab(int InIndex)
@@ -47,14 +46,6 @@ public class FDicePreset : MonoBehaviour
             return;
 
         FUserDataController.Instance.SetPreset(InIndex);
-    }
-
-    public void SetPresetRegistActive(bool InActive)
-    {
-        foreach(FDicePresetSlot slot in m_SlotList)
-        {
-            slot.SetPresetRegistActive(InActive);
-        }
     }
 
     void SelectTab(int InIndex)

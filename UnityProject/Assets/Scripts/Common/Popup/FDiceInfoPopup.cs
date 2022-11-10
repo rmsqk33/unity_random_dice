@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static FPopupManager;
 
 public class FDiceInfoPopup : FPopupBase
 {
     [SerializeField]
-    FDiceSlot m_DiceSlot;
+    FAcquiredDiceSlot m_AcquiredDiceSlot;
     [SerializeField]
-    FDisableDiceSlot m_DisableDiceSlot;
+    FNotAcquiredDiceSlot m_NotAcquiredDiceSlot;
     [SerializeField]
     TextMeshProUGUI m_NameText;
     [SerializeField]
@@ -49,9 +47,9 @@ public class FDiceInfoPopup : FPopupBase
 
         m_UpgradeBtn.gameObject.SetActive(true);
         m_UseBtn.gameObject.SetActive(true);
-        m_DisableDiceSlot.gameObject.SetActive(false);
-        m_DiceSlot.gameObject.SetActive(true);
-        m_DiceSlot.Init(diceData.Value, dice.Value);
+        m_NotAcquiredDiceSlot.gameObject.SetActive(false);
+        m_AcquiredDiceSlot.gameObject.SetActive(true);
+        m_AcquiredDiceSlot.Init(diceData.Value, dice.Value);
         
         FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
         if (gradeData != null)
@@ -66,7 +64,7 @@ public class FDiceInfoPopup : FPopupBase
         }
     }
 
-    public void OpenDisableDiceInfo(int InID)
+    public void OpenNotAcquiredDiceInfo(int InID)
     {
         FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InID);
         if (diceData == null)
@@ -74,9 +72,9 @@ public class FDiceInfoPopup : FPopupBase
 
         m_UpgradeBtn.gameObject.SetActive(false);
         m_UseBtn.gameObject.SetActive(false);
-        m_DiceSlot.gameObject.SetActive(false);
-        m_DisableDiceSlot.gameObject.SetActive(true);
-        m_DisableDiceSlot.Init(diceData.Value);
+        m_AcquiredDiceSlot.gameObject.SetActive(false);
+        m_NotAcquiredDiceSlot.gameObject.SetActive(true);
+        m_NotAcquiredDiceSlot.Init(diceData.Value);
         SetUpgradable(false);
 
         FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using RandomDice;
 
-public class FDisableDiceSlot : MonoBehaviour
+public class FNotAcquiredDiceSlot : MonoBehaviour
 {
     [SerializeField]
     Image Background;
@@ -29,9 +29,9 @@ public class FDisableDiceSlot : MonoBehaviour
         DiceIcon.gameObject.SetActive(InData.Grade != DiceGrade.DICE_GRADE_LEGEND);
 
         if (DiceIcon_L.IsActive())
-            DiceIcon_L.sprite = Resources.Load<Sprite>(InData.DisableIconPath);
+            DiceIcon_L.sprite = Resources.Load<Sprite>(InData.notAcquiredIconPath);
         else
-            DiceIcon.sprite = Resources.Load<Sprite>(InData.DisableIconPath);
+            DiceIcon.sprite = Resources.Load<Sprite>(InData.notAcquiredIconPath);
 
         FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(InData.Grade);
         if (gradeData != null)

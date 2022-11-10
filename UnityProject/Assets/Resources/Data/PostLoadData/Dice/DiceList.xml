@@ -1,40 +1,40 @@
 <DiceList>
-	<Dice id="1" name="불 주사위" icon="Sprite/Dice/Dice_FIRE" disableIcon="Sprite/Dice/Black_Dice_FIRE" color="" grade="1" description="몬스터 공격 시 타겟 주변에 스플래시 [화염] 데미지를 입힌다."></Dice>
-	<Dice id="2" name="전기 주사위" icon="Sprite/Dice/Dice_ELECT" disableIcon="Sprite/Dice/Black_Dice_ELECT" color="ffad0d" grade="1" description="몬스터 공격 시 타겟을 포함한 3개의 몬스터에게 [전기] 데미지를 입힌다." ></Dice>
-	<Dice id="3" name="바람 주사위" icon="Sprite/Dice/Dice_WIND" disableIcon="Sprite/Dice/Black_Dice_WIND" color="00c7a1" grade="1" description="몬스터를 빠른 속도로 공격한다."></Dice>
-	<Dice id="4" name="독 주사위" icon="Sprite/Dice/Dice_POISON" disableIcon="Sprite/Dice/Black_Dice_POISON" color="30bd1c" grade="1" description="몬스터 공격 시 [독] 디버프를 남겨 초당 독 데미지를 입힌다. "></Dice>
-	<Dice id="5" name="얼음 주사위" icon="Sprite/Dice/Dice_ICE" disableIcon="Sprite/Dice/Black_Dice_ICE" color="408ff2" grade="1" description="몬스터 공격 시 [얼음] 디버프를 남겨 이동속도를 감소 시킨다."></Dice>
-	<Dice id="6" name="쇠 주사위" icon="Sprite/Dice/Dice_IRON" disableIcon="Sprite/Dice/Black_Dice_IRON" color="636363" grade="1" description="보스 공격 시 2배 데미지를 입힌다."></Dice>
-	<Dice id="7" name="고장난 주사위" icon="Sprite/Dice/Dice_BROKEN" disableIcon="Sprite/Dice/Black_Dice_BROKEN" color="8f0aff" grade="1" description="무작위 몬스터를 공격한다."></Dice>
-	<Dice id="8" name="도박 주사위" icon="Sprite/Dice/Dice_GAMBLE" disableIcon="Sprite/Dice/Black_Dice_GAMBLE" color="5908fa" grade="1" description="무작위 데미지를 입힌다."></Dice>
-	<Dice id="9" name="잠금 주사위" icon="Sprite/Dice/Dice_LOCK" disableIcon="Sprite/Dice/Black_Dice_LOCK" color="4a4a4a" grade="1" description="몬스터 공격 시 일정 확률로 [잠금] 디버프를 걸어 움직이지 못하게 한다."></Dice>
-	<Dice id="10" name="광산 주사위" icon="Sprite/Dice/Dice_MINE" disableIcon="Sprite/Dice/Black_Dice_MINE" color="00e8ff" grade="2" description="일정 시간마다 추가 SP를 획득한다."></Dice>
-	<Dice id="11" name="빛 주사위" icon="Sprite/Dice/Dice_LIGHT" disableIcon="Sprite/Dice/Black_Dice_LIGHT" color="ffcc08" grade="2" description="십자범위 4칸 주사위에게 [공격속도 증가] 버프를 준다."></Dice>
-	<Dice id="12" name="가시 주사위" icon="Sprite/Dice/Dice_THORN" disableIcon="Sprite/Dice/Black_Dice_THORN" color="2e8a30" grade="2" description="기본공격 대신 몬스터 경로에 [가시]를 설치한다."></Dice>
-	<Dice id="13" name="균열 주사위" icon="Sprite/Dice/Dice_CRACK" disableIcon="Sprite/Dice/Black_Dice_CRACK" color="f726bf" grade="2" description="몬스터 공격 시 추가 데미지를 받는 [균열] 디버프를 남긴다."></Dice>
-	<Dice id="14" name="크리티컬 주사위" icon="Sprite/Dice/Dice_CRITICAL" disableIcon="Sprite/Dice/Black_Dice_CRITICAL" color="ff2600" grade="2" description="십자범위 4칸 주사위에게 [크리티컬 확률 증가] 버프를 준다."></Dice>
-	<Dice id="15" name="에너지 주사위" icon="Sprite/Dice/Dice_ENERGY" disableIcon="Sprite/Dice/Black_Dice_ENERGY" color="05ad8c" grade="2" description="현재 보유한 SP에 비례하여 데미지를 입힌다."></Dice>
-	<Dice id="16" name="제물 주사위" icon="Sprite/Dice/Dice_GIFT" disableIcon="Sprite/Dice/Black_Dice_GIFT" color="4025ed" grade="2"  description="주사위를 합칠 때 추가 SP를 획득한다."></Dice>
-	<Dice id="17" name="활 주사위" icon="Sprite/Dice/Dice_BOW" disableIcon="Sprite/Dice/Black_Dice_BOW" color="f08247" grade="2" description="5회 공격 시마다 무작위 적에게 [화살]을 발사한다."></Dice>
-	<Dice id="18" name="도박 성장 주사위" icon="Sprite/Dice/Dice_GAMBLEGROWTH" disableIcon="Sprite/Dice/Black_Dice_GAMBLEGROWTH" color="ad6305" grade="2" description="일정 시간이 지나면 현재 덱에 있는 주사위로 변신한다."></Dice>
-	<Dice id="19" name="죽음 주사위" icon="Sprite/Dice/Dice_DEATH" disableIcon="Sprite/Dice/Black_Dice_DEATH" color="2e292e" grade="3" description="몬스터 공격 시 일정 확률로 즉사시킨다. 단, 보스에게는 적용되지 않는다."></Dice>
-	<Dice id="21" name="텔레포트 주사위" icon="Sprite/Dice/Dice_TELEPORT" disableIcon="Sprite/Dice/Black_Dice_TELEPORT" color="b805ff" grade="3" description="몬스터 공격 시 일정 확률로 처음 위치로 이동시킨다."></Dice>
-	<Dice id="22" name="레이저 주사위" icon="Sprite/Dice/Dice_LASER" disableIcon="Sprite/Dice/Black_Dice_LASER" color="ff7803" grade="3" description="10회 공격할 때 마다 범위 [레이저] 공격을 한다."></Dice>
-	<Dice id="23" name="적응 주사위" icon="Sprite/Dice/Dice_ADAPTATION" disableIcon="Sprite/Dice/Black_Dice_ADJUST" color="1979e5" grade="3" description="같은 눈금수를 가진 모든 주사위와 합칠 수 있다."></Dice>
-	<Dice id="24" name="감염 주사위" icon="Sprite/Dice/Dice_INFECT" disableIcon="Sprite/Dice/Black_Dice_INFECT" color="9ccf9c" grade="3" description="몬스터 공격 시 [감염] 표식을 남긴다. [감염] 표식은 몬스터 사망 시 해당 위치에 스플래시 데미지를 입히는 [독가스]를 생성한다."></Dice>
-	<Dice id="25" name="개조된 전기 주사위" icon="Sprite/Dice/Dice_MODIFIEDELECT" disableIcon="Sprite/Dice/Black_Dice_MODIFIEDELECT" color="ab2121" grade="3" description="몬스터 공격 시 눈금수만큼의 타겟에게 [전기] 데미지를 입힌다."></Dice>
-	<Dice id="26" name="흡수 주사위" icon="Sprite/Dice/Dice_ABSORB" disableIcon="Sprite/Dice/Black_Dice_ABSORB" color="cc2e24" grade="3" description="몬스터 공격 시 [흡수] 표식을 남긴다. [흡수] 표식은 일정 시간동안 몬스터로부터 SP를 흡수한다."></Dice>
-	<Dice id="27" name="강풍 주사위" icon="Sprite/Dice/Dice_GALE" disableIcon="Sprite/Dice/Black_Dice_GALE" color="73e6e6" grade="3" description="일정 시간마다 [강풍] 상태로 변화하여 공격 속도가 상승한다."></Dice>
-	<Dice id="28" name="스위치 주사위" icon="Sprite/Dice/Dice_SWITCH" disableIcon="Sprite/Dice/Black_Dice_SWITCH" color="5229ff" grade="3" description="같은 눈금수를 가진 주사위와 위치를 변경할 수 있다."></Dice>
-	<Dice id="29" name="기어 주사위" icon="Sprite/Dice/Dice_GEAR" disableIcon="Sprite/Dice/Black_Dice_GEAR" color="4a4a4a" grade="3" description="십자 범위 4칸에 같은 주사위가 있으면 공격력이 증가한다."></Dice>
-	<Dice id="30" name="핵 주사위" icon="Sprite/Dice/Dice_NUCLEAR" disableIcon="Sprite/Dice/Black_Dice_NUCLEAR" color="fb1a40" grade="4"  description="주사위를 합치면 가장 앞쪽 타겟에게 [핵]을 날려 큰 데미지를 입힌다."></Dice>
-	<Dice id="31" name="조커 주사위" icon="Sprite/Dice/Dice_JOKER" disableIcon="Sprite/Dice/Black_Dice_JOKER" color="d9e419" grade="4" description="같은 눈금수의 주사위와 합치면 해당 주사위로 변한다."></Dice>
-	<Dice id="32" name="방패 주사위" icon="Sprite/Dice/Dice_SHIELD" disableIcon="Sprite/Dice/Black_Dice_SHIELD" color="e7ac21" grade="4" description="일정 시간마다 몬스터 경로에 [방패]를 설치하여 막는다."></Dice>
-	<Dice id="33" name="눈보라 주사위" icon="Sprite/Dice/Dice_BLIZZARD" disableIcon="Sprite/Dice/Black_Dice_BLIZZARD" color="387dec" grade="4" description="일정 시간마다 [눈보라]를 일으켜 모든 몬스터의 이동 속도를 감소시킨다."></Dice>
-	<Dice id="34" name="성장 주사위" icon="Sprite/Dice/Dice_GROWTH" disableIcon="Sprite/Dice/Black_Dice_GROWTH" color="3b2993" grade="4" description="일정 시간마다 눈금 수가 1개 상승하며 무작위 주사위로 변한다."></Dice>
-	<Dice id="35" name="소환 주사위" icon="Sprite/Dice/Dice_SUMMON" disableIcon="Sprite/Dice/Black_Dice_SUMMON" color="00a736" grade="4" description="주사위를 합칠 때 무작위 주사위를 1개 소환한다."></Dice>
-	<Dice id="36" name="태양 주사위" icon="Sprite/Dice/Dice_SOLAR" disableIcon="Sprite/Dice/Black_Dice_SOLAR" color="fe8630" grade="4" description="같은 몬스터를 공격하면 점점 데미지가 증가한다. '태양 주사위'가 3, 5, 7, 9개 소환된 경우 [활성화] 상태로 변하여 공격속도가 증가하고 스플래시 데미지를 입힌다."></Dice>
-	<Dice id="37" name="원자 주사위" icon="Sprite/Dice/Dice_ELEMENT" disableIcon="Sprite/Dice/Black_Dice_ELEMENT" color="b71c9d" grade="4" description="눈금수 만큼의 원자가 주사위 주변을 회전하며 몬스터의 현재 체력에 비례하는 데미지를 입힌다."></Dice>
-	<Dice id="38" name="태풍 주사위" icon="Sprite/Dice/Dice_TYPHOON" disableIcon="Sprite/Dice/Black_Dice_TYPHOON" color="177384" grade="4" description="일정 시간 후 [강풍] 1단계로 변하여 공격속도가 증가하고 곧이어 [강풍] 2단계로 변신하여 크리티컬 확률이 100%가 된다."></Dice>
-	<Dice id="39" name="콤보 주사위" icon="Sprite/Dice/Dice_COMBO" disableIcon="Sprite/Dice/Black_Dice_COMBO" color="a21f8b" grade="4" description="주사위를 합치면 [콤보] 수치가 증가하여 공격력이 상승한다."></Dice>
+	<Dice id="1" name="불 주사위" icon="Sprite/Dice/Dice_FIRE" notAcquiredIcon="Sprite/Dice/Black_Dice_FIRE" color="" grade="1" description="몬스터 공격 시 타겟 주변에 스플래시 [화염] 데미지를 입힌다."></Dice>
+	<Dice id="2" name="전기 주사위" icon="Sprite/Dice/Dice_ELECT" notAcquiredIcon="Sprite/Dice/Black_Dice_ELECT" color="ffad0d" grade="1" description="몬스터 공격 시 타겟을 포함한 3개의 몬스터에게 [전기] 데미지를 입힌다." ></Dice>
+	<Dice id="3" name="바람 주사위" icon="Sprite/Dice/Dice_WIND" notAcquiredIcon="Sprite/Dice/Black_Dice_WIND" color="00c7a1" grade="1" description="몬스터를 빠른 속도로 공격한다."></Dice>
+	<Dice id="4" name="독 주사위" icon="Sprite/Dice/Dice_POISON" notAcquiredIcon="Sprite/Dice/Black_Dice_POISON" color="30bd1c" grade="1" description="몬스터 공격 시 [독] 디버프를 남겨 초당 독 데미지를 입힌다. "></Dice>
+	<Dice id="5" name="얼음 주사위" icon="Sprite/Dice/Dice_ICE" notAcquiredIcon="Sprite/Dice/Black_Dice_ICE" color="408ff2" grade="1" description="몬스터 공격 시 [얼음] 디버프를 남겨 이동속도를 감소 시킨다."></Dice>
+	<Dice id="6" name="쇠 주사위" icon="Sprite/Dice/Dice_IRON" notAcquiredIcon="Sprite/Dice/Black_Dice_IRON" color="636363" grade="1" description="보스 공격 시 2배 데미지를 입힌다."></Dice>
+	<Dice id="7" name="고장난 주사위" icon="Sprite/Dice/Dice_BROKEN" notAcquiredIcon="Sprite/Dice/Black_Dice_BROKEN" color="8f0aff" grade="1" description="무작위 몬스터를 공격한다."></Dice>
+	<Dice id="8" name="도박 주사위" icon="Sprite/Dice/Dice_GAMBLE" notAcquiredIcon="Sprite/Dice/Black_Dice_GAMBLE" color="5908fa" grade="1" description="무작위 데미지를 입힌다."></Dice>
+	<Dice id="9" name="잠금 주사위" icon="Sprite/Dice/Dice_LOCK" notAcquiredIcon="Sprite/Dice/Black_Dice_LOCK" color="4a4a4a" grade="1" description="몬스터 공격 시 일정 확률로 [잠금] 디버프를 걸어 움직이지 못하게 한다."></Dice>
+	<Dice id="10" name="광산 주사위" icon="Sprite/Dice/Dice_MINE" notAcquiredIcon="Sprite/Dice/Black_Dice_MINE" color="00e8ff" grade="2" description="일정 시간마다 추가 SP를 획득한다."></Dice>
+	<Dice id="11" name="빛 주사위" icon="Sprite/Dice/Dice_LIGHT" notAcquiredIcon="Sprite/Dice/Black_Dice_LIGHT" color="ffcc08" grade="2" description="십자범위 4칸 주사위에게 [공격속도 증가] 버프를 준다."></Dice>
+	<Dice id="12" name="가시 주사위" icon="Sprite/Dice/Dice_THORN" notAcquiredIcon="Sprite/Dice/Black_Dice_THORN" color="2e8a30" grade="2" description="기본공격 대신 몬스터 경로에 [가시]를 설치한다."></Dice>
+	<Dice id="13" name="균열 주사위" icon="Sprite/Dice/Dice_CRACK" notAcquiredIcon="Sprite/Dice/Black_Dice_CRACK" color="f726bf" grade="2" description="몬스터 공격 시 추가 데미지를 받는 [균열] 디버프를 남긴다."></Dice>
+	<Dice id="14" name="크리티컬 주사위" icon="Sprite/Dice/Dice_CRITICAL" notAcquiredIcon="Sprite/Dice/Black_Dice_CRITICAL" color="ff2600" grade="2" description="십자범위 4칸 주사위에게 [크리티컬 확률 증가] 버프를 준다."></Dice>
+	<Dice id="15" name="에너지 주사위" icon="Sprite/Dice/Dice_ENERGY" notAcquiredIcon="Sprite/Dice/Black_Dice_ENERGY" color="05ad8c" grade="2" description="현재 보유한 SP에 비례하여 데미지를 입힌다."></Dice>
+	<Dice id="16" name="제물 주사위" icon="Sprite/Dice/Dice_GIFT" notAcquiredIcon="Sprite/Dice/Black_Dice_GIFT" color="4025ed" grade="2"  description="주사위를 합칠 때 추가 SP를 획득한다."></Dice>
+	<Dice id="17" name="활 주사위" icon="Sprite/Dice/Dice_BOW" notAcquiredIcon="Sprite/Dice/Black_Dice_BOW" color="f08247" grade="2" description="5회 공격 시마다 무작위 적에게 [화살]을 발사한다."></Dice>
+	<Dice id="18" name="도박 성장 주사위" icon="Sprite/Dice/Dice_GAMBLEGROWTH" notAcquiredIcon="Sprite/Dice/Black_Dice_GAMBLEGROWTH" color="ad6305" grade="2" description="일정 시간이 지나면 현재 덱에 있는 주사위로 변신한다."></Dice>
+	<Dice id="19" name="죽음 주사위" icon="Sprite/Dice/Dice_DEATH" notAcquiredIcon="Sprite/Dice/Black_Dice_DEATH" color="2e292e" grade="3" description="몬스터 공격 시 일정 확률로 즉사시킨다. 단, 보스에게는 적용되지 않는다."></Dice>
+	<Dice id="21" name="텔레포트 주사위" icon="Sprite/Dice/Dice_TELEPORT" notAcquiredIcon="Sprite/Dice/Black_Dice_TELEPORT" color="b805ff" grade="3" description="몬스터 공격 시 일정 확률로 처음 위치로 이동시킨다."></Dice>
+	<Dice id="22" name="레이저 주사위" icon="Sprite/Dice/Dice_LASER" notAcquiredIcon="Sprite/Dice/Black_Dice_LASER" color="ff7803" grade="3" description="10회 공격할 때 마다 범위 [레이저] 공격을 한다."></Dice>
+	<Dice id="23" name="적응 주사위" icon="Sprite/Dice/Dice_ADAPTATION" notAcquiredIcon="Sprite/Dice/Black_Dice_ADJUST" color="1979e5" grade="3" description="같은 눈금수를 가진 모든 주사위와 합칠 수 있다."></Dice>
+	<Dice id="24" name="감염 주사위" icon="Sprite/Dice/Dice_INFECT" notAcquiredIcon="Sprite/Dice/Black_Dice_INFECT" color="9ccf9c" grade="3" description="몬스터 공격 시 [감염] 표식을 남긴다. [감염] 표식은 몬스터 사망 시 해당 위치에 스플래시 데미지를 입히는 [독가스]를 생성한다."></Dice>
+	<Dice id="25" name="개조된 전기 주사위" icon="Sprite/Dice/Dice_MODIFIEDELECT" notAcquiredIcon="Sprite/Dice/Black_Dice_MODIFIEDELECT" color="ab2121" grade="3" description="몬스터 공격 시 눈금수만큼의 타겟에게 [전기] 데미지를 입힌다."></Dice>
+	<Dice id="26" name="흡수 주사위" icon="Sprite/Dice/Dice_ABSORB" notAcquiredIcon="Sprite/Dice/Black_Dice_ABSORB" color="cc2e24" grade="3" description="몬스터 공격 시 [흡수] 표식을 남긴다. [흡수] 표식은 일정 시간동안 몬스터로부터 SP를 흡수한다."></Dice>
+	<Dice id="27" name="강풍 주사위" icon="Sprite/Dice/Dice_GALE" notAcquiredIcon="Sprite/Dice/Black_Dice_GALE" color="73e6e6" grade="3" description="일정 시간마다 [강풍] 상태로 변화하여 공격 속도가 상승한다."></Dice>
+	<Dice id="28" name="스위치 주사위" icon="Sprite/Dice/Dice_SWITCH" notAcquiredIcon="Sprite/Dice/Black_Dice_SWITCH" color="5229ff" grade="3" description="같은 눈금수를 가진 주사위와 위치를 변경할 수 있다."></Dice>
+	<Dice id="29" name="기어 주사위" icon="Sprite/Dice/Dice_GEAR" notAcquiredIcon="Sprite/Dice/Black_Dice_GEAR" color="4a4a4a" grade="3" description="십자 범위 4칸에 같은 주사위가 있으면 공격력이 증가한다."></Dice>
+	<Dice id="30" name="핵 주사위" icon="Sprite/Dice/Dice_NUCLEAR" notAcquiredIcon="Sprite/Dice/Black_Dice_NUCLEAR" color="fb1a40" grade="4"  description="주사위를 합치면 가장 앞쪽 타겟에게 [핵]을 날려 큰 데미지를 입힌다."></Dice>
+	<Dice id="31" name="조커 주사위" icon="Sprite/Dice/Dice_JOKER" notAcquiredIcon="Sprite/Dice/Black_Dice_JOKER" color="d9e419" grade="4" description="같은 눈금수의 주사위와 합치면 해당 주사위로 변한다."></Dice>
+	<Dice id="32" name="방패 주사위" icon="Sprite/Dice/Dice_SHIELD" notAcquiredIcon="Sprite/Dice/Black_Dice_SHIELD" color="e7ac21" grade="4" description="일정 시간마다 몬스터 경로에 [방패]를 설치하여 막는다."></Dice>
+	<Dice id="33" name="눈보라 주사위" icon="Sprite/Dice/Dice_BLIZZARD" notAcquiredIcon="Sprite/Dice/Black_Dice_BLIZZARD" color="387dec" grade="4" description="일정 시간마다 [눈보라]를 일으켜 모든 몬스터의 이동 속도를 감소시킨다."></Dice>
+	<Dice id="34" name="성장 주사위" icon="Sprite/Dice/Dice_GROWTH" notAcquiredIcon="Sprite/Dice/Black_Dice_GROWTH" color="3b2993" grade="4" description="일정 시간마다 눈금 수가 1개 상승하며 무작위 주사위로 변한다."></Dice>
+	<Dice id="35" name="소환 주사위" icon="Sprite/Dice/Dice_SUMMON" notAcquiredIcon="Sprite/Dice/Black_Dice_SUMMON" color="00a736" grade="4" description="주사위를 합칠 때 무작위 주사위를 1개 소환한다."></Dice>
+	<Dice id="36" name="태양 주사위" icon="Sprite/Dice/Dice_SOLAR" notAcquiredIcon="Sprite/Dice/Black_Dice_SOLAR" color="fe8630" grade="4" description="같은 몬스터를 공격하면 점점 데미지가 증가한다. '태양 주사위'가 3, 5, 7, 9개 소환된 경우 [활성화] 상태로 변하여 공격속도가 증가하고 스플래시 데미지를 입힌다."></Dice>
+	<Dice id="37" name="원자 주사위" icon="Sprite/Dice/Dice_ELEMENT" notAcquiredIcon="Sprite/Dice/Black_Dice_ELEMENT" color="b71c9d" grade="4" description="눈금수 만큼의 원자가 주사위 주변을 회전하며 몬스터의 현재 체력에 비례하는 데미지를 입힌다."></Dice>
+	<Dice id="38" name="태풍 주사위" icon="Sprite/Dice/Dice_TYPHOON" notAcquiredIcon="Sprite/Dice/Black_Dice_TYPHOON" color="177384" grade="4" description="일정 시간 후 [강풍] 1단계로 변하여 공격속도가 증가하고 곧이어 [강풍] 2단계로 변신하여 크리티컬 확률이 100%가 된다."></Dice>
+	<Dice id="39" name="콤보 주사위" icon="Sprite/Dice/Dice_COMBO" notAcquiredIcon="Sprite/Dice/Black_Dice_COMBO" color="a21f8b" grade="4" description="주사위를 합치면 [콤보] 수치가 증가하여 공격력이 상승한다."></Dice>
 </DiceList>

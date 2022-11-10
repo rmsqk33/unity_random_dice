@@ -24,7 +24,9 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     
     string m_Name = new string("");
     Dictionary<int, FDice> m_AcquiredDiceMap = new Dictionary<int, FDice>();
+    Dictionary<int, int> m_AcquiredBattleFieldMap = new Dictionary<int, int>();
     int[,] m_DicePresetIDList;
+    int[] m_BattleFieldPresetIDList;
     int m_SelectedPresetIndex = 0;
 
     public int Level { get { return m_Level; } }
@@ -62,6 +64,17 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
             testPacket.diceDataList[i].level = 6;
         }
 
+        for(int i = 0; i < 3; ++i)
+        {
+            testPacket.battleFieldDataList[i].id = i + 1;
+            testPacket.battleFieldDataList[i].level = 1;
+        }
+
+        for(int i = 0; i < testPacket.battleFieldPreset.Length; ++i)
+        {
+            testPacket.battleFieldPreset[i] = 1;
+        }
+
         Instance.Handle_S_USER_DATA(testPacket);
     }
 #endif
@@ -78,16 +91,32 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         return m_AcquiredDiceMap.ContainsKey(InID) ? m_AcquiredDiceMap[InID] : null;
     }
 
+    public bool IsAcquiredBattleField(int InID)
+    {
+        return m_AcquiredBattleFieldMap.ContainsKey(InID);
+    }
+
     public delegate void ForeachDicePresetHandle(int InID);
     public void ForeachDicePreset(int InIndex, in ForeachDicePresetHandle InFunc)
     {
+        if (m_DicePresetIDList == null)
+            return;
+
         for(int i = 0; i < m_DicePresetIDList.GetLength(0); ++i)
         {
             InFunc(m_DicePresetIDList[InIndex, i]);
         }
     }
 
-    public void SetPresetList(int InIndex)
+    public int GetBattleFieldPresetID(int InIndex)
+    {
+        if (m_BattleFieldPresetIDList == null)
+            return 0;
+
+        return m_BattleFieldPresetIDList[InIndex];
+    }
+
+    public void SetPreset(int InIndex)
     {
         if (m_SelectedPresetIndex == InIndex)
             return;
@@ -97,11 +126,17 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         FDicePreset dicePresetUI = FindDicePreset();
         if (dicePresetUI != null)
         {
-            dicePresetUI.SetPresetList(InIndex);
+            dicePresetUI.SetPreset(InIndex);
+        }
+
+        FBattleFieldPreset battleFieldPresetUI = FindBattleFieldPreset();
+        if (battleFieldPresetUI != null)
+        {
+            battleFieldPresetUI.SetPreset(InIndex);
         }
     }
 
-    public void SetPreset(int InID, int InIndex)
+    public void SetDicePreset(int InID, int InIndex)
     {
         FDicePreset dicePresetUI = FindDicePreset();
         int prevIndex = GetDicePresetIndex(InID, m_SelectedPresetIndex);
@@ -109,11 +144,18 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         {
             int prevDiceID = m_DicePresetIDList[m_SelectedPresetIndex, InIndex];
             m_DicePresetIDList[m_SelectedPresetIndex, prevIndex] = prevDiceID;
-            dicePresetUI.SetPreset(prevDiceID, prevIndex);
+            dicePresetUI.SetDicePreset(prevDiceID, prevIndex);
         }
 
         m_DicePresetIDList[m_SelectedPresetIndex, InIndex] = InID;
-        dicePresetUI.SetPreset(InID, InIndex);
+        dicePresetUI.SetDicePreset(InID, InIndex);
+    }
+
+    public void SetBattleFieldPreset(int InID)
+    {
+        FBattleFieldPreset battleFieldPresetUI = FindBattleFieldPreset();
+        m_BattleFieldPresetIDList[m_SelectedPresetIndex] = InID;
+        battleFieldPresetUI.SetBattleFieldPreset(InID);
     }
 
     int GetDicePresetIndex(int InID, int InIndex)
@@ -148,35 +190,51 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         {
             if (diceData.id != 0)
             {
-                AddAcquiredDice(diceData.id, diceData.count, diceData.level);
+                AddAcquiredDice(diceData);
+            }
+        }
+
+        foreach (S_USER_DATA.S_BATTLEFIELD_DATA battleFieldData in InPacket.battleFieldDataList)
+        {
+            if (battleFieldData.id != 0)
+            {
+                AddAcquiredBattleField(battleFieldData);
             }
         }
 
         FDiceInventory diceInventory = FindDiceInventory();
         if (diceInventory != null)
-        {
             diceInventory.On_S_USER_DATA();
-        }
+
+        FBattleFieldInventory battleFieldInventory = FindBattleFieldInventory();
+        if (battleFieldInventory != null)
+            battleFieldInventory.On_S_USER_DATA();
     }
 
     void InitPreset(in S_USER_DATA InPacket)
     {
         m_DicePresetIDList = InPacket.dicePreset.Clone() as int[,];
+        m_BattleFieldPresetIDList = InPacket.battleFieldPreset.Clone() as int[];
         m_SelectedPresetIndex = InPacket.selectedPresetIndex;
 
-        SetPresetList(m_SelectedPresetIndex);
+        SetPreset(m_SelectedPresetIndex);
     }
 
-    void AddAcquiredDice(int InID, int InExp, int InLevel)
+    void AddAcquiredDice(in S_USER_DATA.S_DICE_DATA InData)
     {
         FDice dice = new FDice();
-        dice.id = InID;
-        dice.exp = InExp;
-        dice.level = InLevel;
+        dice.id = InData.id;
+        dice.exp = InData.count;
+        dice.level = InData.level;
 
-        m_AcquiredDiceMap.Add(InID, dice);
+        m_AcquiredDiceMap.Add(InData.id, dice);
 
-        AddCritical(InID, InLevel);
+        AddCritical(InData.id, InData.level);
+    }
+
+    void AddAcquiredBattleField(in S_USER_DATA.S_BATTLEFIELD_DATA InData)
+    {
+        m_AcquiredBattleFieldMap.Add(InData.id, InData.level);
     }
 
     FDiceInventory FindDiceInventory()
@@ -184,6 +242,15 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         GameObject gameObject = GameObject.Find("DiceInventory");
         if (gameObject != null)
             return gameObject.GetComponent<FDiceInventory>();
+
+        return null;
+    }
+
+    FBattleFieldInventory FindBattleFieldInventory()
+    {
+        GameObject gameObject = GameObject.Find("BattleFieldInventory");
+        if (gameObject != null)
+            return gameObject.GetComponent<FBattleFieldInventory>();
 
         return null;
     }
@@ -202,6 +269,15 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         GameObject gameObject = GameObject.Find("DicePreset");
         if (gameObject != null)
             return gameObject.GetComponent<FDicePreset>();
+
+        return null;
+    }
+
+    FBattleFieldPreset FindBattleFieldPreset()
+    {
+        GameObject gameObject = GameObject.Find("BattleFieldPreset");
+        if (gameObject != null)
+            return gameObject.GetComponent<FBattleFieldPreset>();
 
         return null;
     }
