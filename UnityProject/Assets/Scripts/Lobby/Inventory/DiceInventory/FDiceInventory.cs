@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class FInventory : FLobbyScrollMenuBase
+public class FDiceInventory : FGroupMenuBase
 {
     [SerializeField]
     TextMeshProUGUI m_CriticalText;
@@ -23,22 +24,37 @@ public class FInventory : FLobbyScrollMenuBase
     GameObject m_DiceScrollView;
 
     int m_SelectedDiceID = 0;
+    Vector2 m_InitScrollPos = Vector2.zero;
 
     Dictionary<int, FDiceSlot> m_DiceMap = new Dictionary<int, FDiceSlot>();
     Dictionary<int, FDisableDiceSlot> m_DisableDiceList = new Dictionary<int, FDisableDiceSlot>();
 
-#if DEBUG
     private void Start()
+    {
+        m_InitScrollPos = m_DiceScrollView.GetComponent<ScrollRect>().content.anchoredPosition;
+        Critical = FUserDataController.Instance.Critical;
+        InitDiceSlot();
+    }
+
+    public void On_S_USER_DATA()
     {
         Critical = FUserDataController.Instance.Critical;
         InitDiceSlot();
     }
-#endif
+
+    public override void OnActive()
+    {
+        base.OnActive();
+    }
 
     public override void OnDeactive()
     {
         base.OnDeactive();
         SetPresetRegistActive(false);
+
+        ScrollRect scrollRect = m_DiceScrollView.GetComponent<ScrollRect>();
+        scrollRect.velocity = Vector2.zero;
+        scrollRect.content.anchoredPosition = m_InitScrollPos;
     }
 
     public void InitDiceSlot()
@@ -52,7 +68,7 @@ public class FInventory : FLobbyScrollMenuBase
                 AddDisableDice(InData);
         });
     }
-    
+
     public int Critical { set { m_CriticalText.text = value.ToString() + "%"; } }
 
     public void AcquireDice(in FDiceData InData, in FDice InAcquiredDiceData)
@@ -113,7 +129,7 @@ public class FInventory : FLobbyScrollMenuBase
 
     void RemoveDisableDice(in int InID)
     {
-        if(m_DisableDiceList.ContainsKey(InID))
+        if (m_DisableDiceList.ContainsKey(InID))
         {
             Destroy(m_DisableDiceList[InID]);
             m_DisableDiceList.Remove(InID);
@@ -145,13 +161,13 @@ public class FInventory : FLobbyScrollMenuBase
 
         m_DiceScrollView.SetActive(!InActive);
 
-        if(InActive)
+        if (InActive)
         {
             FDiceSlot slot = m_PresetRegistUI.Find("DiceSlot").GetComponent<FDiceSlot>();
 
             FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(m_SelectedDiceID);
             FDice? dice = FUserDataController.Instance.FindAcquiredDice(m_SelectedDiceID);
-            if(diceData != null && dice != null)
+            if (diceData != null && dice != null)
             {
                 slot.Init(diceData.Value, dice.Value);
             }
@@ -166,5 +182,10 @@ public class FInventory : FLobbyScrollMenuBase
             return gameObject.GetComponent<FDicePreset>();
 
         return null;
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log(1111);
     }
 }

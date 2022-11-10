@@ -152,11 +152,10 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
             }
         }
 
-        FInventory inventory = FindInventoryUI();
-        if (inventory != null)
+        FDiceInventory diceInventory = FindDiceInventory();
+        if (diceInventory != null)
         {
-            inventory.Critical = Critical;
-            inventory.InitDiceSlot();
+            diceInventory.On_S_USER_DATA();
         }
     }
 
@@ -180,11 +179,11 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         AddCritical(InID, InLevel);
     }
 
-    FInventory FindInventoryUI()
+    FDiceInventory FindDiceInventory()
     {
-        GameObject gameObject = GameObject.Find("Inventory");
+        GameObject gameObject = GameObject.Find("DiceInventory");
         if (gameObject != null)
-            return gameObject.GetComponent<FInventory>();
+            return gameObject.GetComponent<FDiceInventory>();
 
         return null;
     }

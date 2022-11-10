@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4706055752617845383}
   - component: {fileID: 3116490065837534053}
   m_Layer: 5
-  m_Name: Slot
+  m_Name: DicePresetSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
