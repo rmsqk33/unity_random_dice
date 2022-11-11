@@ -809,6 +809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2393153113557758416}
   - component: {fileID: 4985286579547697007}
+  - component: {fileID: 5115152759081860204}
   m_Layer: 0
   m_Name: MsgPopup
   m_TagString: Untagged
@@ -852,3 +853,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TitleTextMesh: {fileID: 1640787964257420740}
   MsgTextMesh: {fileID: 5635346766002842017}
+--- !u!95 &5115152759081860204
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6942108986038245141}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 846a1276adc7b3943a0f80cc04353401, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
