@@ -1,0 +1,12 @@
+<BattleFieldList>
+    <BattleField id="1" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_0" name="기본"></BattleField>
+    <BattleField id="2" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_1" name="최후의 콜로세움"></BattleField>
+    <BattleField id="3" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_2" name="잠잠한 지옥불"></BattleField>
+    <BattleField id="4" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_3" name="보랏빛 클럽"></BattleField>
+    <BattleField id="5" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_4" name="신들의 낙원"></BattleField>
+    <BattleField id="6" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_5" name="다섯 번째 항해 일지"></BattleField>
+    <BattleField id="7" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_6" name="서리바람 수정협곡"></BattleField>
+    <BattleField id="8" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_7" name="플라즈마 실드"></BattleField>
+    <BattleField id="9" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_11" name="금광"></BattleField>
+    <BattleField id="10" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_14" name="퀸텀"></BattleField>
+</BattleFieldList>

@@ -161,9 +161,9 @@ namespace Packet
 	{
 		public class S_DICE_DATA
 		{
-			public byte id;
+			public int id;
 
-			public byte level;
+			public int level;
 
 			public int count;
 
@@ -173,26 +173,60 @@ namespace Packet
 			public int GetSize()
 			{
 				int size = 0;
-				size += sizeof(byte);
-				size += sizeof(byte);
+				size += sizeof(int);
+				size += sizeof(int);
 				size += sizeof(int);
 				return size;
 			}
 
 			public void Serialize(List<byte> InBuffer)
 			{
-				InBuffer.Add(id);
-				InBuffer.Add(level);
+				InBuffer.AddRange(BitConverter.GetBytes(id));
+				InBuffer.AddRange(BitConverter.GetBytes(level));
 				InBuffer.AddRange(BitConverter.GetBytes(count));
 			}
 
 			public int Deserialize(in byte[] InBuffer, int offset = 0)
 			{
-				id = InBuffer[offset];
-				offset += sizeof(byte);
-				level = InBuffer[offset];
-				offset += sizeof(byte);
+				id = BitConverter.ToInt32(InBuffer, offset);
+				offset += sizeof(int);
+				level = BitConverter.ToInt32(InBuffer, offset);
+				offset += sizeof(int);
 				count = BitConverter.ToInt32(InBuffer, offset);
+				offset += sizeof(int);
+				return offset;
+			}
+
+		}
+
+		public class S_BATTLEFIELD_DATA
+		{
+			public int id;
+
+			public int level;
+
+			public S_BATTLEFIELD_DATA()
+			{
+			}
+			public int GetSize()
+			{
+				int size = 0;
+				size += sizeof(int);
+				size += sizeof(int);
+				return size;
+			}
+
+			public void Serialize(List<byte> InBuffer)
+			{
+				InBuffer.AddRange(BitConverter.GetBytes(id));
+				InBuffer.AddRange(BitConverter.GetBytes(level));
+			}
+
+			public int Deserialize(in byte[] InBuffer, int offset = 0)
+			{
+				id = BitConverter.ToInt32(InBuffer, offset);
+				offset += sizeof(int);
+				level = BitConverter.ToInt32(InBuffer, offset);
 				offset += sizeof(int);
 				return offset;
 			}
@@ -201,7 +235,7 @@ namespace Packet
 
 		public string name = new string("");
 
-		public byte level;
+		public int level;
 
 		public int dia;
 
@@ -209,15 +243,25 @@ namespace Packet
 
 		public int exp;
 
-		public S_DICE_DATA[] diceDataList = new S_DICE_DATA[30];
+		public S_DICE_DATA[] diceDataList = new S_DICE_DATA[50];
 
-		public byte[,] dicePreset = new byte[5,5];
+		public int[,] dicePreset = new int[5,5];
+
+		public S_BATTLEFIELD_DATA[] battleFieldDataList = new S_BATTLEFIELD_DATA[50];
+
+		public int[] battleFieldPreset = new int[5];
+
+		public int selectedPresetIndex;
 
 		public S_USER_DATA()
 		{
-			for(int i = 0; i < 30; ++i)
+			for(int i = 0; i < 50; ++i)
 			{
 				diceDataList[i] = new S_DICE_DATA();
+			}
+			for(int i = 0; i < 50; ++i)
+			{
+				battleFieldDataList[i] = new S_BATTLEFIELD_DATA();
 			}
 		}
 		public int GetSize()
@@ -225,15 +269,21 @@ namespace Packet
 			int size = 0;
 			size += sizeof(int);
 			size += sizeof(char) * name.Length; 
-			size += sizeof(byte);
 			size += sizeof(int);
 			size += sizeof(int);
 			size += sizeof(int);
-			for(int i = 0; i < 30; ++i)
+			size += sizeof(int);
+			for(int i = 0; i < 50; ++i)
 			{
 				size += diceDataList[i].GetSize();
 			}
-			size += sizeof(byte) * 25;
+			size += sizeof(int) * 25;
+			for(int i = 0; i < 50; ++i)
+			{
+				size += battleFieldDataList[i].GetSize();
+			}
+			size += sizeof(int) * 5;
+			size += sizeof(int);
 			return size;
 		}
 
@@ -248,11 +298,11 @@ namespace Packet
 			InBuffer.AddRange(BitConverter.GetBytes((int)GetPacketType()));
 			InBuffer.AddRange(BitConverter.GetBytes(name.Length));
 			InBuffer.AddRange(Encoding.Unicode.GetBytes(name));
-			InBuffer.Add(level);
+			InBuffer.AddRange(BitConverter.GetBytes(level));
 			InBuffer.AddRange(BitConverter.GetBytes(dia));
 			InBuffer.AddRange(BitConverter.GetBytes(gold));
 			InBuffer.AddRange(BitConverter.GetBytes(exp));
-			for(int i = 0; i < 30; ++i)
+			for(int i = 0; i < 50; ++i)
 			{
 				diceDataList[i].Serialize(InBuffer); 
 			}
@@ -260,9 +310,18 @@ namespace Packet
 			{
 				for(int j = 0; j < 5; ++j)
 				{
-					InBuffer.Add(dicePreset[i,j]);
+					InBuffer.AddRange(BitConverter.GetBytes(dicePreset[i,j]));
 				}
 			}
+			for(int i = 0; i < 50; ++i)
+			{
+				battleFieldDataList[i].Serialize(InBuffer); 
+			}
+			for(int i = 0; i < 5; ++i)
+			{
+				InBuffer.AddRange(BitConverter.GetBytes(battleFieldPreset[i]));
+			}
+			InBuffer.AddRange(BitConverter.GetBytes(selectedPresetIndex));
 		}
 
 		public int Deserialize(in byte[] InBuffer, int offset = 0)
@@ -271,20 +330,28 @@ namespace Packet
 			offset += sizeof(int);
 			name = Encoding.Unicode.GetString(InBuffer, offset, name_length);
 			offset += name_length;
-			level = InBuffer[offset];
-			offset += sizeof(byte);
+			level = BitConverter.ToInt32(InBuffer, offset);
+			offset += sizeof(int);
 			dia = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
 			gold = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
 			exp = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
-			for(int i = 0; i < 30; ++i)
+			for(int i = 0; i < 50; ++i)
 			{
 				offset = diceDataList[i].Deserialize(InBuffer, offset);
 			}
-			Buffer.BlockCopy(InBuffer, offset, dicePreset, 0, sizeof(byte) * 25);
-			offset += sizeof(byte) * 25;
+			Buffer.BlockCopy(InBuffer, offset, dicePreset, 0, sizeof(int) * 25);
+			offset += sizeof(int) * 25;
+			for(int i = 0; i < 50; ++i)
+			{
+				offset = battleFieldDataList[i].Deserialize(InBuffer, offset);
+			}
+			Buffer.BlockCopy(InBuffer, offset, battleFieldPreset, 0, sizeof(int) * 5);
+			offset += sizeof(int) * 5;
+			selectedPresetIndex = BitConverter.ToInt32(InBuffer, offset);
+			offset += sizeof(int);
 			return offset;
 		}
 
