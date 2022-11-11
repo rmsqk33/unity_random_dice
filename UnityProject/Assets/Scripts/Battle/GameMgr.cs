@@ -30,7 +30,7 @@ public class GameMgr : Singleton<GameMgr>
     public void SetField(FieldNumber fieldnumber)
     {
         // - SetFieldName
-        string FieldName = "Prefabs/Field_"+((int)fieldnumber).ToString();
+        string FieldName = "Prefabs/Fields/Field_"+((int)fieldnumber).ToString();
         // - Load Field Prefab as GameObject
         GameObject field = Resources.Load(FieldName) as GameObject;
         // - Instantiate Prefab
