@@ -186,7 +186,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     void InitInventory(in S_USER_DATA InPacket)
     {
-        foreach(S_USER_DATA.S_DICE_DATA diceData in InPacket.diceDataList)
+        foreach(S_USER_DATA.DICE_DATA diceData in InPacket.diceDataList)
         {
             if (diceData.id != 0)
             {
@@ -194,7 +194,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
             }
         }
 
-        foreach (S_USER_DATA.S_BATTLEFIELD_DATA battleFieldData in InPacket.battleFieldDataList)
+        foreach (S_USER_DATA.BATTLEFIELD_DATA battleFieldData in InPacket.battleFieldDataList)
         {
             if (battleFieldData.id != 0)
             {
@@ -220,7 +220,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         SetPreset(m_SelectedPresetIndex);
     }
 
-    void AddAcquiredDice(in S_USER_DATA.S_DICE_DATA InData)
+    void AddAcquiredDice(in S_USER_DATA.DICE_DATA InData)
     {
         FDice dice = new FDice();
         dice.id = InData.id;
@@ -232,7 +232,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         AddCritical(InData.id, InData.level);
     }
 
-    void AddAcquiredBattleField(in S_USER_DATA.S_BATTLEFIELD_DATA InData)
+    void AddAcquiredBattleField(in S_USER_DATA.BATTLEFIELD_DATA InData)
     {
         m_AcquiredBattleFieldMap.Add(InData.id, InData.level);
     }

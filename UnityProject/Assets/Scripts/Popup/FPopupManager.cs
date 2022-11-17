@@ -83,6 +83,20 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         m_Popup = popup;
     }
 
+    public void OpenDicePurchasePopup(int InID, int InCount, int InPrice)
+    {
+        if (m_Popup != null)
+            GameObject.Destroy(m_Popup.gameObject);
+
+        FDicePurchasePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DicePurchasePopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FDicePurchasePopup>();
+
+        popup.OpenPopup(InID, InCount, InPrice);
+        m_Popup = popup;
+    }
+
     public void ClosePopup()
     {
         if(m_Popup != null)

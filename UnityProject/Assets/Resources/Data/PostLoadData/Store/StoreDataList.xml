@@ -6,19 +6,19 @@
 		<Dice grade="4" count="1" price="4000" drawMin="0" drawMax="1"></Dice>
 	</DiceStoreData>
 	<BoxStoreData name="랜덤 상자">
-		<Box id="1" name="일반 상자" price="500">
+		<Box id="1" name="일반 상자" price="500" image="Sprite/Lobby/Store/rd_chest_11">
 			<Dice grade="1" min="100" max="200" minPerOne="50" maxPerOne="100"></Dice>
 		</Box>
-		<Box id="2" name="일반~희귀 상자" price="1000">
+		<Box id="2" name="일반~희귀 상자" price="1000" image="Sprite/Lobby/Store/rd_chest_12">
 			<Dice grade="1" min="100" max="200" minPerOne="50" maxPerOne="100"></Dice>
 			<Dice grade="2" min="50" max="100" minPerOne="25" maxPerOne="50"></Dice>
 		</Box>
-		<Box id="3" name="일반~영웅 상자" price="2000">
+		<Box id="3" name="일반~영웅 상자" price="2000" image="Sprite/Lobby/Store/rd_chest_13">
 			<Dice grade="1" min="100" max="200" minPerOne="50" maxPerOne="100"></Dice>
 			<Dice grade="2" min="50" max="100" minPerOne="25" maxPerOne="50"></Dice>
 			<Dice grade="3" min="25" max="50" minPerOne="12" maxPerOne="25"></Dice>
 		</Box>
-		<Box id="4" name="일반~전설" price="4000">
+		<Box id="4" name="일반~전설" price="4000" image="Sprite/Lobby/Store/rd_chest_14">
 			<Dice grade="1" min="100" max="200" minPerOne="50" maxPerOne="100"></Dice>
 			<Dice grade="2" min="50" max="100" minPerOne="25" maxPerOne="50"></Dice>
 			<Dice grade="3" min="25" max="50" minPerOne="12" maxPerOne="25"></Dice>
