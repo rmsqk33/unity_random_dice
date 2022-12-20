@@ -1,50 +1,50 @@
 <DiceGradeList>
 	<DiceGrade grade="1" name="일반" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_normal" initialLevel="5" critical="4">
-		<Level level="1" exp="2" goldCost="2"></Level>
-		<Level level="2" exp="2" goldCost="2"></Level>
-		<Level level="3" exp="2" goldCost="2"></Level>
-		<Level level="4" exp="2" goldCost="2"></Level>
-		<Level level="5" exp="100" goldCost="5"></Level>
-		<Level level="6" exp="500" goldCost="10"></Level>
-		<Level level="7" exp="1000" goldCost="50"></Level>
-		<Level level="8" exp="2000" goldCost="100"></Level>
-		<Level level="9" exp="4000" goldCost="500"></Level>
-		<Level level="10" exp="8000" goldCost="1000"></Level>
+		<Level level="1" count="2" goldCost="2"></Level>
+		<Level level="2" count="2" goldCost="2"></Level>
+		<Level level="3" count="2" goldCost="2"></Level>
+		<Level level="4" count="2" goldCost="2"></Level>
+		<Level level="5" count="100" goldCost="5"></Level>
+		<Level level="6" count="500" goldCost="10"></Level>
+		<Level level="7" count="1000" goldCost="50"></Level>
+		<Level level="8" count="2000" goldCost="100"></Level>
+		<Level level="9" count="4000" goldCost="500"></Level>
+		<Level level="10" count="8000" goldCost="1000"></Level>
 	</DiceGrade>
 	<DiceGrade grade="2" name="희귀" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_blue" initialLevel="5" critical="4">
-		<Level level="1" exp="2" goldCost="2"></Level>
-		<Level level="2" exp="2" goldCost="2"></Level>
-		<Level level="3" exp="2" goldCost="2"></Level>
-		<Level level="4" exp="2" goldCost="2"></Level>
-		<Level level="5" exp="100" goldCost="5"></Level>
-		<Level level="6" exp="500" goldCost="10"></Level>
-		<Level level="7" exp="1000" goldCost="50"></Level>
-		<Level level="8" exp="2000" goldCost="100"></Level>
-		<Level level="9" exp="4000" goldCost="500"></Level>
-		<Level level="10" exp="8000" goldCost="1000"></Level>
+		<Level level="1" count="2" goldCost="2"></Level>
+		<Level level="2" count="2" goldCost="2"></Level>
+		<Level level="3" count="2" goldCost="2"></Level>
+		<Level level="4" count="2" goldCost="2"></Level>
+		<Level level="5" count="100" goldCost="5"></Level>
+		<Level level="6" count="500" goldCost="10"></Level>
+		<Level level="7" count="1000" goldCost="50"></Level>
+		<Level level="8" count="2000" goldCost="100"></Level>
+		<Level level="9" count="4000" goldCost="500"></Level>
+		<Level level="10" count="8000" goldCost="1000"></Level>
 	</DiceGrade>
 	<DiceGrade grade="3" name="영웅" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_purple" initialLevel="5" critical="4">
-		<Level level="1" exp="2" goldCost="2"></Level>
-		<Level level="2" exp="2" goldCost="2"></Level>
-		<Level level="3" exp="2" goldCost="2"></Level>
-		<Level level="4" exp="2" goldCost="2"></Level>
-		<Level level="5" exp="100" goldCost="5"></Level>
-		<Level level="6" exp="500" goldCost="10"></Level>
-		<Level level="7" exp="1000" goldCost="50"></Level>
-		<Level level="8" exp="2000" goldCost="100"></Level>
-		<Level level="9" exp="4000" goldCost="500"></Level>
-		<Level level="10" exp="8000" goldCost="1000"></Level>
+		<Level level="1" count="2" goldCost="2"></Level>
+		<Level level="2" count="2" goldCost="2"></Level>
+		<Level level="3" count="2" goldCost="2"></Level>
+		<Level level="4" count="2" goldCost="2"></Level>
+		<Level level="5" count="100" goldCost="5"></Level>
+		<Level level="6" count="500" goldCost="10"></Level>
+		<Level level="7" count="1000" goldCost="50"></Level>
+		<Level level="8" count="2000" goldCost="100"></Level>
+		<Level level="9" count="4000" goldCost="500"></Level>
+		<Level level="10" count="8000" goldCost="1000"></Level>
 	</DiceGrade>
 	<DiceGrade grade="4" name="전설" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_yellow" initialLevel="5" critical="4">
-		<Level level="1" exp="2" goldCost="2"></Level>
-		<Level level="2" exp="2" goldCost="2"></Level>
-		<Level level="3" exp="2" goldCost="2"></Level>
-		<Level level="4" exp="2" goldCost="2"></Level>
-		<Level level="5" exp="100" goldCost="5"></Level>
-		<Level level="6" exp="500" goldCost="10"></Level>
-		<Level level="7" exp="1000" goldCost="50"></Level>
-		<Level level="8" exp="2000" goldCost="100"></Level>
-		<Level level="9" exp="4000" goldCost="500"></Level>
-		<Level level="10" exp="8000" goldCost="1000"></Level>
+		<Level level="1" count="2" goldCost="2"></Level>
+		<Level level="2" count="2" goldCost="2"></Level>
+		<Level level="3" count="2" goldCost="2"></Level>
+		<Level level="4" count="2" goldCost="2"></Level>
+		<Level level="5" count="100" goldCost="5"></Level>
+		<Level level="6" count="500" goldCost="10"></Level>
+		<Level level="7" count="1000" goldCost="50"></Level>
+		<Level level="8" count="2000" goldCost="100"></Level>
+		<Level level="9" count="4000" goldCost="500"></Level>
+		<Level level="10" count="8000" goldCost="1000"></Level>
 	</DiceGrade>
 </DiceGradeList>

@@ -8,6 +8,7 @@ namespace RandomDice
 
     public enum DiceGrade
     {
+        DICE_GRADE_NONE,
         DICE_GRADE_NORMAL,
         DICE_GRADE_RARE,
         DICE_GRADE_EPIC,
