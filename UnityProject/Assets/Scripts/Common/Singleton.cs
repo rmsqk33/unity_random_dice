@@ -35,7 +35,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
 
     // - 생성시 파괴불가 설정
-    private void Awake() 
+    protected virtual void Awake() 
     {
         DontDestroyOnLoad(gameObject);
     }

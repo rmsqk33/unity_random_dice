@@ -2428,8 +2428,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 826436585}
+  - component: {fileID: 826436586}
   m_Layer: 0
-  m_Name: NatworkManager
+  m_Name: PTPServerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2450,6 +2451,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &826436586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826436584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fc8289b00494645b7b065c8e77a58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &838258110
 GameObject:
   m_ObjectHideFlags: 0
@@ -20706,7 +20719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiSprite: {fileID: 1419027484}
-  _uiText: {fileID: 0}
+  _uiText: {fileID: 1546319437}
 --- !u!1 &2032330898
 GameObject:
   m_ObjectHideFlags: 0

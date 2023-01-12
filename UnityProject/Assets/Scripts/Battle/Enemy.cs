@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
 // - Member Variable
-    public Image    _uiSprite;
-    public Text     _uiText;  
+    public Image                _uiSprite;
+    public TextMeshProUGUI     _uiText;  
 
     private bool    _islive = true;
     private int     _hp = 100;
