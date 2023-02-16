@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RandomDice;
 
-public class NormalEnemy : Enemy
+public class Dice_Fire : Dice
 {
     // Start is called before the first frame update
     void Start()

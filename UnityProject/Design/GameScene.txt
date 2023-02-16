@@ -1,11 +1,31 @@
-GameScene
+<GameScene>
+// - Member Variable
+- Managers -
 
-GameManager - 
-UnitManager
-Unit - Monster, Dice
-Skill - 
+<1> GameManager - Control Gameflow Manager
+// - Member Variable
+1. 
+// - Function(Method)
+1. SummonDice : UI_SummonDice OnClick Event - DiceManager/CreateDice(Position, Grade)
+2. 
+
+<2> UI Manager - Control UI, HUD
+UI - Connect Player Input Interface
+HUD - View Just Infomation Interface
+// - Member Variable
+1. Field : Summon PlayerDice, TeamDice Position
+
+// - Function(Method)
+
+
+<3> Dice Manager
+Dice
+ - 
 Status Control - Solo, Multiple
 
-UI - HUD - ?
 
-Server - Player(DiceList, Level, Icon... etc)
+Server - P2P, Use C# TCP Socket API
+Packet - PlayerSend(DiceList, Level, Icon... etc), Server Send
+
+// - Method
+

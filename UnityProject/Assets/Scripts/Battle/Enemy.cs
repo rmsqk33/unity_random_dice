@@ -4,36 +4,62 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
-public class Enemy : MonoBehaviour
+namespace RandomDice
 {
-// - Member Variable
-    public Image                _uiSprite;
-    public TextMeshProUGUI     _uiText;  
+    public class Enemy : MonoBehaviour
+    {
+        // - Member Variable
+        // - Image, HPText
+        public Image _uiImage;
+        public TextMeshProUGUI _uiHP;
 
-    private bool    _islive = true;
-    private int     _hp = 100;
-    private float   _speed = 1.0f;
-
-// - Mothod
-    public void SetHp(int hp)
-    {
-        _hp = hp;
-    }
-    public void SetSpeed(float speed) 
-    {
-        _speed = speed;
-    }
-    public void TakeDamage(int damage)
-    {
-        _hp -= damage;
-        if( _hp <= 0)
+        // - EnemyInfo : islive, hp, movespeed, movedirection
+        public struct ENEMY_INFO
         {
-            _islive = false;
+            public bool _islive;
+            public int _hp;
+            public float _speed;
+            public Vector3 _direction;
         }
-    }
 
-    void Update() 
-    {
+        private ENEMY_INFO _info = new ENEMY_INFO();
 
+
+        // - Mothod
+        // - base
+        private void FixedUpdate()
+        {
+            // - Move
+            Move();
+        }
+
+        // - Get & Set
+        public void SetHp(int hp)
+        {
+            _info._hp = hp;
+        }
+        public void SetSpeed(float speed)
+        {
+            _info._speed = speed;
+        }
+
+        // - TakeDamage
+        public void TakeDamage(int damage)
+        {
+            _info._hp -= damage;
+            if (_info._hp <= 0)
+            {
+                _info._islive = false;
+                Destroy(gameObject);
+            }
+        }
+        // - Move
+        private void Move()
+        {
+            if (_info._islive)
+            {
+                gameObject.transform.position += _info._direction * _info._speed;
+            }
+        }
     }
 }
