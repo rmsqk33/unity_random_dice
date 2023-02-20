@@ -24,8 +24,8 @@ public class FAcquiredDiceSlot : MonoBehaviour
     [SerializeField]
     Image LevelUpIcon;
 
-    int m_CurrentExp = 0;
-    int m_MaxExp = 0;
+    int m_CurrentExp = 1;
+    int m_MaxExp = 1;
 
     public int Level { set { LevelText.text = value.ToString(); } }
     public int ID { get; set; }

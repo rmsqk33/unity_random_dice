@@ -2150,6 +2150,7 @@ MonoBehaviour:
   PreWorkMinSec: 5
   LoginButton: {fileID: 460385676}
   LoadingUI: {fileID: 709246157}
+  LoadingMsg: {fileID: 1761119114}
 --- !u!1 &1479197386
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,47 +38,6 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     public int SelectedPresetIndex { get { return m_SelectedPresetIndex; } }
     public string Name { get { return m_Name; } }
 
-#if DEBUG
-    [RuntimeInitializeOnLoadMethod]
-    static void Test()
-    {
-        S_USER_DATA testPacket = new S_USER_DATA();
-        testPacket.exp = 300;
-        testPacket.name = "ÈÄ½Ãµò";
-        testPacket.level = 3;
-        testPacket.dia = 30000;
-        testPacket.gold = 30000;
-        testPacket.selectedPresetIndex = 0;
-        for(int i = 0; i < 5; ++i)
-        {
-            for(int j = 0; j < 5; ++j)
-            {
-                testPacket.dicePreset[i, j] = (i + j) % 5 + 1;
-            }
-        }
-        
-        for (int i = 0; i < 10; ++i)
-        {
-            testPacket.diceDataList[i].id = i + 1;
-            testPacket.diceDataList[i].count = 200;
-            testPacket.diceDataList[i].level = 6;
-        }
-
-        for(int i = 0; i < 3; ++i)
-        {
-            testPacket.battleFieldDataList[i].id = i + 1;
-            testPacket.battleFieldDataList[i].level = 1;
-        }
-
-        for(int i = 0; i < testPacket.battleFieldPreset.Length; ++i)
-        {
-            testPacket.battleFieldPreset[i] = 1;
-        }
-
-        Instance.Handle_S_USER_DATA(testPacket);
-    }
-#endif
-
     public void Handle_S_USER_DATA(in S_USER_DATA InPacket)
     {
         InitLobbyUserInfoUI(InPacket);
@@ -248,38 +207,22 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     FBattleFieldInventory FindBattleFieldInventory()
     {
-        GameObject gameObject = GameObject.Find("BattleFieldInventory");
-        if (gameObject != null)
-            return gameObject.GetComponent<FBattleFieldInventory>();
-
-        return null;
+        return  GameObject.FindObjectOfType<FBattleFieldInventory>();
     }
 
     FLobbyUserInfoUI FindLobbyUserInfoUI()
     {
-        GameObject gameObject = GameObject.Find("UserInfoUI");
-        if (gameObject != null)
-            return gameObject.GetComponent<FLobbyUserInfoUI>();
-
-        return null;
+        return  GameObject.FindObjectOfType<FLobbyUserInfoUI>();
     }
 
     FDicePreset FindDicePreset()
     {
-        GameObject gameObject = GameObject.Find("DicePreset");
-        if (gameObject != null)
-            return gameObject.GetComponent<FDicePreset>();
-
-        return null;
+        return  GameObject.FindObjectOfType<FDicePreset>();
     }
 
     FBattleFieldPreset FindBattleFieldPreset()
     {
-        GameObject gameObject = GameObject.Find("BattleFieldPreset");
-        if (gameObject != null)
-            return gameObject.GetComponent<FBattleFieldPreset>();
-
-        return null;
+        return  GameObject.FindObjectOfType<FBattleFieldPreset>();
     }
 
     void AddCritical(int InDiceID, int InLevel)

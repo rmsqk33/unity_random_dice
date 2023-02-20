@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class FLobbyUserInfoUI : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI m_Name = null;
+    TextMeshProUGUI m_NameText = null;
     [SerializeField]
     TextMeshProUGUI m_Gold = null;
     [SerializeField]
@@ -26,7 +26,7 @@ public class FLobbyUserInfoUI : MonoBehaviour
     int m_CurrentExp = 0;
     int m_MaxExp = 0;
 
-    private void start()
+    void Start()
     {
         InitUserInfo();
     }
@@ -40,7 +40,7 @@ public class FLobbyUserInfoUI : MonoBehaviour
         SetExp(FUserDataController.Instance.Exp, FUserDataController.Instance.MaxExp);
     }
 
-    public string Name { set { m_Name.text = value; } }
+    public string Name { set { m_NameText.text = value; } }
     public int Gold { set { m_Gold.text = value.ToString(); } }
     public int Dia { set { m_Dia.text = value.ToString(); } }
     public int Level

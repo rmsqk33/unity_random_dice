@@ -13,31 +13,28 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Initialize() 
     {
-        Instance.ParseXML("Data/PreLoadData");
-        Instance.LoadData();
-    }
-
-    public bool LoadData()
-    {
-        ParseXML("Data/PostLoadData");
+        string dataPath = Application.dataPath + "/Resources/Data/";
+        Instance.ParseXML(dataPath  + "PreLoadData");
+        Instance.ParseXML(dataPath + "PostLoadData");
 
         FDiceDataManager.Instance.Initialize();
         FBattleFieldDataManager.Instance.Initialize();
-        
-        return true;
     }
 
     void ParseXML(in string InPath)
     {
-        TextAsset[] textAssetList = Resources.LoadAll<TextAsset>(InPath);
-        foreach(TextAsset textAsset in textAssetList)
-        {
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(textAsset.text);
+        if (!Directory.Exists(InPath))
+            return;
 
-            FDataNode newNode = new FDataNode();
-            newNode.ParseXmlData(xmlDocument.FirstChild);
-            m_RootNode.AddChild(newNode);
+        string[] allFiles = Directory.GetFiles(InPath, "*.xml", SearchOption.AllDirectories);
+        foreach(string file in allFiles)
+        {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(file);
+
+                FDataNode newNode = new FDataNode();
+                newNode.ParseXmlData(xmlDocument.FirstChild);
+                m_RootNode.AddChild(newNode);
         }
     }
 

@@ -11111,6 +11111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 284602580}
+  - component: {fileID: 284602581}
   m_Layer: 5
   m_Name: UserInfo
   m_TagString: Untagged
@@ -11141,6 +11142,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 715.99}
   m_SizeDelta: {x: 900, y: 168.01}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &284602581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284602579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f551d93a3a6f834ca86864d4410f27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NameText: {fileID: 979289403}
+  m_Gold: {fileID: 195521009}
+  m_Dia: {fileID: 1283877904}
+  m_Exp: {fileID: 1522354560}
+  m_Level: {fileID: 965261848}
+  m_ClassIcon: {fileID: 1153849844}
+  m_ExpGauge: {fileID: 160956459}
 --- !u!1 &315114126
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class LoginScene : MonoBehaviour
     Button LoginButton;
     [SerializeField]
     GameObject LoadingUI;
+    [SerializeField]
     TextMeshProUGUI LoadingMsg;
 
     delegate bool PreWorkFunc();
@@ -30,10 +32,8 @@ public class LoginScene : MonoBehaviour
 
     void Start()
     {
-        LoadingMsg = LoadingUI.GetComponentInChildren<TextMeshProUGUI>(true);
-
         AddPreWork("serverConnect", FServerManager.Instance.ConnectServer);
-        AddPreWork("dataParse", FDataCenter.Instance.LoadData);
+        AddPreWork("login", FAccountMananger.Instance.TryLogin);
 
         LoadPreWork();
     }
@@ -92,8 +92,8 @@ public class LoginScene : MonoBehaviour
             LoadPreWork();
         else
         {
-            LoginButton.gameObject.SetActive(true);
-            LoadingUI.SetActive(false);
+           //LoginButton.gameObject.SetActive(true);
+           //LoadingUI.SetActive(false);
         }
     }
 
@@ -105,8 +105,7 @@ public class LoginScene : MonoBehaviour
         string title = node.GetStringAttr("errorTitle");
         string msg = node.GetStringAttr("errorMsg");
         FPopupManager.Instance.OpenMsgPopup(title, msg, () => {
-            SceneManager.LoadScene("LobbyScene");
-            //Application.Quit();     
+            Application.Quit();     
         });
 
         LoadingUI.SetActive(false);
