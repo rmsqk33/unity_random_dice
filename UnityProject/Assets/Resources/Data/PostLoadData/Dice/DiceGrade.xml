@@ -1,5 +1,5 @@
 <DiceGradeList>
-	<DiceGrade grade="1" name="일반" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_normal" initialLevel="5" critical="4">
+	<DiceGrade grade="1" name="일반" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_normal" initialLevel="5" critical="4">
 		<Level level="1" exp="2" goldCost="2"></Level>
 		<Level level="2" exp="2" goldCost="2"></Level>
 		<Level level="3" exp="2" goldCost="2"></Level>
@@ -11,7 +11,7 @@
 		<Level level="9" exp="4000" goldCost="500"></Level>
 		<Level level="10" exp="8000" goldCost="1000"></Level>
 	</DiceGrade>
-	<DiceGrade grade="2" name="희귀" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_blue" initialLevel="5" critical="4">
+	<DiceGrade grade="2" name="희귀" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_blue" initialLevel="5" critical="4">
 		<Level level="1" exp="2" goldCost="2"></Level>
 		<Level level="2" exp="2" goldCost="2"></Level>
 		<Level level="3" exp="2" goldCost="2"></Level>
@@ -23,7 +23,7 @@
 		<Level level="9" exp="4000" goldCost="500"></Level>
 		<Level level="10" exp="8000" goldCost="1000"></Level>
 	</DiceGrade>
-	<DiceGrade grade="3" name="영웅" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_purple" initialLevel="5" critical="4">
+	<DiceGrade grade="3" name="영웅" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_purple" initialLevel="5" critical="4">
 		<Level level="1" exp="2" goldCost="2"></Level>
 		<Level level="2" exp="2" goldCost="2"></Level>
 		<Level level="3" exp="2" goldCost="2"></Level>
@@ -35,7 +35,7 @@
 		<Level level="9" exp="4000" goldCost="500"></Level>
 		<Level level="10" exp="8000" goldCost="1000"></Level>
 	</DiceGrade>
-	<DiceGrade grade="4" name="전설" invenSlotImage="Sprite/Lobby/Inventory/arcade_inventory_dice_diceboard_yellow" initialLevel="5" critical="4">
+	<DiceGrade grade="4" name="전설" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_yellow" initialLevel="5" critical="4">
 		<Level level="1" exp="2" goldCost="2"></Level>
 		<Level level="2" exp="2" goldCost="2"></Level>
 		<Level level="3" exp="2" goldCost="2"></Level>

@@ -1,5 +1,6 @@
 using Mono.Cecil;
 using Packet;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,8 +26,8 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     string m_Name = new string("");
     Dictionary<int, FDice> m_AcquiredDiceMap = new Dictionary<int, FDice>();
     Dictionary<int, int> m_AcquiredBattleFieldMap = new Dictionary<int, int>();
-    int[,] m_DicePresetIDList;
-    int[] m_BattleFieldPresetIDList;
+    int[,] m_DicePresetIDList = new int[5,5];
+    int[] m_BattleFieldPresetIDList = new int[5];
     int m_SelectedPresetIndex = 0;
 
     public int Level { get { return m_Level; } }
@@ -172,8 +173,8 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     void InitPreset(in S_USER_DATA InPacket)
     {
-        m_DicePresetIDList = InPacket.dicePreset.Clone() as int[,];
-        m_BattleFieldPresetIDList = InPacket.battleFieldPreset.Clone() as int[];
+        Array.Copy(InPacket.dicePreset, m_DicePresetIDList, InPacket.dicePreset.Length);
+        Array.Copy(InPacket.battleFieldPreset, m_BattleFieldPresetIDList, InPacket.battleFieldPreset.Length);
         m_SelectedPresetIndex = InPacket.selectedPresetIndex;
 
         SetPreset(m_SelectedPresetIndex);

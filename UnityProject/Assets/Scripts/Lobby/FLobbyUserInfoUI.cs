@@ -90,6 +90,6 @@ public class FLobbyUserInfoUI : MonoBehaviour
     void UpdateExp()
     {
         m_Exp.text = m_CurrentExp.ToString() + "/" + m_MaxExp.ToString();
-        m_ExpGauge.localScale = new Vector3(m_CurrentExp / m_MaxExp, 1, 1);
+        m_ExpGauge.localScale = m_CurrentExp == 0 || m_MaxExp == 0 ? new Vector3(0, 1, 1) : new Vector3(m_CurrentExp / m_MaxExp, 1, 1);
     }
 }
