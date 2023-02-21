@@ -13,11 +13,12 @@ public class FServerManager : Singleton<FServerManager>
 {
     const string SERVER_IP = "127.0.0.1";
     const int SERVER_PORT = 7777;
-    const int PACKET_MAX = 1024;
+    const int PACKET_MAX = 10240;
 
     private TcpClient m_TcpClient = null;
     private NetworkStream m_NetStream = null;
     private Thread m_ReceiveMessageThread = null;
+    private bool m_ConnectedServer = false;
 
     public delegate void PacketHandler(in byte[] InBuffer);
     private Dictionary<PacketType, PacketHandler> m_PacketHandlerMap = new Dictionary<PacketType, PacketHandler>();
@@ -55,14 +56,14 @@ public class FServerManager : Singleton<FServerManager>
 
     void DisconnectServer()
     {
-        if (m_ReceiveMessageThread != null)
-            m_ReceiveMessageThread.Abort();
+        m_ConnectedServer = false;
+        m_ReceiveMessageThread.Join();
 
-        if (m_TcpClient != null)
-            m_TcpClient.Close();
-
-        if (m_NetStream != null)
+        if(m_NetStream != null)
             m_NetStream.Close();
+
+        if(m_TcpClient != null)
+            m_TcpClient.Close();
     }
 
     public bool ConnectServer()
@@ -74,6 +75,8 @@ public class FServerManager : Singleton<FServerManager>
 
             m_ReceiveMessageThread = new Thread(ReceiveMessage);
             m_ReceiveMessageThread.Start();
+
+            m_ConnectedServer = true;
         }
         catch (Exception e)
         {
@@ -84,58 +87,44 @@ public class FServerManager : Singleton<FServerManager>
         return true;
     }
 
-    void ReceiveMessage()
+    async void ReceiveMessage()
     {
         byte[] buffer = new byte[PACKET_MAX];
         int packetSize = 0;
         int readSize = 0;
 
-        while (true)
+        while (m_ConnectedServer)
         {
-            try
+            readSize += await m_NetStream.ReadAsync(buffer, readSize, PACKET_MAX - readSize);
+
+            // 한번에 여러 패킷이 오는 경우를 대비하여 반복처리
+            while (0 < readSize)
             {
-                if (m_NetStream.CanRead)
-                {
-                    readSize += m_NetStream.Read(buffer, readSize, PACKET_MAX - readSize);
+                // 처음 패킷을 받은 경우 패킷 사이즈 저장
+                if (packetSize == 0)
+                    packetSize = BitConverter.ToInt32(buffer, 0);
 
-                    // 한번에 여러 패킷이 오는 경우를 대비하여 반복처리
-                    while(true)
-                    {             
-                        // 처음 패킷을 받은 경우 패킷 사이즈 저장
-                        if (packetSize == 0)
-                            packetSize = BitConverter.ToInt32(buffer, 0);
+                // 패킷 전체를 전달받지 못한 경우 계속 데이터를 받도록 한다.
+                if (readSize < packetSize)
+                    break;
 
-                        // 패킷 전체를 전달받지 못한 경우 계속 데이터를 받도록 한다.
-                        if (packetSize == 0 || readSize < packetSize)
-                            break;
+                // 패킷 전체를 전부 전달받으면 메시지 큐에 데이터를 담는다.
+                MessageData messageData = new MessageData();
+                messageData.type = (PacketType)BitConverter.ToInt32(buffer, sizeof(int));
+                messageData.buffer = new byte[packetSize];
 
-                        // 패킷 전체를 전부 전달받으면 메시지 큐에 데이터를 담는다.
-                        MessageData messageData = new MessageData();
-                        messageData.type = (PacketType)BitConverter.ToInt32(buffer, sizeof(int));
-                        messageData.buffer = new byte[packetSize];
+                int commonDataLength = sizeof(int) + sizeof(PacketType);
+                Array.Copy(buffer, commonDataLength, messageData.buffer, 0, packetSize - commonDataLength);
 
-                        int commonDataLength = sizeof(int) + sizeof(PacketType);
-                        Array.Copy(buffer, commonDataLength, messageData.buffer, 0, packetSize - commonDataLength);
+                m_MessageQueue.Add(messageData);
 
-                        m_MessageQueue.Add(messageData);
+                readSize -= packetSize;
 
-                        readSize -= packetSize;
-                        
-                        // 처리 안된 패킷이 있으면 앞으로 땡기기
-                        if (0 < readSize)
-                            Array.Copy(buffer, packetSize, buffer, 0, readSize);
-                        // 처리할 패킷이 없으면 서버로 부터 패킷을 받도록 반복문 중단
-                        else
-                        {
-                            packetSize = 0;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (ThreadAbortException e)
-            {
-                Debug.Log("ThreadAbortException: " + e);
+                // 처리 안된 패킷이 있으면 앞으로 땡기기
+                if (0 < readSize)
+                    Array.Copy(buffer, packetSize, buffer, 0, readSize);
+
+                packetSize = 0;
             }
         }
     }
