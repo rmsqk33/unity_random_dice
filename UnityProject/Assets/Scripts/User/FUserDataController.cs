@@ -94,10 +94,16 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         {
             battleFieldPresetUI.SetPreset(InIndex);
         }
+
+        C_CHANGE_PRESET packet = new C_CHANGE_PRESET();
+        packet.presetIndex = InIndex;
+        FServerManager.Instance.SendMessage(packet);
     }
 
     public void SetDicePreset(int InID, int InIndex)
     {
+        C_CHANGE_PRESET_DICE packet = new C_CHANGE_PRESET_DICE();
+
         FDicePreset dicePresetUI = FindDicePreset();
         int prevIndex = GetDicePresetIndex(InID, m_SelectedPresetIndex);
         if (prevIndex != -1)
@@ -105,10 +111,20 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
             int prevDiceID = m_DicePresetIDList[m_SelectedPresetIndex, InIndex];
             m_DicePresetIDList[m_SelectedPresetIndex, prevIndex] = prevDiceID;
             dicePresetUI.SetDicePreset(prevDiceID, prevIndex);
+
+            packet.diceId = prevDiceID;
+            packet.slotIndex = prevIndex;
+            packet.presetIndex = m_SelectedPresetIndex;
+            FServerManager.Instance.SendMessage(packet);
         }
 
         m_DicePresetIDList[m_SelectedPresetIndex, InIndex] = InID;
         dicePresetUI.SetDicePreset(InID, InIndex);
+
+        packet.diceId = InID;
+        packet.slotIndex = InIndex;
+        packet.presetIndex = m_SelectedPresetIndex;
+        FServerManager.Instance.SendMessage(packet);
     }
 
     public void SetBattleFieldPreset(int InID)
@@ -116,6 +132,11 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         FBattleFieldPreset battleFieldPresetUI = FindBattleFieldPreset();
         m_BattleFieldPresetIDList[m_SelectedPresetIndex] = InID;
         battleFieldPresetUI.SetBattleFieldPreset(InID);
+
+        C_CHANGE_PRESET_BATTLEFIELD packet = new C_CHANGE_PRESET_BATTLEFIELD();
+        packet.battlefieldId = InID;
+        packet.presetIndex = m_SelectedPresetIndex;
+        FServerManager.Instance.SendMessage(packet);
     }
 
     int GetDicePresetIndex(int InID, int InIndex)
@@ -176,8 +197,6 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         Array.Copy(InPacket.dicePreset, m_DicePresetIDList, InPacket.dicePreset.Length);
         Array.Copy(InPacket.battleFieldPreset, m_BattleFieldPresetIDList, InPacket.battleFieldPreset.Length);
         m_SelectedPresetIndex = InPacket.selectedPresetIndex;
-
-        SetPreset(m_SelectedPresetIndex);
     }
 
     void AddAcquiredDice(in S_USER_DATA.DICE_DATA InData)

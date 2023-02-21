@@ -1601,7 +1601,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3950933114472737814}
         m_TargetAssemblyTypeName: FDiceInfoPopup, Assembly-CSharp
         m_MethodName: OnClickUse
         m_Mode: 1
@@ -2838,7 +2838,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3950933114472737814}
         m_TargetAssemblyTypeName: FDiceInfoPopup, Assembly-CSharp
         m_MethodName: OnClickUpgrade
         m_Mode: 1
