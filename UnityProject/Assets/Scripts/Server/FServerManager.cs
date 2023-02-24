@@ -56,14 +56,13 @@ public class FServerManager : Singleton<FServerManager>
 
     void DisconnectServer()
     {
-        m_ConnectedServer = false;
-        m_ReceiveMessageThread.Join();
-
-        if(m_NetStream != null)
+        if(m_ConnectedServer)
+        {
+            m_ConnectedServer = false;
+            m_ReceiveMessageThread.Join();
             m_NetStream.Close();
-
-        if(m_TcpClient != null)
             m_TcpClient.Close();
+        }
     }
 
     public bool ConnectServer()

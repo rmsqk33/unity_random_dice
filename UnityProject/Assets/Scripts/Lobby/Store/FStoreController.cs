@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Packet;
+using System;
 
 public struct FDiceGoods
 {
@@ -13,27 +14,14 @@ public struct FDiceGoods
 public class FStoreController : FNonObjectSingleton<FStoreController>
 {
     List<FDiceGoods> m_DiceGoodsList = new List<FDiceGoods>();
+    Int64 m_ResetTime = 0;
 
-#if DEBUG
-    [RuntimeInitializeOnLoadMethod]
-    private static void Test()
+    public Int64 ResetTime { get { return m_ResetTime; } }
+
+    public void Handle_S_STORE_DICE_LIST(S_STORE_DICE_LIST InPacket)
     {
-        S_STORE_DICE_LIST packet = new S_STORE_DICE_LIST();
-        packet.diceCount = 5;
-        for(int i = 0; i < packet.diceCount; ++i)
-        {
-            packet.diceList[i].count = 50;
-            packet.diceList[i].id = i + 1;
-            packet.diceList[i].price = 100 * (i + 1);
-        }
-
-        FStoreController.Instance.Handler_S_STORE_DICE_LIST(packet);
-    }
-#endif
-
-    public void Handler_S_STORE_DICE_LIST(S_STORE_DICE_LIST InPacket)
-    {
-        for(int i = 0; i < InPacket.diceCount; ++i)
+        m_DiceGoodsList.Clear();
+        for (int i = 0; i < InPacket.diceCount; ++i)
         {
             FDiceGoods goods = new FDiceGoods();
             goods.id = InPacket.diceList[i].id;
@@ -42,6 +30,8 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
 
             m_DiceGoodsList.Add(goods);
         }
+
+        m_ResetTime = InPacket.resetTime;
 
         FStoreMenu storeMenu = FindStoreUI();
         if (storeMenu != null)

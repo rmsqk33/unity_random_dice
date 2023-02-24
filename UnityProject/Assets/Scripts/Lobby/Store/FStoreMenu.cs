@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,16 +14,30 @@ public class FStoreMenu : FLobbyScrollMenuBase
     FGoodsGroup m_BoxList;
     [SerializeField]
     FGoodsSlot m_GoodsSlotPrefab;
+    [SerializeField]
+    GameObject m_Content;
+
+    DateTime m_ElapsedTime;
 
     private void Start()
     {
         InitStore();
+        m_ElapsedTime = DateTime.Now;
+    }
+
+    private void Update()
+    {
+        if(1 <= (DateTime.Now - m_ElapsedTime).Seconds)
+        {
+            UpdateResetTime();
+            m_ElapsedTime = DateTime.Now;
+        }
     }
 
     public void InitStore()
     {
-        InitBoxList();
         UpdateDiceGoodsList();
+        InitBoxList();
     }
 
     public void UpdateDiceGoodsList()
@@ -42,6 +59,11 @@ public class FStoreMenu : FLobbyScrollMenuBase
                 m_DiceList.AddGoods(slot);
             }
         });
+
+        UpdateResetTime();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)m_DiceList.transform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)m_BoxList.transform);
     }
 
     public override void OnDeactive()
@@ -57,7 +79,7 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
         dataNode.ForeachChildNodes("Box", (in FDataNode InNode) => {
             FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab);
-            slot.Name = dataNode.GetStringAttr("name");
+            slot.Name = InNode.GetStringAttr("name");
             slot.Price = InNode.GetIntAttr("price");
             slot.Image = Resources.Load<Sprite>(InNode.GetStringAttr("image"));
             slot.Count = 1;
@@ -67,6 +89,28 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
             m_BoxList.AddGoods(slot);
         });
+    }
+
+    private void UpdateResetTime()
+    {
+        DateTime resetTime = new DateTime(1970, 1, 1, 9, 0, 0, 0);
+        resetTime = resetTime.AddSeconds(FStoreController.Instance.ResetTime);
+
+        TimeSpan diff = resetTime - DateTime.Now;
+
+        string timeText = "갱신까지 남은 시간 : ";
+        if (0 < diff.Days)
+            timeText += diff.Days + "일 ";
+
+        if (0 < diff.Hours)
+            timeText += diff.Hours + "시 ";
+
+        if (0 < diff.Minutes)
+            timeText += diff.Minutes + "분 ";
+
+        timeText += diff.Seconds + "초";
+
+        m_DiceList.Time = timeText;
     }
 
     private void OnClickDice(int InID)

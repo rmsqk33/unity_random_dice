@@ -9,6 +9,7 @@ public class FPacketHandler
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_GUEST_LOGIN, Handle_S_GUEST_LOGIN);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CREATE_GUEST_ACCOUNT, Handle_S_CREATE_GUEST_ACCOUNT);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_USER_DATA, Handle_S_USER_DATA);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_STORE_DICE_LIST, Handle_S_STORE_DICE_LIST);
     }
 
     static void Handle_S_GUEST_LOGIN(in byte[] InBuffer)
@@ -31,5 +32,11 @@ public class FPacketHandler
 
         FUserDataController.Instance.Handle_S_USER_DATA(pkt);
     }
-    
+
+    static void Handle_S_STORE_DICE_LIST(in byte[] InBuffer)
+    {
+        S_STORE_DICE_LIST pkt = new S_STORE_DICE_LIST(InBuffer);
+
+        FStoreController.Instance.Handle_S_STORE_DICE_LIST(pkt);
+    }
 }

@@ -10,8 +10,11 @@ public class FGoodsGroup : MonoBehaviour
     TextMeshProUGUI m_TitleText;
     [SerializeField]
     Transform m_GoodsList;
-    
+    [SerializeField]
+    TextMeshProUGUI m_TimeText;
+
     public string Title { set { m_TitleText.text = value; } }
+    public string Time { set { m_TimeText.text = value; } }
     public void AddGoods(FGoodsSlot InSlot)
     {
         InSlot.transform.SetParent(m_GoodsList);
@@ -19,9 +22,9 @@ public class FGoodsGroup : MonoBehaviour
 
     public void ClearGoods()
     {
-        for(int i = 0; i < m_GoodsList.transform.childCount; ++i)
+        foreach(Transform child in m_GoodsList.transform)
         {
-            GameObject.Destroy(m_GoodsList.transform.GetChild(i).gameObject);
+            GameObject.Destroy(child.gameObject);
         }
     }
 }

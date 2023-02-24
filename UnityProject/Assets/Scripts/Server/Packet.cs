@@ -482,6 +482,8 @@ namespace Packet
 
 		}
 
+		public Int64 resetTime;
+
 		public int diceCount;
 
 		public DICE_DATA[] diceList = new DICE_DATA[10];
@@ -506,6 +508,7 @@ namespace Packet
 		public int GetSize()
 		{
 			int size = 0;
+			size += sizeof(Int64);
 			size += sizeof(int);
 			for(int i = 0; i < 10; ++i)
 			{
@@ -523,6 +526,7 @@ namespace Packet
 			int size = GetSize() + sizeof(int) + sizeof(PacketType);
 			InBuffer.AddRange(BitConverter.GetBytes(size));
 			InBuffer.AddRange(BitConverter.GetBytes((int)GetPacketType()));
+			InBuffer.AddRange(BitConverter.GetBytes(resetTime));
 			InBuffer.AddRange(BitConverter.GetBytes(diceCount));
 			for(int i = 0; i < 10; ++i)
 			{
@@ -532,6 +536,8 @@ namespace Packet
 
 		public int Deserialize(in byte[] InBuffer, int offset = 0)
 		{
+			resetTime = BitConverter.ToInt64(InBuffer, offset);
+			offset += sizeof(Int64);
 			diceCount = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
 			for(int i = 0; i < 10; ++i)

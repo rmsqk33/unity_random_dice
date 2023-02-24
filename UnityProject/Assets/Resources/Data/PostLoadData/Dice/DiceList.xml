@@ -20,7 +20,7 @@
 	<Dice id="19" name="죽음 주사위" icon="Sprite/Dice/Dice_DEATH" notAcquiredIcon="Sprite/Dice/Black_Dice_DEATH" color="2e292e" grade="3" description="몬스터 공격 시 일정 확률로 즉사시킨다. 단, 보스에게는 적용되지 않는다."></Dice>
 	<Dice id="21" name="텔레포트 주사위" icon="Sprite/Dice/Dice_TELEPORT" notAcquiredIcon="Sprite/Dice/Black_Dice_TELEPORT" color="b805ff" grade="3" description="몬스터 공격 시 일정 확률로 처음 위치로 이동시킨다."></Dice>
 	<Dice id="22" name="레이저 주사위" icon="Sprite/Dice/Dice_LASER" notAcquiredIcon="Sprite/Dice/Black_Dice_LASER" color="ff7803" grade="3" description="10회 공격할 때 마다 범위 [레이저] 공격을 한다."></Dice>
-	<Dice id="23" name="적응 주사위" icon="Sprite/Dice/Dice_ADAPTATION" notAcquiredIcon="Sprite/Dice/Black_Dice_ADJUST" color="1979e5" grade="3" description="같은 눈금수를 가진 모든 주사위와 합칠 수 있다."></Dice>
+	<Dice id="23" name="적응 주사위" icon="Sprite/Dice/Black_Dice_ADAPTATION" notAcquiredIcon="Sprite/Dice/Black_Dice_ADAPTATION" color="1979e5" grade="3" description="같은 눈금수를 가진 모든 주사위와 합칠 수 있다."></Dice>
 	<Dice id="24" name="감염 주사위" icon="Sprite/Dice/Dice_INFECT" notAcquiredIcon="Sprite/Dice/Black_Dice_INFECT" color="9ccf9c" grade="3" description="몬스터 공격 시 [감염] 표식을 남긴다. [감염] 표식은 몬스터 사망 시 해당 위치에 스플래시 데미지를 입히는 [독가스]를 생성한다."></Dice>
 	<Dice id="25" name="개조된 전기 주사위" icon="Sprite/Dice/Dice_MODIFIEDELECT" notAcquiredIcon="Sprite/Dice/Black_Dice_MODIFIEDELECT" color="ab2121" grade="3" description="몬스터 공격 시 눈금수만큼의 타겟에게 [전기] 데미지를 입힌다."></Dice>
 	<Dice id="26" name="흡수 주사위" icon="Sprite/Dice/Dice_ABSORB" notAcquiredIcon="Sprite/Dice/Black_Dice_ABSORB" color="cc2e24" grade="3" description="몬스터 공격 시 [흡수] 표식을 남긴다. [흡수] 표식은 일정 시간동안 몬스터로부터 SP를 흡수한다."></Dice>
@@ -35,6 +35,6 @@
 	<Dice id="35" name="소환 주사위" icon="Sprite/Dice/Dice_SUMMON" notAcquiredIcon="Sprite/Dice/Black_Dice_SUMMON" color="00a736" grade="4" description="주사위를 합칠 때 무작위 주사위를 1개 소환한다."></Dice>
 	<Dice id="36" name="태양 주사위" icon="Sprite/Dice/Dice_SOLAR" notAcquiredIcon="Sprite/Dice/Black_Dice_SOLAR" color="fe8630" grade="4" description="같은 몬스터를 공격하면 점점 데미지가 증가한다. '태양 주사위'가 3, 5, 7, 9개 소환된 경우 [활성화] 상태로 변하여 공격속도가 증가하고 스플래시 데미지를 입힌다."></Dice>
 	<Dice id="37" name="원자 주사위" icon="Sprite/Dice/Dice_ELEMENT" notAcquiredIcon="Sprite/Dice/Black_Dice_ELEMENT" color="b71c9d" grade="4" description="눈금수 만큼의 원자가 주사위 주변을 회전하며 몬스터의 현재 체력에 비례하는 데미지를 입힌다."></Dice>
-	<Dice id="38" name="태풍 주사위" icon="Sprite/Dice/Dice_TYPHOON" notAcquiredIcon="Sprite/Dice/Black_Dice_TYPHOON" color="177384" grade="4" description="일정 시간 후 [강풍] 1단계로 변하여 공격속도가 증가하고 곧이어 [강풍] 2단계로 변신하여 크리티컬 확률이 100%가 된다."></Dice>
+	<Dice id="38" name="태풍 주사위" icon="Sprite/Dice/Dice_TYPHPOON" notAcquiredIcon="Sprite/Dice/Black_Dice_TYPHOON" color="177384" grade="4" description="일정 시간 후 [강풍] 1단계로 변하여 공격속도가 증가하고 곧이어 [강풍] 2단계로 변신하여 크리티컬 확률이 100%가 된다."></Dice>
 	<Dice id="39" name="콤보 주사위" icon="Sprite/Dice/Dice_COMBO" notAcquiredIcon="Sprite/Dice/Black_Dice_COMBO" color="a21f8b" grade="4" description="주사위를 합치면 [콤보] 수치가 증가하여 공격력이 상승한다."></Dice>
 </DiceList>

@@ -18,7 +18,7 @@
 			<Dice grade="2" min="50" max="100" minPerOne="25" maxPerOne="50"></Dice>
 			<Dice grade="3" min="25" max="50" minPerOne="12" maxPerOne="25"></Dice>
 		</Box>
-		<Box id="4" name="일반~전설" price="4000" image="Sprite/Lobby/Store/rd_chest_14">
+		<Box id="4" name="일반~전설 상자" price="4000" image="Sprite/Lobby/Store/rd_chest_14">
 			<Dice grade="1" min="100" max="200" minPerOne="50" maxPerOne="100"></Dice>
 			<Dice grade="2" min="50" max="100" minPerOne="25" maxPerOne="50"></Dice>
 			<Dice grade="3" min="25" max="50" minPerOne="12" maxPerOne="25"></Dice>
