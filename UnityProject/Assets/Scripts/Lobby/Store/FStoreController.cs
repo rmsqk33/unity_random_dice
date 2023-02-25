@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Packet;
 using System;
+using RandomDice;
 
 public struct FDiceGoods
 {
     public int id;
     public int count;
     public int price;
+    public bool soldOut;
 }
 
 public class FStoreController : FNonObjectSingleton<FStoreController>
@@ -38,6 +40,49 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
             storeMenu.UpdateDiceGoodsList();
     }
 
+    public void Handle_S_PURCHASE_DICE(S_PURCHASE_DICE InPacket)
+    {
+        StorePurchaseResult result = (StorePurchaseResult)InPacket.resultType;
+        if (result != StorePurchaseResult.STORE_PURCHASE_RESULT_SUCCESS)
+        {
+            OpenPurchaseResultPopup(result);
+            return;
+        }
+
+        FStoreMenu storeMenu = FindStoreUI();
+        if (storeMenu != null)
+            storeMenu.SetDiceSoldOut(InPacket.id);
+    }
+
+    public void RequestPurchaseDice(int InID)
+    {
+        FDiceGoods? goods = FindDiceGoods(InID);
+        if (goods == null)
+        {
+            OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS);
+            return;
+        }
+
+        if(goods.Value.price < FUserDataController.Instance.Gold)
+        {
+            OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY);
+            return;
+        }
+
+        C_PURCHASE_DICE packet = new C_PURCHASE_DICE();
+        packet.id = InID;
+
+        FServerManager.Instance.SendMessage(packet);
+    }
+
+    private void OpenPurchaseResultPopup(StorePurchaseResult InResult)
+    {
+        if(InResult == StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS)
+            FPopupManager.Instance.OpenMsgPopup("구매 오류", "존재하지 않는 주사위입니다.");
+        else if(InResult == StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY)
+            FPopupManager.Instance.OpenMsgPopup("구매 오류", "잔액이 모자라 구매할 수 없습니다.");
+    }
+
     public delegate void ForeachDiceGoodsListFunc(in FDiceGoods InGoods);
     public void ForeachDiceGoodsList(in ForeachDiceGoodsListFunc InFunc)
     {
@@ -61,4 +106,6 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
     {
         return GameObject.FindObjectOfType<FStoreMenu>();
     }
+
+        
 }

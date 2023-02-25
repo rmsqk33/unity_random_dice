@@ -19,4 +19,5 @@ public class FGoodsSlot : MonoBehaviour
     public int Count { set { m_CountText.text = value <= 1 ? "" : "x" + value; } }
     public int Price { set { m_PriceText.text = value.ToString(); } }
     public Sprite Image { set { m_Image.sprite = value; } }
+    public bool SoldOut { set { enabled = !value; } }
 }

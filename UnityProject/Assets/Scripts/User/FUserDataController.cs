@@ -16,28 +16,19 @@ public struct FDice
 
 public class FUserDataController : FNonObjectSingleton<FUserDataController>
 {
-    int m_Level = 0;
-    int m_Gold = 0;
-    int m_Dia = 0;
-    int m_Exp = 0;
-    int m_MaxExp = 0;
-    int m_Critical = 0;
-    
-    string m_Name = new string("");
     Dictionary<int, FDice> m_AcquiredDiceMap = new Dictionary<int, FDice>();
     Dictionary<int, int> m_AcquiredBattleFieldMap = new Dictionary<int, int>();
     int[,] m_DicePresetIDList = new int[5,5];
     int[] m_BattleFieldPresetIDList = new int[5];
-    int m_SelectedPresetIndex = 0;
 
-    public int Level { get { return m_Level; } }
-    public int Gold { get { return m_Gold; } }
-    public int Dia { get { return m_Dia; } }
-    public int Exp { get { return m_Exp; } }
-    public int MaxExp { get { return m_MaxExp; } }
-    public int Critical { get { return m_Critical; } }
-    public int SelectedPresetIndex { get { return m_SelectedPresetIndex; } }
-    public string Name { get { return m_Name; } }
+    public int Level { get; set; }
+    public int Gold { get; set; }
+    public int Dia { get; set; }
+    public int Exp { get; set; }
+    public int MaxExp { get; set; }
+    public int Critical { get; set; }
+    public int SelectedPresetIndex { get; set; }
+    public string Name { get; set; }
 
     public void Handle_S_USER_DATA(in S_USER_DATA InPacket)
     {
@@ -78,10 +69,10 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     public void SetPreset(int InIndex)
     {
-        if (m_SelectedPresetIndex == InIndex)
+        if (SelectedPresetIndex == InIndex)
             return;
 
-        m_SelectedPresetIndex = InIndex;
+        SelectedPresetIndex = InIndex;
 
         FDicePreset dicePresetUI = FindDicePreset();
         if (dicePresetUI != null)
@@ -105,37 +96,37 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         C_CHANGE_PRESET_DICE packet = new C_CHANGE_PRESET_DICE();
 
         FDicePreset dicePresetUI = FindDicePreset();
-        int prevIndex = GetDicePresetIndex(InID, m_SelectedPresetIndex);
+        int prevIndex = GetDicePresetIndex(InID, SelectedPresetIndex);
         if (prevIndex != -1)
         {
-            int prevDiceID = m_DicePresetIDList[m_SelectedPresetIndex, InIndex];
-            m_DicePresetIDList[m_SelectedPresetIndex, prevIndex] = prevDiceID;
+            int prevDiceID = m_DicePresetIDList[SelectedPresetIndex, InIndex];
+            m_DicePresetIDList[SelectedPresetIndex, prevIndex] = prevDiceID;
             dicePresetUI.SetDicePreset(prevDiceID, prevIndex);
 
             packet.diceId = prevDiceID;
             packet.slotIndex = prevIndex;
-            packet.presetIndex = m_SelectedPresetIndex;
+            packet.presetIndex = SelectedPresetIndex;
             FServerManager.Instance.SendMessage(packet);
         }
 
-        m_DicePresetIDList[m_SelectedPresetIndex, InIndex] = InID;
+        m_DicePresetIDList[SelectedPresetIndex, InIndex] = InID;
         dicePresetUI.SetDicePreset(InID, InIndex);
 
         packet.diceId = InID;
         packet.slotIndex = InIndex;
-        packet.presetIndex = m_SelectedPresetIndex;
+        packet.presetIndex = SelectedPresetIndex;
         FServerManager.Instance.SendMessage(packet);
     }
 
     public void SetBattleFieldPreset(int InID)
     {
         FBattleFieldPreset battleFieldPresetUI = FindBattleFieldPreset();
-        m_BattleFieldPresetIDList[m_SelectedPresetIndex] = InID;
+        m_BattleFieldPresetIDList[SelectedPresetIndex] = InID;
         battleFieldPresetUI.SetBattleFieldPreset(InID);
 
         C_CHANGE_PRESET_BATTLEFIELD packet = new C_CHANGE_PRESET_BATTLEFIELD();
         packet.battlefieldId = InID;
-        packet.presetIndex = m_SelectedPresetIndex;
+        packet.presetIndex = SelectedPresetIndex;
         FServerManager.Instance.SendMessage(packet);
     }
 
@@ -151,12 +142,12 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
 
     void InitLobbyUserInfoUI(in S_USER_DATA InPacket)
     {
-        m_Name = InPacket.name;
-        m_Gold = InPacket.gold;
-        m_Dia = InPacket.dia;
-        m_Level = InPacket.level;
-        m_Exp = InPacket.exp;
-        m_MaxExp = FDataCenter.Instance.GetIntAttribute("UserClass.Class[@class=" + InPacket.level + "]@exp");
+        Name = InPacket.name;
+        Gold = InPacket.gold;
+        Dia = InPacket.dia;
+        Level = InPacket.level;
+        Exp = InPacket.exp;
+        MaxExp = FDataCenter.Instance.GetIntAttribute("UserClass.Class[@class=" + InPacket.level + "]@exp");
 
         FLobbyUserInfoUI userInfoUI = FindLobbyUserInfoUI();
         if (userInfoUI != null)
@@ -196,7 +187,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
     {
         Array.Copy(InPacket.dicePreset, m_DicePresetIDList, InPacket.dicePreset.Length);
         Array.Copy(InPacket.battleFieldPreset, m_BattleFieldPresetIDList, InPacket.battleFieldPreset.Length);
-        m_SelectedPresetIndex = InPacket.selectedPresetIndex;
+        SelectedPresetIndex = InPacket.selectedPresetIndex;
     }
 
     void AddAcquiredDice(in S_USER_DATA.DICE_DATA InData)
@@ -250,7 +241,7 @@ public class FUserDataController : FNonObjectSingleton<FUserDataController>
         FDiceGradeData? data = FDiceDataManager.Instance.FindGradeDataByID(InDiceID);
         if(data != null)
         {
-            m_Critical += data.Value.Critical * InLevel;
+            Critical += data.Value.Critical * InLevel;
         }
     }
 }

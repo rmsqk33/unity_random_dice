@@ -83,7 +83,7 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         m_Popup = popup;
     }
 
-    public void OpenDicePurchasePopup(int InID, int InCount, int InPrice)
+    public void OpenDicePurchasePopup(int InID, int InCount, int InPrice, FDicePurchasePopup.ButtonHandler InFunc)
     {
         if (m_Popup != null)
             GameObject.Destroy(m_Popup.gameObject);
@@ -93,6 +93,7 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         if (gameObject != null)
             popup = gameObject.GetComponent<FDicePurchasePopup>();
 
+        popup.PurchaseBtnHandler = InFunc;
         popup.OpenPopup(InID, InCount, InPrice);
         m_Popup = popup;
     }

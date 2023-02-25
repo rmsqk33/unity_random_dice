@@ -24,6 +24,11 @@ public class FDicePurchasePopup : FPopupBase
     public int Count { set { m_Count.text = "x" + value; } }
     public int Price { set { m_Price.text = value.ToString(); } }
 
+    public delegate void ButtonHandler(int InID);
+    ButtonHandler m_PurchaseBtnHandler;
+    
+    public ButtonHandler PurchaseBtnHandler { set { m_PurchaseBtnHandler = value; } }
+
     public void OpenPopup(int InID, int InCount, int InPrice)
     {
         ID = InID;
@@ -43,7 +48,7 @@ public class FDicePurchasePopup : FPopupBase
 
     public void OnClickPurchase()
     {
-
+        m_PurchaseBtnHandler(ID);
     }
 
     public void OnClose()

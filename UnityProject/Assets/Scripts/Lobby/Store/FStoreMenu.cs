@@ -51,12 +51,13 @@ public class FStoreMenu : FLobbyScrollMenuBase
                 slot.Name = diceData.Value.Name;
                 slot.Price = InGoods.price;
                 slot.Count = InGoods.count;
+                slot.SoldOut = InGoods.soldOut;
                 slot.Image = Resources.Load<Sprite>(diceData.Value.IconPath);
 
                 int diceID = InGoods.id;
                 slot.GetComponent<Button>().onClick.AddListener(() => { OnClickDice(diceID); });
                 
-                m_DiceList.AddGoods(slot);
+                m_DiceList.AddGoods(diceID, slot);
             }
         });
 
@@ -70,6 +71,11 @@ public class FStoreMenu : FLobbyScrollMenuBase
     {
         base.OnDeactive();
         FPopupManager.Instance.ClosePopup();
+    }
+
+    public void SetDiceSoldOut(int InID)
+    {
+        m_DiceList.SetDiceSoldOut(InID);
     }
 
     private void InitBoxList()
@@ -87,7 +93,7 @@ public class FStoreMenu : FLobbyScrollMenuBase
             int boxID = InNode.GetIntAttr("id");
             slot.GetComponent<Button>().onClick.AddListener(() => { OnClickBox(boxID); });
 
-            m_BoxList.AddGoods(slot);
+            m_BoxList.AddGoods(boxID, slot);
         });
     }
 
@@ -118,11 +124,16 @@ public class FStoreMenu : FLobbyScrollMenuBase
         FDiceGoods? goods = FStoreController.Instance.FindDiceGoods(InID);
         if (goods != null)
         {
-            FPopupManager.Instance.OpenDicePurchasePopup(InID, goods.Value.count, goods.Value.price);
+            FPopupManager.Instance.OpenDicePurchasePopup(InID, goods.Value.count, goods.Value.price, OnClickPurchaseDice);
         }
     }
 
     private void OnClickBox(int InID)
+    {
+
+    }
+
+    private void OnClickPurchaseDice(int InID)
     {
 
     }
