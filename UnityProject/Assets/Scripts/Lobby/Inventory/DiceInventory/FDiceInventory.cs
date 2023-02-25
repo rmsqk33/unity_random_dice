@@ -9,21 +9,21 @@ using UnityEngine.UIElements;
 public class FDiceInventory : FGroupMenuBase
 {
     [SerializeField]
-    TextMeshProUGUI m_CriticalText;
+    TextMeshProUGUI CriticalText;
     [SerializeField]
-    Transform m_AcquiredDiceListUI;
+    Transform AcquiredDiceListUI;
     [SerializeField]
-    Transform m_NotAcquiredDiceListUI;
+    Transform NotAcquiredDiceListUI;
     [SerializeField]
-    FAcquiredDiceSlot m_AcquiredDiceSlotPrefab;
+    FAcquiredDiceSlot AcquiredDiceSlotPrefab;
     [SerializeField]
-    FNotAcquiredDiceSlot m_NotAcquiredDiceSlotPrefab;
+    FNotAcquiredDiceSlot NotAcquiredDiceSlotPrefab;
     [SerializeField]
-    Transform m_PresetRegistUI;
+    Transform PresetRegistUI;
     [SerializeField]
-    FDicePreset m_DicePreset;
+    FDicePreset DicePreset;
     [SerializeField]
-    ScrollRect m_DiceScrollRect;
+    ScrollRect DiceScrollRect;
 
     int m_SelectedDiceID = 0;
     Vector2 m_InitScrollPos = Vector2.zero;
@@ -31,23 +31,23 @@ public class FDiceInventory : FGroupMenuBase
     Dictionary<int, FAcquiredDiceSlot> m_AcquiredDiceMap = new Dictionary<int, FAcquiredDiceSlot>();
     Dictionary<int, FNotAcquiredDiceSlot> m_NotAcquiredDiceList = new Dictionary<int, FNotAcquiredDiceSlot>();
 
+    private int Critical { set { CriticalText.text = value.ToString() + "%"; } }
+
     private void Start()
     {
-        m_InitScrollPos = m_DiceScrollRect.content.anchoredPosition;
-        Critical = FUserDataController.Instance.Critical;
-        InitDiceSlot();
-    }
-
-    public void On_S_USER_DATA()
-    {
-        Critical = FUserDataController.Instance.Critical;
-        InitDiceSlot();
+        m_InitScrollPos = DiceScrollRect.content.anchoredPosition;
+        InitInventory();
     }
 
     public override void OnActive()
     {
         base.OnActive();
-        m_DicePreset.SetPreset(FUserDataController.Instance.SelectedPresetIndex);
+
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            DicePreset.SetPreset(presetController.SelectedPresetIndex);
+        }
     }
 
     public override void OnDeactive()
@@ -55,23 +55,28 @@ public class FDiceInventory : FGroupMenuBase
         base.OnDeactive();
         SetPresetRegistActive(false);
 
-        m_DiceScrollRect.velocity = Vector2.zero;
-        m_DiceScrollRect.content.anchoredPosition = m_InitScrollPos;
+        DiceScrollRect.velocity = Vector2.zero;
+        DiceScrollRect.content.anchoredPosition = m_InitScrollPos;
     }
 
-    public void InitDiceSlot()
+    public void InitInventory()
     {
+        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        if(statController != null)
+        {
+            Critical = statController.Critical;
+        }
+
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
         FDiceDataManager.Instance.ForeachDiceData((in FDiceData InData) =>
         {
-            FDice? acquiredDiceData = FUserDataController.Instance.FindAcquiredDice(InData.ID);
+            FDice? acquiredDiceData = diceController.FindAcquiredDice(InData.ID);
             if (acquiredDiceData != null)
                 AddAcquiredDice(InData, acquiredDiceData.Value);
             else
                 AddNotAcquiredDice(InData);
         });
     }
-
-    public int Critical { set { m_CriticalText.text = value.ToString() + "%"; } }
 
     public void AcquireDice(in FDiceData InData, in FDice InAcquiredDiceData)
     {
@@ -97,7 +102,11 @@ public class FDiceInventory : FGroupMenuBase
 
     public void OnChangeDiceInPreset(int InIndex)
     {
-        FUserDataController.Instance.SetDicePreset(m_SelectedDiceID, InIndex);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            presetController.SetDicePreset(m_SelectedDiceID, InIndex);
+        }
         SetPresetRegistActive(false);
     }
 
@@ -106,7 +115,7 @@ public class FDiceInventory : FGroupMenuBase
         if (m_AcquiredDiceMap.ContainsKey(InData.ID))
             return;
 
-        FAcquiredDiceSlot slot = Instantiate(m_AcquiredDiceSlotPrefab, m_AcquiredDiceListUI);
+        FAcquiredDiceSlot slot = Instantiate(AcquiredDiceSlotPrefab, AcquiredDiceListUI);
         slot.Init(InData, InAcquiredDiceData);
         slot.OnClickHandler = OnClickAcquiredDiceSlot;
 
@@ -122,7 +131,7 @@ public class FDiceInventory : FGroupMenuBase
         if (m_NotAcquiredDiceList.ContainsKey(InData.ID))
             return;
 
-        FNotAcquiredDiceSlot slot = Instantiate(m_NotAcquiredDiceSlotPrefab, m_NotAcquiredDiceListUI);
+        FNotAcquiredDiceSlot slot = Instantiate(NotAcquiredDiceSlotPrefab, NotAcquiredDiceListUI);
         slot.Init(InData);
         slot.OnClickHandler = OnClickNotAcquiredDiceSlot;
 
@@ -157,20 +166,27 @@ public class FDiceInventory : FGroupMenuBase
 
     void SetPresetRegistActive(bool InActive)
     {
-        m_DicePreset.SetPresetRegistActive(InActive);
-        m_DiceScrollRect.gameObject.SetActive(!InActive);
+        DicePreset.SetPresetRegistActive(InActive);
+        DiceScrollRect.gameObject.SetActive(!InActive);
 
         if (InActive)
         {
-            FAcquiredDiceSlot slot = m_PresetRegistUI.Find("DiceSlot").GetComponent<FAcquiredDiceSlot>();
+            FAcquiredDiceSlot slot = PresetRegistUI.Find("DiceSlot").GetComponent<FAcquiredDiceSlot>();
 
             FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(m_SelectedDiceID);
-            FDice? dice = FUserDataController.Instance.FindAcquiredDice(m_SelectedDiceID);
-            if (diceData != null && dice != null)
-            {
-                slot.Init(diceData.Value, dice.Value);
-            }
+            if (diceData == null)
+                return;
+
+            FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+            if (diceController == null)
+                return;
+
+            FDice? dice = diceController.FindAcquiredDice(m_SelectedDiceID);
+            if (dice != null)
+                return;
+
+            slot.Init(diceData.Value, dice.Value);
         }
-        m_PresetRegistUI.gameObject.SetActive(InActive);
+        PresetRegistUI.gameObject.SetActive(InActive);
     }
 }

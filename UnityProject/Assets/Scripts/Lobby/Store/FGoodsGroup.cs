@@ -13,7 +13,7 @@ public class FGoodsGroup : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI m_TimeText;
 
-    Dictionary<int, FGoodsSlot> m_GoodsIDMap;
+    Dictionary<int, FGoodsSlot> m_GoodsIDMap = new Dictionary<int, FGoodsSlot>();
 
     public string Title { set { m_TitleText.text = value; } }
     public string Time { set { m_TimeText.text = value; } }

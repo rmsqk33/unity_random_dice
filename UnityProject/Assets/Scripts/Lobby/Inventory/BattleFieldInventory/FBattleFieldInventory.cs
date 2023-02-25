@@ -32,7 +32,12 @@ public class FBattleFieldInventory : FGroupMenuBase
     public override void OnActive()
     {
         base.OnActive();
-        m_BattleFieldPreset.SetPreset(FUserDataController.Instance.SelectedPresetIndex);
+
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            m_BattleFieldPreset.SetPreset(presetController.SelectedPresetIndex);
+        }
     }
 
     public override void OnDeactive()
@@ -41,11 +46,6 @@ public class FBattleFieldInventory : FGroupMenuBase
 
         m_BattleFieldScrollRect.velocity = Vector2.zero;
         m_BattleFieldScrollRect.content.anchoredPosition = m_InitScrollPos;
-    }
-
-    public void On_S_USER_DATA()
-    {
-        InitBattleFieldList();
     }
 
     public void OnClickAcquiredBattleFieldSlot(int InID)
@@ -68,7 +68,12 @@ public class FBattleFieldInventory : FGroupMenuBase
 
     public void OnClickUseBattleField()
     {
-        FUserDataController.Instance.SetBattleFieldPreset(m_SelectedBattleFieldID);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            presetController.SetBattleFieldPreset(m_SelectedBattleFieldID);
+        }
+
         FPopupManager.Instance.ClosePopup();
     }
 
@@ -82,14 +87,19 @@ public class FBattleFieldInventory : FGroupMenuBase
 
     }
 
-    private void InitBattleFieldList()
+    public void InitBattleFieldList()
     {
-        FBattleFieldDataManager.Instance.ForeachBattleFieldData((FBattleFieldData InData) => {
-            if (FUserDataController.Instance.IsAcquiredBattleField(InData.ID))
-                AddAcquiredBattleField(InData);
-            else
-                AddNotAcquiredBattleField(InData);
-        });
+        FBattlefieldController battlefieldController = FLocalPlayer.Instance.FindController<FBattlefieldController>();
+        if (battlefieldController != null)
+        {
+            FBattleFieldDataManager.Instance.ForeachBattleFieldData((FBattleFieldData InData) =>
+            {
+                if (battlefieldController.IsAcquiredBattleField(InData.ID))
+                    AddAcquiredBattleField(InData);
+                else
+                    AddNotAcquiredBattleField(InData);
+            });
+        }
     }
 
     private void AddAcquiredBattleField(FBattleFieldData InData)

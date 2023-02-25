@@ -32,7 +32,35 @@ public class FPacketHandler
     {
         S_USER_DATA pkt = new S_USER_DATA(InBuffer);
 
-        FUserDataController.Instance.Handle_S_USER_DATA(pkt);
+        FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
+        if (inventoryController != null)
+        {
+            inventoryController.Handle_S_USER_DATA(pkt);
+        }
+
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (diceController != null)
+        {
+            diceController.Handle_S_USER_DATA(pkt);
+        }
+
+        FBattlefieldController battlefieldController = FLocalPlayer.Instance.FindController<FBattlefieldController>();
+        if (battlefieldController != null)
+        {
+            battlefieldController.Handle_S_USER_DATA(pkt);
+        }
+
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.Handle_S_USER_DATA(pkt);
+        }
+
+        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        if (statController != null)
+        {
+            statController.Handle_S_USER_DATA(pkt);
+        }
     }
 
     static void Handle_S_STORE_DICE_LIST(in byte[] InBuffer)
@@ -53,6 +81,10 @@ public class FPacketHandler
     {
         S_CHANGE_GOLD pkt = new S_CHANGE_GOLD(InBuffer);
 
-        FUserDataController.Instance.Gold = pkt.gold;
+        FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
+        if(inventoryController != null)
+        {
+            inventoryController.Gold = pkt.gold;
+        }
     }
 }

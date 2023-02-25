@@ -63,7 +63,8 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
             return;
         }
 
-        if(goods.Value.price < FUserDataController.Instance.Gold)
+        FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
+        if(inventoryController == null || goods.Value.price < inventoryController.Gold)
         {
             OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY);
             return;

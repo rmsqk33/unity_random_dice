@@ -5,53 +5,72 @@ using UnityEngine.UI;
 public class FDicePreset : MonoBehaviour
 {
     [SerializeField]
-    List<Button> m_TabList;
+    List<Button> TabList;
     [SerializeField]
-    List<FDicePresetSlot> m_SlotList;
+    List<FDicePresetSlot> SlotList;
 
-    int m_SelectedPresetIndex = 0;
+    int SelectedPresetIndex = 0;
 
     private void Start()
     {
-        SetPreset(FUserDataController.Instance.SelectedPresetIndex);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            SetPreset(presetController.SelectedPresetIndex);
+        }
     }
 
     public void SetPreset(int InPresetIndex)
     {
-        UnselectTab(m_SelectedPresetIndex);
+        UnselectTab(SelectedPresetIndex);
         SelectTab(InPresetIndex);
 
-        m_SelectedPresetIndex = InPresetIndex;
+        SelectedPresetIndex = InPresetIndex;
 
         int i = 0;
-        FUserDataController.Instance.ForeachDicePreset(InPresetIndex, (int InID) => 
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (presetController != null && diceController != null)
         {
-            FDice? dice = FUserDataController.Instance.FindAcquiredDice(InID);
-            if (dice != null)
-                m_SlotList[i].SetSlot(dice.Value);
-           
-            ++i;
-        });
+            presetController.ForeachDicePreset(InPresetIndex, (int InID) =>
+            {
+                FDice? dice = diceController.FindAcquiredDice(InID);
+                if (dice != null)
+                    SlotList[i].SetSlot(dice.Value);
+
+                ++i;
+            });
+        }
     }
 
     public void SetDicePreset(int InID, int InIndex)
     {
-        FDice? dice = FUserDataController.Instance.FindAcquiredDice(InID);
-        if (dice != null)
-            m_SlotList[InIndex].SetSlot(dice.Value);
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if(diceController != null)
+        {
+            FDice? dice = diceController.FindAcquiredDice(InID);
+            if (dice != null)
+            {
+                SlotList[InIndex].SetSlot(dice.Value);
+            }
+        }
     }
 
     public void OnClickTab(int InIndex)
     {
-        if (m_SelectedPresetIndex == InIndex)
+        if (SelectedPresetIndex == InIndex)
             return;
 
-        FUserDataController.Instance.SetPreset(InIndex);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            presetController.SetPreset(InIndex);
+        }
     }
 
     public void SetPresetRegistActive(bool InActive)
     {
-        foreach(FDicePresetSlot slot in m_SlotList)
+        foreach(FDicePresetSlot slot in SlotList)
         {
             slot.SetPresetRegistActive(InActive);
         }
@@ -59,11 +78,11 @@ public class FDicePreset : MonoBehaviour
 
     void SelectTab(int InIndex)
     {
-        m_TabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");
+        TabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");
     }
 
     void UnselectTab(int InIndex)
     {
-        m_TabList[InIndex].GetComponent<Animator>().SetTrigger("Normal");
+        TabList[InIndex].GetComponent<Animator>().SetTrigger("Normal");
     }
 }

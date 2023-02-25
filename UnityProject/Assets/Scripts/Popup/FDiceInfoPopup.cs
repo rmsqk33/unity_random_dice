@@ -37,7 +37,11 @@ public class FDiceInfoPopup : FPopupBase
 
     public void OpenAcquiredDiceInfo(int InID)
     {
-        FDice? dice = FUserDataController.Instance.FindAcquiredDice(InID);
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (diceController == null)
+            return;
+
+        FDice? dice = diceController.FindAcquiredDice(InID);
         if (dice == null)
             return;
 
@@ -97,7 +101,12 @@ public class FDiceInfoPopup : FPopupBase
     {
         m_NameText.text = InDiceData.Name;
         m_Description.text = InDiceData.Description;
-        m_Critical.text = FUserDataController.Instance.Critical + "%";
+
+        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        if(statController != null)
+        {
+            m_Critical.text = statController.Critical + "%";
+        }
 
         m_Grade.text = InGradeData.GradeName;
         m_UpgradeCritical.text = InGradeData.Critical + "%";

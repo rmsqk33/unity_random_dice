@@ -6,28 +6,36 @@ using UnityEngine.UI;
 public class FBattleFieldPreset : MonoBehaviour
 {
     [SerializeField]
-    List<Button> m_TabList;
+    List<Button> TabList;
     [SerializeField]
-    Image m_BattleFieldImage;
+    Image BattleFieldImage;
     [SerializeField]
-    TextMeshProUGUI m_BattleFieldName;
+    TextMeshProUGUI BattleFieldName;
 
-    int m_SelectedPresetIndex = 0;
+    int SelectedPresetIndex = 0;
 
     private void Start()
     {
-        SetPreset(FUserDataController.Instance.SelectedPresetIndex);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            SetPreset(presetController.SelectedPresetIndex);
+        }
     }
 
     public void SetPreset(int InPresetIndex)
     {
-        UnselectTab(m_SelectedPresetIndex);
+        UnselectTab(SelectedPresetIndex);
         SelectTab(InPresetIndex);
 
-        int battleFieldID = FUserDataController.Instance.GetBattleFieldPresetID(InPresetIndex);
-        SetBattleFieldPreset(battleFieldID);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            int battleFieldID = presetController.GetBattleFieldPresetID(InPresetIndex);
+            SetBattleFieldPreset(battleFieldID);
+        }
 
-        m_SelectedPresetIndex = InPresetIndex;
+        SelectedPresetIndex = InPresetIndex;
     }
 
     public void SetBattleFieldPreset(int InID)
@@ -35,26 +43,30 @@ public class FBattleFieldPreset : MonoBehaviour
         FBattleFieldData? battleFieldData = FBattleFieldDataManager.Instance.FindBattleFieldData(InID);
         if (battleFieldData != null)
         {
-            m_BattleFieldName.text = battleFieldData.Value.Name;
-            m_BattleFieldImage.sprite = Resources.Load<Sprite>(battleFieldData.Value.SkinImage);
+            BattleFieldName.text = battleFieldData.Value.Name;
+            BattleFieldImage.sprite = Resources.Load<Sprite>(battleFieldData.Value.SkinImage);
         }
     }
 
     public void OnClickTab(int InIndex)
     {
-        if (m_SelectedPresetIndex == InIndex)
+        if (SelectedPresetIndex == InIndex)
             return;
 
-        FUserDataController.Instance.SetPreset(InIndex);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.SetPreset(InIndex);
+        }
     }
 
     void SelectTab(int InIndex)
     {
-        m_TabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");
+        TabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");
     }
 
     void UnselectTab(int InIndex)
     {
-        m_TabList[InIndex].GetComponent<Animator>().SetTrigger("Normal");
+        TabList[InIndex].GetComponent<Animator>().SetTrigger("Normal");
     }
 }
