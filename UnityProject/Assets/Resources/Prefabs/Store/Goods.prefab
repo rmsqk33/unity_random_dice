@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 6173996619647463570}
   - component: {fileID: 3973671685363678253}
   - component: {fileID: 7697374583403670112}
-  - component: {fileID: 2983237010254327489}
+  - component: {fileID: 2308770235366624032}
   m_Layer: 5
   m_Name: Goods
   m_TagString: Untagged
@@ -271,7 +271,8 @@ MonoBehaviour:
   m_NameText: {fileID: 1217062489091255550}
   m_CountText: {fileID: 4601612425699097400}
   m_PriceText: {fileID: 1942068926881677068}
-  m_Image: {fileID: 4232478017842256576}
+  m_Background: {fileID: 6173996619647463570}
+  m_DiceImage: {fileID: 4232478017842256576}
 --- !u!114 &7697374583403670112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +317,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!95 &2983237010254327489
+--- !u!95 &2308770235366624032
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -508,7 +509,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -136.17}
+  m_AnchoredPosition: {x: 0, y: -128.79}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5421193106661275379
@@ -721,7 +722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -63.6}
+  m_AnchoredPosition: {x: 0, y: -58.8}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8373246405204876678

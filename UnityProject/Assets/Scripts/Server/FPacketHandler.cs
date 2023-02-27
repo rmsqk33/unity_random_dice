@@ -12,6 +12,8 @@ public class FPacketHandler
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_STORE_DICE_LIST, Handle_S_STORE_DICE_LIST);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_PURCHASE_DICE, Handle_S_PURCHASE_DICE);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_GOLD, Handle_S_CHANGE_GOLD);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_ADD_DICE, Handle_S_ADD_DICE);
+        
     }
 
     static void Handle_S_GUEST_LOGIN(in byte[] InBuffer)
@@ -67,14 +69,33 @@ public class FPacketHandler
     {
         S_STORE_DICE_LIST pkt = new S_STORE_DICE_LIST(InBuffer);
 
-        FStoreController.Instance.Handle_S_STORE_DICE_LIST(pkt);
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            storeController.Handle_S_STORE_DICE_LIST(pkt);
+        }
     }
 
     static void Handle_S_PURCHASE_DICE(in byte[] InBuffer)
     {
         S_PURCHASE_DICE pkt = new S_PURCHASE_DICE(InBuffer);
 
-        FStoreController.Instance.Handle_S_PURCHASE_DICE(pkt);
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            storeController.Handle_S_PURCHASE_DICE(pkt);
+        }
+    }
+
+    static void Handle_S_ADD_DICE(in byte[] InBuffer)
+    {
+        S_ADD_DICE pkt = new S_ADD_DICE(InBuffer);
+
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (diceController != null)
+        {
+            diceController.Handle_S_ADD_DICE(pkt);
+        }
     }
 
     static void Handle_S_CHANGE_GOLD(in byte[] InBuffer)
@@ -84,7 +105,7 @@ public class FPacketHandler
         FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
         if(inventoryController != null)
         {
-            inventoryController.Gold = pkt.gold;
+            inventoryController.Handle_S_CHANGE_GOLD(pkt);
         }
     }
 }

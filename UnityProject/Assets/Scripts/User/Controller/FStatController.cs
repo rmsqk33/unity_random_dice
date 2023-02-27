@@ -6,7 +6,7 @@ public class FStatController : FControllerBase
     public int Level { get; set; }
     public int Exp { get; set; }
     public int MaxExp { get; set; }
-    public int Critical { get; set; }
+    public int Critical { get; private set; }
     public string Name { get; set; }
 
     public FStatController(FLocalPlayer InOwner) : base(InOwner)
@@ -37,13 +37,29 @@ public class FStatController : FControllerBase
         if(diceController != null)
         {
             diceController.ForeachAcquiredDice((FDice InDice) => {
-                FDiceGradeData? data = FDiceDataManager.Instance.FindGradeDataByID(InDice.id);
-                if (data != null)
-                {
-                    Critical += data.Value.Critical * InDice.level;
-                }
+                AddCritical(InDice.id, InDice.level);
             });
         }
+    }
+
+    public void AddCritical(int InID, int InIncreaseLevel)
+    {
+        FDiceGradeData? data = FDiceDataManager.Instance.FindGradeDataByID(InID);
+        if (data != null)
+        {
+            Critical += data.Value.Critical * InIncreaseLevel;
+
+            FDiceInventory diceInventory = FindDiceInventoryUI();
+            if (diceInventory != null)
+            {
+                diceInventory.Critical = Critical;
+            }
+        }
+    }
+
+    private FDiceInventory FindDiceInventoryUI()
+    {
+        return GameObject.FindObjectOfType<FDiceInventory>();
     }
 
     private FLobbyUserInfoUI FindLobbyUserInfoUI()

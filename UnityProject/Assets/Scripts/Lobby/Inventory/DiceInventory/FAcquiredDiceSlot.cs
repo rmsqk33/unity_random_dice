@@ -24,8 +24,8 @@ public class FAcquiredDiceSlot : MonoBehaviour
     [SerializeField]
     Image LevelUpIcon;
 
-    int m_CurrentExp = 1;
-    int m_MaxExp = 1;
+    int m_CurrentCount = 1;
+    int m_MaxCount = 1;
 
     public int Level { set { LevelText.text = value.ToString(); } }
     public int ID { get; set; }
@@ -34,12 +34,12 @@ public class FAcquiredDiceSlot : MonoBehaviour
     ClickHandler m_ClickHandler;
     public ClickHandler OnClickHandler { set { m_ClickHandler = value; } }
 
-    public int CurrentExp
+    public int CurrentCount
     {
         set
         {
-            m_CurrentExp = value;
-            UpdateExp();
+            m_CurrentCount = value;
+            UpdateCount();
         }
     }
 
@@ -65,27 +65,27 @@ public class FAcquiredDiceSlot : MonoBehaviour
             FDiceLevelData levelData;
             if (gradeData.Value.LevelDataMap.TryGetValue(InDice.level, out levelData))
             {
-                SetExp(InDice.exp, levelData.MaxExp);
+                SetCount(InDice.count, levelData.MaxExp);
             }
         }
     }
 
-    public void SetExp(int InExp, int InMax)
+    public void SetCount(int InCount, int InMax)
     {
-        m_CurrentExp = Mathf.Min(InExp, InMax);
-        m_MaxExp = InMax;
-        UpdateExp();
+        m_CurrentCount = InCount;
+        m_MaxCount = InMax;
+        UpdateCount();
     }
 
-    void UpdateExp()
+    void UpdateCount()
     {
         Vector3 scale = ExpGauge.transform.localScale;
-        scale.x = (float)m_CurrentExp / (float)m_MaxExp;
+        scale.x = Mathf.Min((float)m_CurrentCount / (float)m_MaxCount, 1);
         ExpGauge.transform.localScale = scale;
 
-        ExpText.text = m_CurrentExp.ToString() + "/" + m_MaxExp.ToString();
+        ExpText.text = m_CurrentCount.ToString() + "/" + m_MaxCount.ToString();
 
-        LevelUpIcon.enabled = m_MaxExp == m_CurrentExp;
+        LevelUpIcon.gameObject.SetActive(m_MaxCount <= m_CurrentCount);
     }
 
     public void OnClickSlot()

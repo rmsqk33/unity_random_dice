@@ -7,15 +7,14 @@ public class FLocalPlayer : FSingleton<FLocalPlayer>
 {
     private Dictionary<Type, FControllerBase> Controllers = new Dictionary<Type, FControllerBase>();
 
-    protected override void Awake() 
+    private void Start() 
     {
-        base.Awake();
-
         AddController<FInventoryController>();
         AddController<FDiceController>();
         AddController<FBattlefieldController>();
         AddController<FPresetController>();
         AddController<FStatController>();
+        AddController<FStoreController>();
     }
 
     private void AddController<T>()

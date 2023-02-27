@@ -18,7 +18,7 @@ public class FServerManager : Singleton<FServerManager>
     private TcpClient m_TcpClient = null;
     private NetworkStream m_NetStream = null;
     private Thread m_ReceiveMessageThread = null;
-    private bool m_ConnectedServer = false;
+    public bool IsConnectedServer { get; private set; } = false;
 
     public delegate void PacketHandler(in byte[] InBuffer);
     private Dictionary<PacketType, PacketHandler> m_PacketHandlerMap = new Dictionary<PacketType, PacketHandler>();
@@ -56,9 +56,9 @@ public class FServerManager : Singleton<FServerManager>
 
     void DisconnectServer()
     {
-        if(m_ConnectedServer)
+        if(IsConnectedServer)
         {
-            m_ConnectedServer = false;
+            IsConnectedServer = false;
             m_ReceiveMessageThread.Join();
             m_NetStream.Close();
             m_TcpClient.Close();
@@ -67,6 +67,9 @@ public class FServerManager : Singleton<FServerManager>
 
     public bool ConnectServer()
     {
+        if (IsConnectedServer)
+            return false;
+
         try
         {
             m_TcpClient = new TcpClient(SERVER_IP, SERVER_PORT);
@@ -75,7 +78,7 @@ public class FServerManager : Singleton<FServerManager>
             m_ReceiveMessageThread = new Thread(ReceiveMessage);
             m_ReceiveMessageThread.Start();
 
-            m_ConnectedServer = true;
+            IsConnectedServer = true;
         }
         catch (Exception e)
         {
@@ -92,7 +95,7 @@ public class FServerManager : Singleton<FServerManager>
         int packetSize = 0;
         int readSize = 0;
 
-        while (m_ConnectedServer)
+        while (IsConnectedServer)
         {
             readSize += await m_NetStream.ReadAsync(buffer, readSize, PACKET_MAX - readSize);
 

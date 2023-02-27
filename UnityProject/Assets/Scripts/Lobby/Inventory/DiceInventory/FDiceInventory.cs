@@ -31,7 +31,7 @@ public class FDiceInventory : FGroupMenuBase
     Dictionary<int, FAcquiredDiceSlot> m_AcquiredDiceMap = new Dictionary<int, FAcquiredDiceSlot>();
     Dictionary<int, FNotAcquiredDiceSlot> m_NotAcquiredDiceList = new Dictionary<int, FNotAcquiredDiceSlot>();
 
-    private int Critical { set { CriticalText.text = value.ToString() + "%"; } }
+    public int Critical { set { CriticalText.text = value.ToString() + "%"; } }
 
     private void Start()
     {
@@ -39,12 +39,56 @@ public class FDiceInventory : FGroupMenuBase
         InitInventory();
     }
 
+    public void InitInventory()
+    {
+        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        if(statController != null)
+        {
+            Critical = statController.Critical;
+        }
+
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (diceController != null)
+        {
+            FDiceDataManager.Instance.ForeachDiceData((in FDiceData InData) =>
+            {
+                FDice? acquiredDiceData = diceController.FindAcquiredDice(InData.ID);
+                if (acquiredDiceData != null)
+                    AddAcquiredDice(acquiredDiceData.Value);
+                else
+                    AddNotAcquiredDice(InData);
+            });
+        }
+    }
+
+    public void AcquireDice(in FDice InAcquiredDiceData)
+    {
+        AddAcquiredDice(InAcquiredDiceData);
+        RemoveNotAcquiredDice(InAcquiredDiceData.id);
+    }
+
+    public void SetDiceCount(int InID, int InCount)
+    {
+        if (!m_AcquiredDiceMap.ContainsKey(InID))
+            return;
+
+        m_AcquiredDiceMap[InID].CurrentCount = InCount;
+    }
+    
+    public void SetDiceMaxExp(int InID, int InExp, int InMaxExp)
+    {
+        if (!m_AcquiredDiceMap.ContainsKey(InID))
+            return;
+
+        m_AcquiredDiceMap[InID].SetCount(InExp, InMaxExp);
+    }
+
     public override void OnActive()
     {
         base.OnActive();
 
         FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
-        if(presetController != null)
+        if (presetController != null)
         {
             DicePreset.SetPreset(presetController.SelectedPresetIndex);
         }
@@ -57,31 +101,6 @@ public class FDiceInventory : FGroupMenuBase
 
         DiceScrollRect.velocity = Vector2.zero;
         DiceScrollRect.content.anchoredPosition = m_InitScrollPos;
-    }
-
-    public void InitInventory()
-    {
-        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
-        if(statController != null)
-        {
-            Critical = statController.Critical;
-        }
-
-        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
-        FDiceDataManager.Instance.ForeachDiceData((in FDiceData InData) =>
-        {
-            FDice? acquiredDiceData = diceController.FindAcquiredDice(InData.ID);
-            if (acquiredDiceData != null)
-                AddAcquiredDice(InData, acquiredDiceData.Value);
-            else
-                AddNotAcquiredDice(InData);
-        });
-    }
-
-    public void AcquireDice(in FDiceData InData, in FDice InAcquiredDiceData)
-    {
-        AddAcquiredDice(InData, InAcquiredDiceData);
-        RemoveNotAcquiredDice(InData.ID);
     }
 
     public void OnClickUpgrade()
@@ -110,13 +129,17 @@ public class FDiceInventory : FGroupMenuBase
         SetPresetRegistActive(false);
     }
 
-    void AddAcquiredDice(in FDiceData InData, in FDice InAcquiredDiceData)
+    void AddAcquiredDice(in FDice InAcquiredDiceData)
     {
-        if (m_AcquiredDiceMap.ContainsKey(InData.ID))
+        if (m_AcquiredDiceMap.ContainsKey(InAcquiredDiceData.id))
+            return;
+
+        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InAcquiredDiceData.id);
+        if (diceData == null)
             return;
 
         FAcquiredDiceSlot slot = Instantiate(AcquiredDiceSlotPrefab, AcquiredDiceListUI);
-        slot.Init(InData, InAcquiredDiceData);
+        slot.Init(diceData.Value, InAcquiredDiceData);
         slot.OnClickHandler = OnClickAcquiredDiceSlot;
 
         m_AcquiredDiceMap.Add(slot.ID, slot);
@@ -182,7 +205,7 @@ public class FDiceInventory : FGroupMenuBase
                 return;
 
             FDice? dice = diceController.FindAcquiredDice(m_SelectedDiceID);
-            if (dice != null)
+            if (dice == null)
                 return;
 
             slot.Init(diceData.Value, dice.Value);

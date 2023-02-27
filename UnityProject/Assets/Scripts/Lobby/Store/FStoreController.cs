@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Packet;
@@ -13,27 +12,30 @@ public struct FDiceGoods
     public bool soldOut;
 }
 
-public class FStoreController : FNonObjectSingleton<FStoreController>
+public class FStoreController : FControllerBase
 {
-    List<FDiceGoods> m_DiceGoodsList = new List<FDiceGoods>();
-    Int64 m_ResetTime = 0;
+    Dictionary<int, FDiceGoods> DiceGoodsMap = new Dictionary<int, FDiceGoods>();
+    public Int64 ResetTime { get; private set; }
 
-    public Int64 ResetTime { get { return m_ResetTime; } }
+    public FStoreController(FLocalPlayer InOwner) : base(InOwner)
+    {
+    }
 
     public void Handle_S_STORE_DICE_LIST(S_STORE_DICE_LIST InPacket)
     {
-        m_DiceGoodsList.Clear();
+        DiceGoodsMap.Clear();
         for (int i = 0; i < InPacket.diceCount; ++i)
         {
             FDiceGoods goods = new FDiceGoods();
             goods.id = InPacket.diceList[i].id;
             goods.count = InPacket.diceList[i].count;
             goods.price = InPacket.diceList[i].price;
+            goods.soldOut = InPacket.diceList[i].soldOut;
 
-            m_DiceGoodsList.Add(goods);
+            DiceGoodsMap.Add(goods.id, goods);
         }
 
-        m_ResetTime = InPacket.resetTime;
+        ResetTime = InPacket.resetTime;
 
         FStoreMenu storeMenu = FindStoreUI();
         if (storeMenu != null)
@@ -49,9 +51,17 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
             return;
         }
 
-        FStoreMenu storeMenu = FindStoreUI();
-        if (storeMenu != null)
-            storeMenu.SetDiceSoldOut(InPacket.id);
+        if (DiceGoodsMap.ContainsKey(InPacket.id))
+        {
+            FDiceGoods diceGoods = DiceGoodsMap[InPacket.id];
+            diceGoods.soldOut = true;
+
+            FStoreMenu storeMenu = FindStoreUI();
+            if (storeMenu != null)
+            {
+                storeMenu.SetDiceSoldOut(InPacket.id);
+            }
+        }
     }
 
     public void RequestPurchaseDice(int InID)
@@ -63,8 +73,14 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
             return;
         }
 
+        if (goods.Value.soldOut)
+        {
+            OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_SOLDOUT);
+            return;
+        }
+
         FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
-        if(inventoryController == null || goods.Value.price < inventoryController.Gold)
+        if (inventoryController == null || inventoryController.Gold < goods.Value.price)
         {
             OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY);
             return;
@@ -78,28 +94,36 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
 
     private void OpenPurchaseResultPopup(StorePurchaseResult InResult)
     {
-        if(InResult == StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS)
-            FPopupManager.Instance.OpenMsgPopup("구매 오류", "존재하지 않는 주사위입니다.");
-        else if(InResult == StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY)
-            FPopupManager.Instance.OpenMsgPopup("구매 오류", "잔액이 모자라 구매할 수 없습니다.");
+        switch (InResult)
+        {
+            case StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS:
+                FPopupManager.Instance.OpenMsgPopup("구매 오류", "존재하지 않는 주사위입니다.");
+                break;
+
+            case StorePurchaseResult.STORE_PURCHASE_RESULT_SOLDOUT:
+                FPopupManager.Instance.OpenMsgPopup("구매 오류", "품절된 상품입니다.");
+                break;
+
+            case StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY:
+                FPopupManager.Instance.OpenMsgPopup("구매 오류", "잔액이 모자라 구매할 수 없습니다.");
+                break;
+        }
     }
 
     public delegate void ForeachDiceGoodsListFunc(in FDiceGoods InGoods);
     public void ForeachDiceGoodsList(in ForeachDiceGoodsListFunc InFunc)
     {
-        foreach(FDiceGoods goods in m_DiceGoodsList)
+        foreach (var pair in DiceGoodsMap)
         {
-            InFunc(goods);
+            InFunc(pair.Value);
         }
     }
 
     public FDiceGoods? FindDiceGoods(int InID)
     {
-        foreach(FDiceGoods goods in m_DiceGoodsList)
-        {
-            if (goods.id == InID)
-                return goods;
-        }
+        if(DiceGoodsMap.ContainsKey(InID))
+            return DiceGoodsMap[InID];
+
         return null;
     }
 
@@ -108,5 +132,5 @@ public class FStoreController : FNonObjectSingleton<FStoreController>
         return GameObject.FindObjectOfType<FStoreMenu>();
     }
 
-        
+
 }

@@ -62,7 +62,7 @@ public class FDiceInfoPopup : FPopupBase
             {
                 FDiceLevelData levelData = gradeData.Value.LevelDataMap[dice.Value.level];
                 m_UpgradeCost.text = levelData.GoldCost.ToString();
-                SetUpgradable(levelData.MaxExp <= dice.Value.exp);
+                SetUpgradable(levelData.MaxExp <= dice.Value.count);
                 SetCommonDiceInfo(diceData.Value, gradeData.Value);
             }
         }

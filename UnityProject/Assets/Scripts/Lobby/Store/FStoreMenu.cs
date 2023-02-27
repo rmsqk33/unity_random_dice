@@ -43,28 +43,37 @@ public class FStoreMenu : FLobbyScrollMenuBase
     public void UpdateDiceGoodsList()
     {
         m_DiceList.ClearGoods();
-        FStoreController.Instance.ForeachDiceGoodsList((in FDiceGoods InGoods) => {
-            FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InGoods.id);
-            if (diceData != null)
-            {
-                FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab);
-                slot.Name = diceData.Value.Name;
-                slot.Price = InGoods.price;
-                slot.Count = InGoods.count;
-                slot.SoldOut = InGoods.soldOut;
-                slot.Image = Resources.Load<Sprite>(diceData.Value.IconPath);
 
-                int diceID = InGoods.id;
-                slot.GetComponent<Button>().onClick.AddListener(() => { OnClickDice(diceID); });
-                
-                m_DiceList.AddGoods(diceID, slot);
-            }
-        });
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            storeController.ForeachDiceGoodsList((in FDiceGoods InGoods) =>
+            {
+                FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InGoods.id);
+                if (diceData != null)
+                {
+                    FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab);
+                    slot.Name = diceData.Value.Name;
+                    slot.Price = InGoods.price;
+                    slot.Count = InGoods.count;
+                    slot.SoldOut = InGoods.soldOut;
+                    slot.DiceImage = Resources.Load<Sprite>(diceData.Value.IconPath);
+
+                    FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
+                    if(gradeData != null)
+                    {
+                        slot.Background = Resources.Load<Sprite>(gradeData.Value.BackgroundPath);
+                    }
+
+                    int diceID = InGoods.id;
+                    slot.GetComponent<Button>().onClick.AddListener(() => { OnClickDice(diceID); });
+
+                    m_DiceList.AddGoods(diceID, slot);
+                }
+            });
+        }
 
         UpdateResetTime();
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)m_DiceList.transform);
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)m_BoxList.transform);
     }
 
     public override void OnDeactive()
@@ -87,7 +96,7 @@ public class FStoreMenu : FLobbyScrollMenuBase
             FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab);
             slot.Name = InNode.GetStringAttr("name");
             slot.Price = InNode.GetIntAttr("price");
-            slot.Image = Resources.Load<Sprite>(InNode.GetStringAttr("image"));
+            slot.DiceImage = Resources.Load<Sprite>(InNode.GetStringAttr("image"));
             slot.Count = 1;
 
             int boxID = InNode.GetIntAttr("id");
@@ -99,32 +108,40 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
     private void UpdateResetTime()
     {
-        DateTime resetTime = new DateTime(1970, 1, 1, 9, 0, 0, 0);
-        resetTime = resetTime.AddSeconds(FStoreController.Instance.ResetTime);
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            DateTime resetTime = new DateTime(1970, 1, 1, 9, 0, 0, 0);
+            resetTime = resetTime.AddSeconds(storeController.ResetTime);
 
-        TimeSpan diff = resetTime - DateTime.Now;
+            TimeSpan diff = resetTime - DateTime.Now;
 
-        string timeText = "갱신까지 남은 시간 : ";
-        if (0 < diff.Days)
-            timeText += diff.Days + "일 ";
+            string timeText = "갱신까지 남은 시간 : ";
+            if (0 < diff.Days)
+                timeText += diff.Days + "일 ";
 
-        if (0 < diff.Hours)
-            timeText += diff.Hours + "시 ";
+            if (0 < diff.Hours)
+                timeText += diff.Hours + "시 ";
 
-        if (0 < diff.Minutes)
-            timeText += diff.Minutes + "분 ";
+            if (0 < diff.Minutes)
+                timeText += diff.Minutes + "분 ";
 
-        timeText += diff.Seconds + "초";
+            timeText += diff.Seconds + "초";
 
-        m_DiceList.Time = timeText;
+            m_DiceList.Time = timeText;
+        }
     }
 
     private void OnClickDice(int InID)
     {
-        FDiceGoods? goods = FStoreController.Instance.FindDiceGoods(InID);
-        if (goods != null)
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
         {
-            FPopupManager.Instance.OpenDicePurchasePopup(InID, goods.Value.count, goods.Value.price, OnClickPurchaseDice);
+            FDiceGoods? goods = storeController.FindDiceGoods(InID);
+            if (goods != null)
+            {
+                FPopupManager.Instance.OpenDicePurchasePopup(InID, goods.Value.count, goods.Value.price, OnClickPurchaseDice);
+            }
         }
     }
 
@@ -135,6 +152,10 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
     private void OnClickPurchaseDice(int InID)
     {
-
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if(storeController != null)
+        {
+            storeController.RequestPurchaseDice(InID);
+        }
     }
 }

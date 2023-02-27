@@ -26,10 +26,11 @@ public class FGoodsGroup : MonoBehaviour
 
     public void ClearGoods()
     {
-        foreach(Transform child in m_GoodsList.transform)
+        foreach (FGoodsSlot slot in m_GoodsIDMap.Values)
         {
-            GameObject.Destroy(child.gameObject);
+            GameObject.Destroy(slot.gameObject);
         }
+        m_GoodsIDMap.Clear();
     }
 
     public void SetDiceSoldOut(int InID)
