@@ -63,7 +63,7 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         popup.OpenNotAcquiredBattleFieldInfo(InID);
     }
 
-    public void OpenDicePurchasePopup(int InID, int InCount, int InPrice, FDicePurchasePopup.ButtonHandler InFunc)
+    public void OpenDicePurchasePopup(int InID, FDicePurchasePopup.ButtonHandler InFunc)
     {
         FDicePurchasePopup popup = null;
         GameObject gameObject = CreatePopup("Prefabs/Popup/DicePurchasePopup");
@@ -71,7 +71,18 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
             popup = gameObject.GetComponent<FDicePurchasePopup>();
 
         popup.PurchaseBtnHandler = InFunc;
-        popup.OpenPopup(InID, InCount, InPrice);
+        popup.OpenPopup(InID);
+    }
+
+    public void OpenBoxPurchasePopup(int InID, FBoxPurchasePopup.ButtonHandler InFunc)
+    {
+        FBoxPurchasePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/BoxPurchasePopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FBoxPurchasePopup>();
+
+        popup.PurchaseBtnHandler = InFunc;
+        popup.OpenPopup(InID);
     }
 
     public void OpenAcquiredDicePopup(List<KeyValuePair<int, int>> InDiceList)

@@ -52,12 +52,12 @@ public class FStoreMenu : FLobbyScrollMenuBase
                 FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InGoods.id);
                 if (diceData != null)
                 {
-                    FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab);
+                    FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab, m_DiceList.GoodsParent);
                     slot.Name = diceData.Value.Name;
-                    slot.Price = InGoods.price;
+                    slot.Gold = InGoods.price;
                     slot.Count = InGoods.count;
                     slot.SoldOut = InGoods.soldOut;
-                    slot.DiceImage = Resources.Load<Sprite>(diceData.Value.IconPath);
+                    slot.GoodsImage = Resources.Load<Sprite>(diceData.Value.IconPath);
 
                     FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
                     if(gradeData != null)
@@ -89,17 +89,16 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
     private void InitBoxList()
     {
-        FDataNode dataNode = FDataCenter.Instance.GetDataNodeWithQuery("StoreDataList.BoxStoreData");
-        m_BoxList.Title = dataNode.GetStringAttr("name");
-
-        dataNode.ForeachChildNodes("Box", (in FDataNode InNode) => {
-            FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab);
-            slot.Name = InNode.GetStringAttr("name");
-            slot.Price = InNode.GetIntAttr("price");
-            slot.DiceImage = Resources.Load<Sprite>(InNode.GetStringAttr("image"));
+        m_BoxList.Title = FStoreDataManager.Instance.BoxStoreTitle;
+        FStoreDataManager.Instance.ForeachStoreBoxData((in FStoreBoxData InData) =>
+        {
+            FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab, m_BoxList.GoodsParent);
+            slot.Name = InData.name;
+            slot.Dia = InData.price;
+            slot.GoodsImage = Resources.Load<Sprite>(InData.boxImagePath);
             slot.Count = 1;
 
-            int boxID = InNode.GetIntAttr("id");
+            int boxID = InData.id;
             slot.GetComponent<Button>().onClick.AddListener(() => { OnClickBox(boxID); });
 
             m_BoxList.AddGoods(boxID, slot);
@@ -134,20 +133,12 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
     private void OnClickDice(int InID)
     {
-        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
-        if (storeController != null)
-        {
-            FDiceGoods? goods = storeController.FindDiceGoods(InID);
-            if (goods != null)
-            {
-                FPopupManager.Instance.OpenDicePurchasePopup(InID, goods.Value.count, goods.Value.price, OnClickPurchaseDice);
-            }
-        }
+        FPopupManager.Instance.OpenDicePurchasePopup(InID, OnClickPurchaseDice);
     }
 
     private void OnClickBox(int InID)
     {
-
+        FPopupManager.Instance.OpenBoxPurchasePopup(InID, OnClickPurchaseBox);
     }
 
     private void OnClickPurchaseDice(int InID)
@@ -156,6 +147,15 @@ public class FStoreMenu : FLobbyScrollMenuBase
         if(storeController != null)
         {
             storeController.RequestPurchaseDice(InID);
+        }
+    }
+
+    private void OnClickPurchaseBox(int InID)
+    {
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            storeController.RequestPurchaseBox(InID);
         }
     }
 }

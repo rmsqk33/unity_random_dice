@@ -61,8 +61,9 @@ public class FDiceController : FControllerBase
             }
 
             addDiceList.Add(new KeyValuePair<int, int>(diceID, diceCount));
-            FPopupManager.Instance.OpenAcquiredDicePopup(addDiceList);
         }
+     
+        FPopupManager.Instance.OpenAcquiredDicePopup(addDiceList);
     }
 
     public delegate void ForeachAcquiredDiceFunc(FDice InDice);

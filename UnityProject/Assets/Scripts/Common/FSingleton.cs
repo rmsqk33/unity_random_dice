@@ -28,7 +28,7 @@ public class FSingleton<T> : MonoBehaviour where T : MonoBehaviour
             m_Instance = GetComponent<T>();
             DontDestroyOnLoad(gameObject);
         }
-        else 
+        else if(m_Instance.gameObject != gameObject) 
         {
             GameObject.Destroy(gameObject);
         }

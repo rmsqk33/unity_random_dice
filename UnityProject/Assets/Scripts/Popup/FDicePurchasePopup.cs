@@ -29,21 +29,39 @@ public class FDicePurchasePopup : FPopupBase
     
     public ButtonHandler PurchaseBtnHandler { set { m_PurchaseBtnHandler = value; } }
 
-    public void OpenPopup(int InID, int InCount, int InPrice)
+    public void OpenPopup(int InID)
     {
         ID = InID;
-        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InID);
-        if(diceData != null)
-        {
-            Name = diceData.Value.Name;
-            DiceImage = Resources.Load<Sprite>(diceData.Value.IconPath);
-            Count = InCount;
-            Price = InPrice;
 
-            FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
-            if (gradeData != null)
-                Grade = gradeData.Value.GradeName;
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if(storeController == null)
+        {
+            Close();
+            return;
         }
+
+        FDiceGoods? diceGoods = storeController.FindDiceGoods(InID);
+        if(diceGoods == null)
+        {
+            Close();
+            return;
+        }
+
+        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InID);
+        if(diceData == null)
+        {
+            Close();
+            return;
+        }
+
+        Name = diceData.Value.Name;
+        DiceImage = Resources.Load<Sprite>(diceData.Value.IconPath);
+        Count = diceGoods.Value.count;
+        Price = diceGoods.Value.price;
+
+        FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
+        if (gradeData != null)
+            Grade = gradeData.Value.GradeName;
     }
 
     public void OnClickPurchase()

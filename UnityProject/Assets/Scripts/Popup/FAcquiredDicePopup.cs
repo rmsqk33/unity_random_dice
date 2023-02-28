@@ -9,13 +9,27 @@ public class FAcquiredDicePopup : FPopupBase
     Transform DiceListParent;
     [SerializeField]
     FAcquiredDicePopupSlot DicePrefab;
+    [SerializeField]
+    float DelaySec;
+
+    private List<KeyValuePair<int, int>> DiceList;
     
     public void OpenPopup(List<KeyValuePair<int, int>> InDiceList)
     {
-        foreach (KeyValuePair<int, int> iter in InDiceList)
+        DiceList = InDiceList;
+        AddDice();
+    }
+
+    private void AddDice()
+    {
+        FAcquiredDicePopupSlot slot = Instantiate(DicePrefab, DiceListParent);
+        slot.SetSlot(DiceList[0].Key, DiceList[0].Value);
+
+        DiceList.RemoveAt(0);
+
+        if (DiceList.Count != 0)
         {
-            FAcquiredDicePopupSlot slot = Instantiate(DicePrefab, DiceListParent);
-            slot.SetSlot(iter.Key, iter.Value);
+            Invoke("AddDice", DelaySec);
         }
     }
 }

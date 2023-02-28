@@ -17,11 +17,11 @@ public class FGoodsGroup : MonoBehaviour
 
     public string Title { set { m_TitleText.text = value; } }
     public string Time { set { m_TimeText.text = value; } }
-    
+    public Transform GoodsParent { get { return m_GoodsList; } }
+
     public void AddGoods(int InID, FGoodsSlot InSlot)
     {
         m_GoodsIDMap.Add(InID, InSlot);
-        InSlot.transform.SetParent(m_GoodsList);
     }
 
     public void ClearGoods()

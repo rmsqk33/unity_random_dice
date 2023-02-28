@@ -193,9 +193,9 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 123.8, y: 221.48}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Spacing: {x: 150, y: 221.48}
+  m_Constraint: 1
+  m_ConstraintCount: 3
 --- !u!1 &5237010387039450274
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,6 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DiceListParent: {fileID: 6577032567572444222}
   DicePrefab: {fileID: 7722216242714597470, guid: b8ab472c9b8322b4bb5f4fd1a341b37f, type: 3}
+  DelaySec: 0.3
 --- !u!222 &5372151090913857301
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -584,7 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.48235294}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.90588236}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

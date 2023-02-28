@@ -3,6 +3,7 @@ using UnityEngine;
 using Packet;
 using System;
 using RandomDice;
+using UnityEditor;
 
 public struct FDiceGoods
 {
@@ -64,6 +65,15 @@ public class FStoreController : FControllerBase
         }
     }
 
+    public void Handle_S_PURCHASE_BOX(S_PURCHASE_BOX InPacket)
+    {
+        StorePurchaseResult result = (StorePurchaseResult)InPacket.resultType;
+        if (result != StorePurchaseResult.STORE_PURCHASE_RESULT_SUCCESS)
+        {
+            OpenPurchaseResultPopup(result);
+        }
+    }
+
     public void RequestPurchaseDice(int InID)
     {
         FDiceGoods? goods = FindDiceGoods(InID);
@@ -87,6 +97,28 @@ public class FStoreController : FControllerBase
         }
 
         C_PURCHASE_DICE packet = new C_PURCHASE_DICE();
+        packet.id = InID;
+
+        FServerManager.Instance.SendMessage(packet);
+    }
+
+    public void RequestPurchaseBox(int InID)
+    {
+        FStoreBoxData? boxData = FStoreDataManager.Instance.FindStoreBoxData(InID);
+        if(boxData == null)
+        {
+            OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS);
+            return;
+        }
+
+        FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
+        if (inventoryController == null || inventoryController.Gold < boxData.Value.price)
+        {
+            OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY);
+            return;
+        }
+
+        C_PURCHASE_BOX packet = new C_PURCHASE_BOX();
         packet.id = InID;
 
         FServerManager.Instance.SendMessage(packet);

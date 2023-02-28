@@ -40,7 +40,7 @@ public class LoginScene : MonoBehaviour
 
     void Update()
     {
-        if (0 < m_MainThreadFuncQueue.Count)
+        if (0 < m_MainThreadFuncQueue.Count && m_MainThreadFuncQueue[0] != null)
         {
             m_MainThreadFuncQueue[0]();
             m_MainThreadFuncQueue.RemoveAt(0);

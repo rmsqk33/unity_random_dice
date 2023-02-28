@@ -13,15 +13,39 @@ public class FGoodsSlot : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI m_PriceText;
     [SerializeField]
+    Image m_GoldIcon;
+    [SerializeField]
+    Image m_DiaIcon;
+    [SerializeField]
     Image m_Background;
     [SerializeField]
-    Image m_DiceImage;
+    Image m_GoodsImage;
 
     public string Name { set { m_NameText.text = value; } }
     public int Count { set { m_CountText.text = "x" + value; } }
-    public int Price { set { m_PriceText.text = value.ToString(); } }
     public Sprite Background { set { m_Background.sprite = value; } }
-    public Sprite DiceImage { set { m_DiceImage.sprite = value; } }
+    public Sprite GoodsImage { set { m_GoodsImage.sprite = value; } }
+
+    public int Gold 
+    { 
+        set 
+        {
+            m_GoldIcon.gameObject.SetActive(true);
+            m_DiaIcon.gameObject.SetActive(false);
+            m_PriceText.text = value.ToString(); 
+        }
+    }
+
+    public int Dia 
+    { 
+        set 
+        {
+            m_GoldIcon.gameObject.SetActive(false);
+            m_DiaIcon.gameObject.SetActive(true);
+            m_PriceText.text = value.ToString(); 
+        }
+    }
+
     public bool SoldOut 
     {
         set 

@@ -29,7 +29,7 @@ public class FDiceInventory : FGroupMenuBase
     Vector2 m_InitScrollPos = Vector2.zero;
 
     Dictionary<int, FAcquiredDiceSlot> m_AcquiredDiceMap = new Dictionary<int, FAcquiredDiceSlot>();
-    Dictionary<int, FNotAcquiredDiceSlot> m_NotAcquiredDiceList = new Dictionary<int, FNotAcquiredDiceSlot>();
+    Dictionary<int, FNotAcquiredDiceSlot> m_NotAcquiredDiceMap = new Dictionary<int, FNotAcquiredDiceSlot>();
 
     public int Critical { set { CriticalText.text = value.ToString() + "%"; } }
 
@@ -50,6 +50,7 @@ public class FDiceInventory : FGroupMenuBase
         FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
         if (diceController != null)
         {
+            ClearInventory();
             FDiceDataManager.Instance.ForeachDiceData((in FDiceData InData) =>
             {
                 FDice? acquiredDiceData = diceController.FindAcquiredDice(InData.ID);
@@ -151,22 +152,22 @@ public class FDiceInventory : FGroupMenuBase
 
     void AddNotAcquiredDice(in FDiceData InData)
     {
-        if (m_NotAcquiredDiceList.ContainsKey(InData.ID))
+        if (m_NotAcquiredDiceMap.ContainsKey(InData.ID))
             return;
 
         FNotAcquiredDiceSlot slot = Instantiate(NotAcquiredDiceSlotPrefab, NotAcquiredDiceListUI);
         slot.Init(InData);
         slot.OnClickHandler = OnClickNotAcquiredDiceSlot;
 
-        m_NotAcquiredDiceList.Add(InData.ID, slot);
+        m_NotAcquiredDiceMap.Add(InData.ID, slot);
     }
 
     void RemoveNotAcquiredDice(in int InID)
     {
-        if (m_NotAcquiredDiceList.ContainsKey(InID))
+        if (m_NotAcquiredDiceMap.ContainsKey(InID))
         {
-            Destroy(m_NotAcquiredDiceList[InID]);
-            m_NotAcquiredDiceList.Remove(InID);
+            Destroy(m_NotAcquiredDiceMap[InID].gameObject);
+            m_NotAcquiredDiceMap.Remove(InID);
         }
     }
 
@@ -181,7 +182,7 @@ public class FDiceInventory : FGroupMenuBase
 
     void OnClickNotAcquiredDiceSlot(int InID)
     {
-        if (m_NotAcquiredDiceList.ContainsKey(InID))
+        if (m_NotAcquiredDiceMap.ContainsKey(InID))
         {
             FPopupManager.Instance.OpenNotAcquiredDiceInfoPopup(InID);
         }
@@ -211,5 +212,20 @@ public class FDiceInventory : FGroupMenuBase
             slot.Init(diceData.Value, dice.Value);
         }
         PresetRegistUI.gameObject.SetActive(InActive);
+    }
+
+    void ClearInventory()
+    {
+        foreach (var iter in m_AcquiredDiceMap)
+        {
+            Destroy(iter.Value.gameObject);
+        }
+        m_AcquiredDiceMap.Clear();
+
+        foreach (var iter in m_NotAcquiredDiceMap)
+        {
+            Destroy(iter.Value.gameObject);
+        }
+        m_NotAcquiredDiceMap.Clear();
     }
 }
