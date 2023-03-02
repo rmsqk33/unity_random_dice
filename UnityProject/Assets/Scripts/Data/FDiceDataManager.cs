@@ -1,6 +1,7 @@
 using RandomDice;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,7 +20,7 @@ public struct FDiceData
 public struct FDiceLevelData
 {
     public int Level;
-    public int MaxExp;
+    public int DiceCountCost;
     public int GoldCost;
 }
 
@@ -29,6 +30,7 @@ public struct FDiceGradeData
     public string GradeName;
     public string BackgroundPath;
     public int InitialLevel;
+    public int MaxLevel;
     public int Critical;
     public Dictionary<int, FDiceLevelData> LevelDataMap;
 }
@@ -69,11 +71,13 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
             node.ForeachChildNodes("Level", (in FDataNode InNode) => {
                 FDiceLevelData levelData = new FDiceLevelData();
                 levelData.Level = InNode.GetIntAttr("level");
-                levelData.MaxExp = InNode.GetIntAttr("exp");
+                levelData.DiceCountCost = InNode.GetIntAttr("diceCountCost");
                 levelData.GoldCost = InNode.GetIntAttr("goldCost");
 
                 gradeData.LevelDataMap.Add(levelData.Level, levelData);
             });
+
+            gradeData.MaxLevel = gradeData.LevelDataMap.Keys.Max();
 
             m_DiceGradeDataMap.Add(gradeData.Grade, gradeData);
         }
@@ -113,5 +117,17 @@ public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
             return m_DiceGradeDataMap[InGrade];
         }
         return null;
+    }
+
+    public FDiceLevelData? FindDiceLevelData(int InID, int InLevel)
+    {
+        FDiceGradeData? diceGradeData = FindGradeDataByID(InID);
+        if (diceGradeData == null)
+            return null;
+
+        if (diceGradeData.Value.LevelDataMap.ContainsKey(InLevel) == false)
+            return null;
+
+        return diceGradeData.Value.LevelDataMap[InLevel];
     }
 }

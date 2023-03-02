@@ -41,7 +41,7 @@ public class FDiceInfoPopup : FPopupBase
         if (diceController == null)
             return;
 
-        FDice? dice = diceController.FindAcquiredDice(InID);
+        FDice dice = diceController.FindAcquiredDice(InID);
         if (dice == null)
             return;
 
@@ -53,16 +53,16 @@ public class FDiceInfoPopup : FPopupBase
         m_UseBtn.gameObject.SetActive(true);
         m_NotAcquiredDiceSlot.gameObject.SetActive(false);
         m_AcquiredDiceSlot.gameObject.SetActive(true);
-        m_AcquiredDiceSlot.Init(diceData.Value, dice.Value);
+        m_AcquiredDiceSlot.Init(diceData.Value, dice);
         
         FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
         if (gradeData != null)
         {
-            if(gradeData.Value.LevelDataMap.ContainsKey(dice.Value.level))
+            if(gradeData.Value.LevelDataMap.ContainsKey(dice.level))
             {
-                FDiceLevelData levelData = gradeData.Value.LevelDataMap[dice.Value.level];
+                FDiceLevelData levelData = gradeData.Value.LevelDataMap[dice.level];
                 m_UpgradeCost.text = levelData.GoldCost.ToString();
-                SetUpgradable(levelData.MaxExp <= dice.Value.count);
+                SetUpgradable(levelData.DiceCountCost <= dice.count);
                 SetCommonDiceInfo(diceData.Value, gradeData.Value);
             }
         }

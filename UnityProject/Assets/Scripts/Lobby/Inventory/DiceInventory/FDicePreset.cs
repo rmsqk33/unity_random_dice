@@ -34,9 +34,9 @@ public class FDicePreset : MonoBehaviour
         {
             presetController.ForeachDicePreset(InPresetIndex, (int InID) =>
             {
-                FDice? dice = diceController.FindAcquiredDice(InID);
+                FDice dice = diceController.FindAcquiredDice(InID);
                 if (dice != null)
-                    SlotList[i].SetSlot(dice.Value);
+                    SlotList[i].SetSlot(dice);
 
                 ++i;
             });
@@ -48,10 +48,10 @@ public class FDicePreset : MonoBehaviour
         FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
         if(diceController != null)
         {
-            FDice? dice = diceController.FindAcquiredDice(InID);
+            FDice dice = diceController.FindAcquiredDice(InID);
             if (dice != null)
             {
-                SlotList[InIndex].SetSlot(dice.Value);
+                SlotList[InIndex].SetSlot(dice);
             }
         }
     }

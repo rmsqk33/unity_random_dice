@@ -42,7 +42,7 @@ public class FStatController : FControllerBase
         }
     }
 
-    public void AddCritical(int InID, int InIncreaseLevel)
+    public void AddCritical(int InID, int InIncreaseLevel = 1)
     {
         FDiceGradeData? data = FDiceDataManager.Instance.FindGradeDataByID(InID);
         if (data != null)

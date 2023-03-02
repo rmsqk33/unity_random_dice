@@ -95,6 +95,16 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         popup.OpenPopup(InDiceList);
     }
 
+    public void OpenDiceUpgradeResultPopup(in FDice InDice)
+    {
+        FDiceUpgradeResultPopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceUpgradeResultPopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FDiceUpgradeResultPopup>();
+
+        popup.OpenPopup(InDice);
+    }
+
     public void ClosePopup()
     {
         if(m_Popup != null)

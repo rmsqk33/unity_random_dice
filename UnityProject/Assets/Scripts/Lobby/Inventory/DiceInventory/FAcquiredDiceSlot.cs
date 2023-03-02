@@ -43,6 +43,15 @@ public class FAcquiredDiceSlot : MonoBehaviour
         }
     }
 
+    public int MaxCount
+    {
+        set
+        {
+            m_MaxCount = value;
+            UpdateCount();
+        }
+    }
+
     public void Init(in FDiceData InDiceData, in FDice InDice)
     {
         ID = InDice.id;
@@ -65,16 +74,11 @@ public class FAcquiredDiceSlot : MonoBehaviour
             FDiceLevelData levelData;
             if (gradeData.Value.LevelDataMap.TryGetValue(InDice.level, out levelData))
             {
-                SetCount(InDice.count, levelData.MaxExp);
+                m_CurrentCount = InDice.count;
+                m_MaxCount = levelData.DiceCountCost;
+                UpdateCount();
             }
         }
-    }
-
-    public void SetCount(int InCount, int InMax)
-    {
-        m_CurrentCount = InCount;
-        m_MaxCount = InMax;
-        UpdateCount();
     }
 
     void UpdateCount()

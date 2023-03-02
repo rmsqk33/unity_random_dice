@@ -549,6 +549,8 @@ namespace Packet
 
 		public int level;
 
+		public int count;
+
 		public int resultType;
 
 		public S_UPGRADE_DICE()
@@ -566,6 +568,7 @@ namespace Packet
 			size += sizeof(int);
 			size += sizeof(int);
 			size += sizeof(int);
+			size += sizeof(int);
 			return size;
 		}
 
@@ -580,6 +583,7 @@ namespace Packet
 			InBuffer.AddRange(BitConverter.GetBytes((int)GetPacketType()));
 			InBuffer.AddRange(BitConverter.GetBytes(id));
 			InBuffer.AddRange(BitConverter.GetBytes(level));
+			InBuffer.AddRange(BitConverter.GetBytes(count));
 			InBuffer.AddRange(BitConverter.GetBytes(resultType));
 		}
 
@@ -588,6 +592,8 @@ namespace Packet
 			id = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
 			level = BitConverter.ToInt32(InBuffer, offset);
+			offset += sizeof(int);
+			count = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
 			resultType = BitConverter.ToInt32(InBuffer, offset);
 			offset += sizeof(int);
