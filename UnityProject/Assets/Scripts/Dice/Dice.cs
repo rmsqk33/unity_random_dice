@@ -7,22 +7,23 @@ public class Dice : MonoBehaviour
 {
 // - Member Variable
     // - DiceImage, Attacker
-    public Image        _uiImage;
-    public int          _grade = 1;
-    public GameObject[] _Eyes = new GameObject[MAX_EYES];
-    public GameObject   _TargetEnemy;
-    const int       MAX_EYES = 7;
+    public Image            _uiImage;
+    public int              _grade = 1;
+    public GameObject[]     _Eyes = new GameObject[MAX_EYES];
+    public GameObject       _TargetEnemy;
+    const int               MAX_EYES = 7;
+
 
     // - DiceInfo : State, Damage, Skill, 
     public struct DICE_INFO
     {
         public int      _Damage;
         public float    _AttackSpped;
-
+        public bool     _isPlayer;
     }
 
 
-// - Method
+    // - Method
     // - Base
     // Start is called before the first frame update
     void Start()

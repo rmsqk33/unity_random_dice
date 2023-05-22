@@ -6,33 +6,45 @@ using UnityEngine.UI;
 
 namespace RandomDice
 {
+    // - BulletInfo
+    public struct BULLET_INFO
+    {
+        public bool     _Islive;
+        public int      _Damage;
+        public float    _Speed;
+        public Vector3  _Direction;
+    }
+
     public class Bullet : MonoBehaviour
     {
         // - Member Variable
-        // - Image, Target
-        public Image _uiImage;
+        public Image        _uiImage;
         public GameObject _Target;
-
-        // - BulletInfo
-        public struct BULLET_INFO
-        {
-            public bool _Islive;
-            public int _Damage;
-            public float _Speed;
-            public Vector3 _Direction;
-        }
 
         private BULLET_INFO _info = new BULLET_INFO();
 
-        // - Method
+        // - Constructor
+        public Bullet()
+        {
+
+        }
+        public Bullet(GameObject target, BULLET_INFO info)
+        {
+            _info = info;
+        }
+
+    // - Method
         // - Base
-        // Start is called before the first frame update
+        private void Awake()
+        {
+            // - Initiation
+            
+        }
         void Start()
         {
 
         }
 
-        // Update is called once per frame
         private void FixedUpdate()
         {
             // - BulletMove
@@ -47,7 +59,11 @@ namespace RandomDice
         // - Move
         private void Move()
         {
-            gameObject.transform.position += _info._Direction * _info._Speed;
+            // - gameObject active check
+            if (gameObject.active == true)
+            {
+                gameObject.transform.position += _info._Direction * _info._Speed;
+            }
         }
         // - Attack
     }
