@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e94db999d08bd4eab3366b58448d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiImage: {fileID: 0}
+  _uiImage: {fileID: 115215162612966872}
   _grade: 1
   _Eyes:
   - {fileID: 8357191301301130465}

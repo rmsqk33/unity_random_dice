@@ -6,15 +6,27 @@ using RandomDice;
 public class GameManager : Singleton<GameManager>
 {
 // - Member Variable
-    // - Field ID, Object
+    // - ID, Object
+    // - Field
     private int _fieldID = 0;
     public GameObject _field;
+    // - Player, Team
+    private Player  _player;
+    private Team    _team;
 
     // - WaveCount
     private int _wavecount = 1;
 
-// - Method
+    // - Method
     // - Base
+    private void Awake()
+    {
+    // - Setting
+        // - UserData
+        // - DiceManager
+        // - EnemyManager
+    }
+
     void Start()
     {
         // - Get FieldID

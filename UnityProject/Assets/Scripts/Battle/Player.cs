@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     // - PlayerInfo
     public struct PLYAER_INFO
     {
+        public int[] _DiceIndexList;
+        
     }
 
 

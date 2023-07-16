@@ -42,9 +42,8 @@ public class PTPServerManager : Singleton<PTPServerManager>
 
     // - Method
     // - Base
-    protected override void Awake()
+    public void Awake()
     {
-        base.Awake();
         // - if host, set listener
         if (_isHost)
         {

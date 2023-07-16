@@ -8,12 +8,16 @@ public class BulletManager : Singleton<BulletManager>
 {
 // - Member Variable
     // - BulletList, 
-    private List<Bullet> _bullets = new List<Bullet>();
+    private List<Bullet> _bulletlist = new List<Bullet>();
     private const int BULLET_MAX = 1000;
     private int _index = 0;
 
-// - Method
+    // - Method
     // - Base
+    private void Awake()
+    {
+        _bulletlist.Clear();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +45,6 @@ public class BulletManager : Singleton<BulletManager>
         // - Fire
     }
 
-    // - GetBullet
-
+    // - GetBullet(Reload)
+    // - SetBullet
 }

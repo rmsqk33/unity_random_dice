@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using RandomDice;
 
 public class Dice : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class Dice : MonoBehaviour
     public int              _grade = 1;
     public GameObject[]     _Eyes = new GameObject[MAX_EYES];
     public GameObject       _TargetEnemy;
+    public int              _CurrentEyeIndex = 0;
     const int               MAX_EYES = 7;
+    public                  TYPE _type = TYPE.NORMAL;
 
 
     // - DiceInfo : State, Damage, Skill, 
@@ -40,6 +43,13 @@ public class Dice : MonoBehaviour
     // - SetEyes
     public void SetEyes()
     {
+
+    }
+
+    // - Bullet Fire
+    public void Fire(GameObject target)
+    {
+        BulletManager.Instance.Fire(_Eyes[_CurrentEyeIndex].transform.localPosition, target);
 
     }
 

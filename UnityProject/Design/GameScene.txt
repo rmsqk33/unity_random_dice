@@ -1,12 +1,28 @@
 <GameScene>
-// - Member Variable
-- Managers -
 
+-  Class -
+------------------------------------------------------------------------------------------
+1. Type : Dice, Bullet, Skill..etc type class
+ 1-1 Method : SetDice(type), SetBullet(type)
+
+2. State : Dice State(Activate, Disabled, Sealed, Slow)
+
+------------------------------------------------------------------------------------------
+
+- namespace Define -
+------------------------------------------------------------------------------------------
+1. Types - Dice, Bullet, Skill etc types
+2. State - DiceState(Normal, Pressed, disable, Silence.. etc)
+3. 
+------------------------------------------------------------------------------------------
+
+- Managers -
+------------------------------------------------------------------------------------------
 <1> GameManager - Control Gameflow Manager
 // - Member Variable
 1. 
 // - Function(Method)
-1. SummonDice : UI_SummonDice OnClick Event - DiceManager/CreateDice(Position, Grade)
+1. UI Event LinkMethod(SummonDiceBtn, DiceLevelUpBtn ...etc)
 2. 
 
 <2> UI Manager - Control UI, HUD
@@ -14,18 +30,17 @@ UI - Connect Player Input Interface
 HUD - View Just Infomation Interface
 // - Member Variable
 1. Field : Summon PlayerDice, TeamDice Position
-
 // - Function(Method)
 
 
 <3> Dice Manager
-Dice
- - 
-Status Control - Solo, Multiple
-
-
+Class - Dice :
+Class - Type : Dice, Bullet Type.
+Control - Solo, Multiple
 Server - P2P, Use C# TCP Socket API
 Packet - PlayerSend(DiceList, Level, Icon... etc), Server Send
+// - Function(Method)
+1. SummonDice : 
 
-// - Method
-
+<4> BulletManager
+------------------------------------------------------------------------------------------
