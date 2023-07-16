@@ -4,13 +4,21 @@ using UnityEngine;
 
 namespace RandomDice
 {
+
     public class Field : MonoBehaviour
     {
     // - Member Variable
-        // - SpawnPoint
+        // - PlayerDiceList
+        public Transform[] _playerList = new Transform[MAX_DICELIST];
+        // - TeamDiceList
+        public Transform[] _teamList = new Transform[MAX_DICELIST];
 
+        // - MaxDiceCount
+        public const int MAX_DICELIST = 15;
 
-    // - Mothod
+        // - Fie
+
+        // - Mothod
         /// Awake is called when the script instance is being loaded.
         void Awake()
         {

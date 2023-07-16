@@ -33,10 +33,4 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             return instance;
         }
     }
-
-    // - 생성시 파괴불가 설정
-    private void Awake() 
-    {
-        DontDestroyOnLoad(gameObject);
-    }
 }
