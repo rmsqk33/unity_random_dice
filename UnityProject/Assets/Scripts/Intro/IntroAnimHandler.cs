@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using FEnum;
 
 public class IntroAnimHandler : MonoBehaviour
 {
     public void OnCompleteAnim()
     {
-        SceneManager.LoadScene("LoginScene");
+        FSceneManager.Instance.ChangeScene(SceneType.Login);
     }
 }

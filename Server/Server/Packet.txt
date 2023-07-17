@@ -1,0 +1,306 @@
+struct C_GUEST_LOGIN
+{
+	char id[256]
+}
+
+struct S_GUEST_LOGIN
+{
+	byte result
+}
+
+struct C_CREATE_GUEST_ACCOUNT
+{
+}
+
+struct S_CREATE_GUEST_ACCOUNT
+{
+	char id[256]
+}
+
+struct S_USER_DATA
+{
+	struct DICE_DATA
+	{
+		byte id
+		byte level
+		int count
+	} 
+
+	char name[48]
+	byte level
+	int exp
+	int gold
+	int dia
+	int card
+	DICE_DATA diceDataList[50]
+	byte dicePreset[5][5]
+	int battleFieldIDList[50]
+	byte battleFieldPreset[5]
+	byte selectedPresetIndex
+}
+
+struct S_STORE_DICE_LIST
+{	
+	struct DICE_DATA
+	{
+		int id
+		int price
+		int count
+		bool soldOut
+	}
+	int64 resetTime
+	int diceCount
+	DICE_DATA diceList[10]
+}
+
+struct C_UPGRADE_DICE
+{
+	int id
+}
+
+struct S_UPGRADE_DICE
+{
+	int id
+	int level
+	int count
+	int resultType
+}
+
+struct C_PURCHASE_DICE
+{
+	int id
+}
+
+struct S_PURCHASE_DICE
+{
+	int id
+	int resultType
+}
+
+struct C_PURCHASE_BOX
+{
+	int id
+}
+
+struct S_PURCHASE_BOX
+{
+	int resultType
+}
+
+struct C_PURCHASE_BATTLEFIELD
+{
+	int id
+}
+
+struct S_PURCHASE_BATTLEFIELD
+{
+	int id
+	int resultType
+}
+
+struct S_ADD_DICE
+{
+	struct DICE_DATA
+	{
+		int id
+		int count
+	}
+	
+	int diceCount
+	DICE_DATA diceList[10]
+}
+
+struct S_CHANGE_GOLD
+{
+	int gold
+}
+
+struct S_CHANGE_DIA
+{
+	int dia
+}
+
+struct S_CHANGE_CARD
+{
+	int card
+}
+
+struct C_CHANGE_PRESET
+{
+	int presetIndex
+}
+
+struct C_CHANGE_PRESET_DICE
+{
+	int presetIndex
+	int slotIndex
+	int diceId
+}
+
+struct C_CHANGE_PRESET_BATTLEFIELD
+{
+	int presetIndex
+	int battlefieldId
+}
+
+struct C_CHANGE_NAME
+{
+	char name[48]
+}
+
+struct S_CHANGE_NAME
+{
+	int resultType
+	char name[48]
+}
+
+struct C_BATTLE_RESULT
+{
+	int battleId
+	int clearWave
+}
+
+struct S_CHANGE_EXP
+{
+	int exp
+}
+
+struct S_CHANGE_LEVEL
+{
+	int level
+}
+
+struct C_BATTLE_MATCHING
+{
+
+}
+
+struct C_BATTLE_MATCHING_CANCEL
+{
+	
+}
+
+struct S_BATTLE_MATCHING
+{
+	bool isHost	
+	char hostIP[48]
+}
+
+struct P2P_PLAYER_DATA
+{
+	struct DICE_DATA
+	{	
+		int id
+		int level
+	}
+
+	char name[48]
+	int level
+	float criticalDamageRate
+	DICE_DATA diceList[5]
+	int instanceId
+}
+
+struct P2P_CHANGE_DICE_LEVEL
+{
+	int index
+	int level
+}
+
+struct P2P_SPAWN_ENEMY
+{
+	int instanceId
+	int enemyId
+	int ownerId
+}
+
+struct P2P_DAMAGE
+{
+	int objectId
+	int damage
+	bool critical
+}
+
+struct P2P_SPAWN_REMOTE_DICE
+{
+	int objectId
+	int index
+	int diceId
+	int eyeCount
+}
+
+struct P2P_C_REQUEST_SPAWN_DICE
+{
+	int index
+	int diceId
+	int eyeCount
+}
+
+struct P2P_S_REQUEST_SPAWN_DICE
+{
+	int objectId
+	int index
+	int diceId
+	int eyeCount
+}
+
+struct P2P_DESPAWN_OBJECT
+{
+	int objectId
+}
+
+struct P2P_CHANGE_LIFE
+{
+	int life
+}
+
+struct P2P_START_BATTLE
+{
+	int battleId
+}
+
+struct P2P_CHANGE_WAVE
+{
+	int wave
+}
+
+struct P2P_READY_BATTLE
+{
+	
+}
+
+struct P2P_ON_SKILL
+{
+	int objectId
+	int skillId
+	int targetId
+}
+
+struct P2P_USE_SKILL_IN_PATH
+{
+	int objectId
+	int skillId
+	int pathIndex
+	float pathRate
+}
+
+struct P2P_OFF_SKILL
+{
+	int objectId
+	int skillId
+}
+
+struct P2P_SPAWN_COLLISION_OBJECT
+{
+	int objectId
+	int ownerObjectId
+	int collisionObjectId
+	float pathRate
+}
+
+struct P2P_REQUEST_COLLISION_OBJECT
+{
+	int ownerObjectId
+	int collisionObjectId
+	float pathRate
+}

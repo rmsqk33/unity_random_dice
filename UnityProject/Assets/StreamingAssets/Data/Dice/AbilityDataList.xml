@@ -1,0 +1,11 @@
+<AbilityDataList>
+    <Ability type="0" title="-" icon="Sprite/Ability/base_ability_none"/>
+    <Ability type="1" title="기본 공격력" icon="Sprite/Ability/base_ability_attack"/>
+    <Ability type="2" title="공격 속도" icon="Sprite/Ability/base_ability_attackspeed"/>
+    <Ability type="3" title="타겟" icon="Sprite/Ability/base_ability_target"/>
+    <Ability type="4" title="화염 데미지" icon="Sprite/Ability/ability_FIRE"/>
+    <Ability type="5" title="전기 데미지" icon="Sprite/Ability/ability_ELECT"/>
+    <Ability type="6" title="독 데미지" icon="Sprite/Ability/ability_INFECT"/>
+    <Ability type="7" title="얼음 효과" icon="Sprite/Ability/ability_ICE"/>
+    <TargetTypeString type="0" name="앞쪽"/>
+</AbilityDataList>

@@ -1,117 +1,160 @@
-using RandomDice;
-using System.Collections;
+using FEnum;
 using System.Collections.Generic;
-using System.Xml;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
 
-public struct FDiceData
+public class FDiceData
 {
-    public int ID;
-    public DiceGrade Grade;
-    public string Name;
-    public string Description;
-    public string IconPath;
-    public string notAcquiredIconPath;
-    public Color Color;
+    public readonly int id;
+    public readonly DiceGrade grade;
+    public readonly string name;
+    public readonly string description;
+    public readonly string iconPath;
+    public readonly string notAcquiredIconPath;
+    public readonly Color color;
+    public readonly List<int> skillIDList = new List<int>();
+
+    public FDiceData(FDataNode InNode)
+    {
+        id = InNode.GetIntAttr("id");
+        grade = (DiceGrade)InNode.GetIntAttr("grade");
+        name = InNode.GetStringAttr("name");
+        description = InNode.GetStringAttr("description");
+        iconPath = InNode.GetStringAttr("icon");
+        notAcquiredIconPath = InNode.GetStringAttr("notAcquiredIcon");
+        color = InNode.GetColorAttr("color");
+
+        FDataNode skillListNode = InNode.FindChildNode("SkillList");
+        if(skillListNode != null)
+        {
+            skillListNode.ForeachChildNodes("Skill", (in FDataNode InNode) => {
+                skillIDList.Add(InNode.GetIntAttr("id"));
+            });
+        }
+    }
+
+    public delegate void ForeachSkillIDDelegate(int InID);
+    public void ForeachSkillID(ForeachSkillIDDelegate InFunc)
+    {
+        foreach(int id in skillIDList)
+        {
+            InFunc(id);
+        }
+    }
 }
 
-public struct FDiceLevelData
+public class FDiceLevelData
 {
-    public int Level;
-    public int MaxExp;
-    public int GoldCost;
+    public readonly int level;
+    public readonly int diceCountCost;
+    public readonly int goldCost;
+
+    public FDiceLevelData(FDataNode InNode)
+    {
+        level = InNode.GetIntAttr("level");
+        diceCountCost = InNode.GetIntAttr("diceCountCost");
+        goldCost = InNode.GetIntAttr("goldCost");
+    }
 }
 
-public struct FDiceGradeData
+public class FDiceGradeData
 {
-    public DiceGrade Grade;
-    public string GradeName;
-    public string BackgroundPath;
-    public int InitialLevel;
-    public int Critical;
-    public Dictionary<int, FDiceLevelData> LevelDataMap;
+    public readonly DiceGrade grade;
+    public readonly string gradeName;
+    public readonly string backgroundPath;
+    public readonly int initialLevel;
+    public readonly int maxLevel;
+    public readonly int critical;
+
+    private Dictionary<int, FDiceLevelData> levelDataMap = new Dictionary<int, FDiceLevelData>();
+
+    public FDiceGradeData(FDataNode InNode)
+    {
+        grade = (DiceGrade)InNode.GetIntAttr("grade");
+        gradeName = InNode.GetStringAttr("name");
+        backgroundPath = InNode.GetStringAttr("invenSlotImage");
+        initialLevel = InNode.GetIntAttr("initialLevel");
+        critical = InNode.GetIntAttr("critical");
+
+        InNode.ForeachChildNodes("Level", (in FDataNode InNode) => {
+            FDiceLevelData levelData = new FDiceLevelData(InNode);
+            levelDataMap.Add(levelData.level, levelData);
+        });
+
+        maxLevel = levelDataMap.Keys.Max();
+    }
+
+    public FDiceLevelData FindDiceLevelData(int InLevel)
+    {
+        if (levelDataMap.ContainsKey(InLevel))
+            return levelDataMap[InLevel];
+
+        return null;
+    }
 }
 
 public class FDiceDataManager : FNonObjectSingleton<FDiceDataManager>
 {
-    Dictionary<int, FDiceData> m_DiceDataMap = new Dictionary<int, FDiceData>();
-    Dictionary<DiceGrade, FDiceGradeData> m_DiceGradeDataMap = new Dictionary<DiceGrade, FDiceGradeData>();
+    Dictionary<int, FDiceData> diceDataMap = new Dictionary<int, FDiceData>();
+    Dictionary<DiceGrade, FDiceGradeData> diceGradeDataMap = new Dictionary<DiceGrade, FDiceGradeData>();
 
     public void Initialize()
     {
         List<FDataNode> diceDataNodes = FDataCenter.Instance.GetDataNodesWithQuery("DiceList.Dice");
         foreach(FDataNode node in diceDataNodes)
         {
-            FDiceData data = new FDiceData();
-            data.ID = node.GetIntAttr("id");
-            data.Grade = (DiceGrade)node.GetIntAttr("grade");
-            data.Name = node.GetStringAttr("name");
-            data.Description = node.GetStringAttr("description");
-            data.IconPath = node.GetStringAttr("icon");
-            data.notAcquiredIconPath = node.GetStringAttr("notAcquiredIcon");
-            data.Color = node.GetColorAttr("color");
-
-            m_DiceDataMap.Add(data.ID, data);
+            FDiceData data = new FDiceData(node);
+            diceDataMap.Add(data.id, data);
         }
 
         List<FDataNode> diceGradeDataNodes = FDataCenter.Instance.GetDataNodesWithQuery("DiceGradeList.DiceGrade");
         foreach (FDataNode node in diceGradeDataNodes)
         {
-            FDiceGradeData gradeData = new FDiceGradeData();
-            gradeData.Grade = (DiceGrade)node.GetIntAttr("grade");
-            gradeData.GradeName = node.GetStringAttr("name");
-            gradeData.BackgroundPath = node.GetStringAttr("invenSlotImage");
-            gradeData.InitialLevel = node.GetIntAttr("initialLevel");
-            gradeData.Critical = node.GetIntAttr("critical");
-            gradeData.LevelDataMap = new Dictionary<int, FDiceLevelData>();
-
-            node.ForeachChildNodes("Level", (in FDataNode InNode) => {
-                FDiceLevelData levelData = new FDiceLevelData();
-                levelData.Level = InNode.GetIntAttr("level");
-                levelData.MaxExp = InNode.GetIntAttr("exp");
-                levelData.GoldCost = InNode.GetIntAttr("goldCost");
-
-                gradeData.LevelDataMap.Add(levelData.Level, levelData);
-            });
-
-            m_DiceGradeDataMap.Add(gradeData.Grade, gradeData);
+            FDiceGradeData gradeData = new FDiceGradeData(node);
+            diceGradeDataMap.Add(gradeData.grade, gradeData);
         }
     }
 
     public delegate void ForeachDiceDataFunc(in FDiceData InDiceData);
     public void ForeachDiceData(in ForeachDiceDataFunc InFunc)
     {
-        foreach (FDiceData data in m_DiceDataMap.Values)
+        foreach (FDiceData data in diceDataMap.Values)
         {
             InFunc(data);
         }
     }
 
-    public FDiceData? FindDiceData(int InID)
+    public FDiceData FindDiceData(int InID)
     {
-        if (m_DiceDataMap.ContainsKey(InID))
-        {
-            return m_DiceDataMap[InID];
-        }
+        if (diceDataMap.ContainsKey(InID))
+            return diceDataMap[InID];
+
         return null;
     }
 
-    public FDiceGradeData? FindGradeDataByID(int InID)
+    public FDiceGradeData FindGradeDataByID(int InID)
     {
-        FDiceData? diceData = FindDiceData(InID);
+        FDiceData diceData = FindDiceData(InID);
         if (diceData != null)
-            return FindGradeData(diceData.Value.Grade);
+            return FindGradeData(diceData.grade);
 
         return null;
     }
 
-    public FDiceGradeData? FindGradeData(DiceGrade InGrade)
+    public FDiceGradeData FindGradeData(DiceGrade InGrade)
     {
-        if(m_DiceGradeDataMap.ContainsKey(InGrade))
-        {
-            return m_DiceGradeDataMap[InGrade];
-        }
+        if(diceGradeDataMap.ContainsKey(InGrade))
+            return diceGradeDataMap[InGrade];
+
         return null;
+    }
+
+    public FDiceLevelData FindDiceLevelData(int InID, int InLevel)
+    {
+        FDiceGradeData diceGradeData = FindGradeDataByID(InID);
+        if (diceGradeData == null)
+            return null;
+
+        return diceGradeData.FindDiceLevelData(InLevel);
     }
 }

@@ -1,0 +1,8 @@
+<EffectDataList>
+    <EffectData id="1" type="1" abilityType="4" value="5" valuePerLevel="5" valuePerBattleLevel="5" radius="100" prefab="Prefabs/Effect/FireExplosion"/>
+    <EffectData id="2" type="2" abilityType="5" value="5" valuePerLevel="5" valuePerBattleLevel="5" chainCount="2" chainDamageRate="0.3" chainPrefab="Prefabs/Effect/ChainLightning" prefab="Prefabs/Effect/ElectricExplosion"/>
+    <EffectData id="3" type="0" value="5" valuePerLevel="5" valuePerBattleLevel="5" prefab="Prefabs/Effect/BasicAttack"/>
+    <EffectData id="4" type="0" value="5" valuePerLevel="5" valuePerBattleLevel="5" prefab="Prefabs/Effect/BasicAttack"/>
+    <EffectData id="5" type="0" value="5" valuePerLevel="5" valuePerBattleLevel="5" prefab="Prefabs/Effect/BasicAttack"/>
+    <EffectData id="40000" type="0" prefab="Prefabs/Effect/Summon"/>
+</EffectDataList>

@@ -1,0 +1,19 @@
+<AbnormalityList>
+    <Abnormality id="4" type="1" maxOverlap="1" interval="1" duration="4" value="5" valuePerLevel="5" valuePerBattleLevel="5" abilityType="6">
+        <Overlap overlap="1" effectPercentage="1" effectPrefab="Prefabs/Effect/Poison" />
+    </Abnormality>
+    <Abnormality id="5" type="0" maxOverlap="3" duration="2" statType="3" value="-0.15" valuePerLevel="-0.005" valuePerBattleLevel="-0.005" abilityType="7">
+        <Overlap overlap="1" effectPercentage="1" effectPrefab="Prefabs/Effect/Ice/1" />
+        <Overlap overlap="2" effectPercentage="2" effectPrefab="Prefabs/Effect/Ice/2" />
+        <Overlap overlap="3" effectPercentage="3" effectPrefab="Prefabs/Effect/Ice/3" />
+    </Abnormality>
+    <Abnormality id="12" type="1" maxOverlap="1" interval="1" duration="2" value="200" valuePerLevel="5" valuePerBattleLevel="5" abilityType="8" nonOverlap="true">
+        <Overlap overlap="1" effectPercentage="1"/>
+    </Abnormality>
+    <Abnormality id="40001" type="0" maxOverlap="1" duration="0.75" value="-1" statType="3">
+        <Overlap overlap="1" effectPercentage="1"/>
+    </Abnormality>
+    <Abnormality id="50000" type="2" maxOverlap="1" duration="9999">
+        <Overlap overlap="1" effectPercentage="1" effectPrefab="Prefabs/Effect/Lock"/>
+    </Abnormality>
+</AbnormalityList>

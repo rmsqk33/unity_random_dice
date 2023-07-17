@@ -1,15 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginScene : MonoBehaviour
@@ -17,9 +11,8 @@ public class LoginScene : MonoBehaviour
     [SerializeField]
     float PreWorkMinSec = 0f; // ���� �۾��� UI �ּ� ǥ�ýð�
     [SerializeField]
-    Button LoginButton;
-    [SerializeField]
     GameObject LoadingUI;
+    [SerializeField]
     TextMeshProUGUI LoadingMsg;
 
     delegate bool PreWorkFunc();
@@ -30,17 +23,15 @@ public class LoginScene : MonoBehaviour
 
     void Start()
     {
-        LoadingMsg = LoadingUI.GetComponentInChildren<TextMeshProUGUI>(true);
-
-        AddPreWork("serverConnect", FServerManager.Instance.ConnectServer);
-        AddPreWork("dataParse", FDataCenter.Instance.LoadData);
+        AddPreWork("serverConnect", FServerManager.Instance.ConnectMainServer);
+        AddPreWork("login", FAccountMananger.Instance.TryLogin);
 
         LoadPreWork();
     }
 
     void Update()
     {
-        if (0 < m_MainThreadFuncQueue.Count)
+        if (0 < m_MainThreadFuncQueue.Count && m_MainThreadFuncQueue[0] != null)
         {
             m_MainThreadFuncQueue[0]();
             m_MainThreadFuncQueue.RemoveAt(0);
@@ -90,11 +81,6 @@ public class LoginScene : MonoBehaviour
         m_PreWorkMap.Remove(m_PreWorkMap.Keys.First());
         if (0 < m_PreWorkMap.Count)
             LoadPreWork();
-        else
-        {
-            LoginButton.gameObject.SetActive(true);
-            LoadingUI.SetActive(false);
-        }
     }
 
     void OnFailPreWork()
@@ -105,8 +91,7 @@ public class LoginScene : MonoBehaviour
         string title = node.GetStringAttr("errorTitle");
         string msg = node.GetStringAttr("errorMsg");
         FPopupManager.Instance.OpenMsgPopup(title, msg, () => {
-            SceneManager.LoadScene("LobbyScene");
-            //Application.Quit();     
+            Application.Quit();     
         });
 
         LoadingUI.SetActive(false);

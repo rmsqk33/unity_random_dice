@@ -1,0 +1,5 @@
+<BattleFieldList>
+    <BattleField id="1" name="기본" price="500" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_1" battlefieldPrefab="Prefabs/Battle/Field/1/Battlefield"></BattleField>
+    <BattleField id="2" name="얼음" price="500" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_2" battlefieldPrefab="Prefabs/Battle/3/Field/Battlefield"></BattleField>
+    <BattleField id="3" name="마법 분해기" price="500" skinImage="Sprite/Lobby/Inventory/BattleField/rd_inventory_skin_board_3" battlefieldPrefab="Prefabs/Battle/2/Field/Battlefield"></BattleField>
+</BattleFieldList>

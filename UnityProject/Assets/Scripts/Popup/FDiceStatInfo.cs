@@ -5,17 +5,26 @@ using UnityEngine.UI;
 public class FDiceStatInfo : MonoBehaviour
 {
     [SerializeField]
-    Image m_Icon;
+    Image statIcon;
     [SerializeField]
-    TextMeshProUGUI m_Title;
+    TextMeshProUGUI title;
     [SerializeField]
-    TextMeshProUGUI m_Value;
+    TextMeshProUGUI value;
     [SerializeField]
-    TextMeshProUGUI m_UpgradeValue;
+    TextMeshProUGUI upgradeValue;
 
-    public Sprite Icon { set { m_Icon.sprite = value; } }
-    public string Title { set { m_Title.text = value; } }
-    public string Value { set { m_Value.text = value; } }
-    public string UpgradeValue { set { m_UpgradeValue.text = value; } }
-    public bool Upgradable { set { m_UpgradeValue.gameObject.SetActive(value); } }
+    public Sprite StatIcon 
+    { 
+        set
+        {
+            Vector2 originSize = statIcon.rectTransform.sizeDelta;
+
+            statIcon.sprite = value;
+            statIcon.rectTransform.localScale = new Vector2(1, value.textureRect.height / value.textureRect.width);
+        } 
+    }
+    public string Title { set { title.text = value; } }
+    public string Value { set { this.value.text = value; } }
+    public string UpgradeValue { set { upgradeValue.text = value; } }
+    public bool Upgradable { set { upgradeValue.gameObject.SetActive(value); } }
 }

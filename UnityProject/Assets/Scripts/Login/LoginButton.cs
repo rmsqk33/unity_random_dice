@@ -7,7 +7,7 @@ public class LoginButton : MonoBehaviour
 {
     public void OnClick()
     {
-        S_ADD_GUEST_ACCOUNT pkt = new S_ADD_GUEST_ACCOUNT();
+        C_CREATE_GUEST_ACCOUNT pkt = new C_CREATE_GUEST_ACCOUNT();
         FServerManager.Instance.SendMessage(pkt);
     }
 }

@@ -44,18 +44,18 @@ public class PTPServerManager : Singleton<PTPServerManager>
     // - Base
     public void Awake()
     {
-        // - if host, set listener
-        if (_isHost)
-        {
-            _thread = new Thread(new ThreadStart(ListenForIncommingRequest));
-            _thread.IsBackground = true;
-            _thread.Start();
-        }
-        // - else set client
-        else
-        {
-            ConnectServer();
-        }
+        //// - if host, set listener
+        //if (_isHost)
+        //{
+        //    _thread = new Thread(new ThreadStart(ListenForIncommingRequest));
+        //    _thread.IsBackground = true;
+        //    _thread.Start();
+        //}
+        //// - else set client
+        //else
+        //{
+        //    ConnectServer();
+        //}
     }
 
     private void Start()

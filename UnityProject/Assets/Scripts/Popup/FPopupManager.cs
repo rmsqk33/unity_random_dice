@@ -1,16 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FPopupManager : FNonObjectSingleton<FPopupManager>
 {
-    FPopupBase m_Popup;
+    FPopupBase openedPopup;
 
     public void OpenMsgPopup(in string InTitle, in string InMsg, FMsgPopup.OKButtonFunc InFunc = null)
     {
-        if (m_Popup != null)
-            GameObject.Destroy(m_Popup.gameObject);
-
         FMsgPopup popup = null;
         GameObject gameObject = CreatePopup("Prefabs/Popup/MsgPopup");
         if (gameObject != null)
@@ -19,94 +15,129 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         popup.Title = InTitle;
         popup.Message = InMsg;
         popup.OKButtonHandler = InFunc;
-        m_Popup = popup;
     }
 
-    public void OpenAcquiredDiceInfoPopup(int InID, FDiceInfoPopup.ButtonHandler InFunc, FDiceInfoPopup.ButtonHandler InFunc2)
+    public void OpenAcquiredDiceInfoPopup(int InID)
     {
-        if (m_Popup != null)
-            GameObject.Destroy(m_Popup.gameObject);
-
         FDiceInfoPopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfoPopup");
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfo/DiceInfoPopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FDiceInfoPopup>();
 
-        popup.UpgradeHandler = InFunc;
-        popup.UseHandler = InFunc2;
         popup.OpenAcquiredDiceInfo(InID);
-        m_Popup = popup;
     }
 
     public void OpenNotAcquiredDiceInfoPopup(int InID)
     {
-        if (m_Popup != null)
-            GameObject.Destroy(m_Popup.gameObject);
-
         FDiceInfoPopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfoPopup");
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfo/DiceInfoPopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FDiceInfoPopup>();
 
         popup.OpenNotAcquiredDiceInfo(InID);
-        m_Popup = popup;
     }
 
-    public void OpenAcquiredBattleFieldInfoPopup(int InID, FBattleFieldInfoPopup.ButtonHandler InFunc, FBattleFieldInfoPopup.ButtonHandler InFunc2)
+    public void OpenBattleFieldInfoPopup(int InID)
     {
-        if (m_Popup != null)
-            GameObject.Destroy(m_Popup.gameObject);
-
         FBattleFieldInfoPopup popup = null;
         GameObject gameObject = CreatePopup("Prefabs/Popup/BattleFieldInfoPopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FBattleFieldInfoPopup>();
 
-        popup.UpgradeHandler = InFunc;
-        popup.UseHandler = InFunc2;
-        popup.OpenAcquiredBattleFieldInfo(InID);
-        m_Popup = popup;
+        popup.OpenPopup(InID);
     }
 
-    public void OpenNotAcquiredBattleFieldInfoPopup(int InID, FBattleFieldInfoPopup.ButtonHandler InFunc)
+    public void OpenDicePurchasePopup(int InID)
     {
-        if (m_Popup != null)
-            GameObject.Destroy(m_Popup.gameObject);
-
-        FBattleFieldInfoPopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/BattleFieldInfoPopup");
+        FDicePurchasePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DicePurchasePopup");
         if (gameObject != null)
-            popup = gameObject.GetComponent<FBattleFieldInfoPopup>();
+            popup = gameObject.GetComponent<FDicePurchasePopup>();
 
-        popup.PurchaseBtnHandler = InFunc;
-        popup.OpenNotAcquiredBattleFieldInfo(InID);
-        m_Popup = popup;
+        popup.OpenPopup(InID);
+    }
+
+    public void OpenBoxPurchasePopup(int InID)
+    {
+        FBoxPurchasePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/BoxPurchase/BoxPurchasePopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FBoxPurchasePopup>();
+
+        popup.OpenPopup(InID);
+    }
+
+    public void OpenAcquiredDicePopup(List<KeyValuePair<int, int>> InDiceList)
+    {
+        FAcquiredDicePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/AcquiredDice/AcquiredDicePopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FAcquiredDicePopup>();
+
+        popup.OpenPopup(InDiceList);
+    }
+
+    public void OpenDiceUpgradeResultPopup(in FDice InDice)
+    {
+        FDiceUpgradeResultPopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceUpgradeResultPopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FDiceUpgradeResultPopup>();
+
+        popup.OpenPopup(InDice);
+    }
+
+    public void OpenAcquiredBattlefieldPopup(int InID)
+    {
+        FAcquiredBattlefieldPopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/AcquiredBattlefieldPopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FAcquiredBattlefieldPopup>();
+
+        popup.OpenPopup(InID);
+    }
+
+    public void OpenNamePopup()
+    {
+        FNamePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/NamePopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FNamePopup>();
+
+        popup.OpenPopup();
+    }
+
+    public void OpenBattleMatchingPopup()
+    {
+        FBattleMatchingPopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/BattleMatchingPopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FBattleMatchingPopup>();
+
+        popup.OpenPopup();
     }
 
     public void ClosePopup()
     {
-        if(m_Popup != null)
+        if(openedPopup != null)
         {
-            m_Popup.Close();
-            m_Popup = null;
+            openedPopup.Close();
+            openedPopup = null;
         }
     }
 
     GameObject CreatePopup(in string InPath)
     {
+        if (openedPopup != null)
+            GameObject.Destroy(openedPopup.gameObject);
+
         GameObject popup = Resources.Load<GameObject>(InPath);
         if (popup == null)
             return null;
 
-        GameObject canvas = GameObject.Find("UI");
-        if (canvas == null)
-        {
-            GameObject.Destroy(popup);
-            return null;
-        }
-
-        popup = GameObject.Instantiate(popup, canvas.transform);
-
+        popup = GameObject.Instantiate(popup, FUIManager.Instance.TopSiblingCanvas.transform);
+        openedPopup = popup.GetComponent<FPopupBase>();
+        
         return popup;
     }
 }

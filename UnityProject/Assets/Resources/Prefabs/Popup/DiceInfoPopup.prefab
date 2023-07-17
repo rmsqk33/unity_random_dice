@@ -66,7 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -319,7 +319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.48627454, g: 0.5294118, b: 0.56078434, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.48627454, g: 0.5294118, b: 0.56078434, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1462,7 +1462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1835,7 +1835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2237,8 +2237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd63291f91126b84481e2de6b03d53a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DiceSlot: {fileID: 489869113431692899}
-  m_DisableDiceSlot: {fileID: 3196960007062433769}
+  m_AcquiredDiceSlot: {fileID: 489869113431692899}
+  m_NotAcquiredDiceSlot: {fileID: 3196960007062433769}
   m_NameText: {fileID: 1640787964257420740}
   m_Grade: {fileID: 3109878583647738985}
   m_Description: {fileID: 4793768921051395501}
@@ -2471,7 +2471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3365,6 +3365,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6574773869815414172}
     m_Modifications:
+    - target: {fileID: 7778790885735355406, guid: a0c90aca3f4e5894d935f2826f4742bc, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7822494790400995606, guid: a0c90aca3f4e5894d935f2826f4742bc, type: 3}
       propertyPath: m_Name
       value: DisableDiceSlot
@@ -3490,6 +3494,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6574773869815414172}
     m_Modifications:
+    - target: {fileID: 7822494790400995595, guid: be66d2d71393bbe46883c91aabb03e15, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7822494790400995606, guid: be66d2d71393bbe46883c91aabb03e15, type: 3}
       propertyPath: m_Name
       value: 'DiceSlot '

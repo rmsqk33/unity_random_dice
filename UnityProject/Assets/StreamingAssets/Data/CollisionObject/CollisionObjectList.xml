@@ -1,0 +1,3 @@
+<CollisionObjectList>
+    <CollisionObject id="12" abnormalityID="12" prefab="Prefabs/CollisionObject/Thorn" duration="3" size="100"/>
+</CollisionObjectList>

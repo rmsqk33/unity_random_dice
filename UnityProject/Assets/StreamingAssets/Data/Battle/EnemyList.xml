@@ -1,0 +1,24 @@
+<EnemyList>
+    <Enemy id="1" sp="10" hpIncreaseBySpawnCount="10" moveSpeed="100" hp="100" prefab="Prefabs/Battle/Enemy/NormalEnemy1" />
+    <Enemy id="2" sp="10" hpIncreaseBySpawnCount="10" moveSpeed="200" hp="100" prefab="Prefabs/Battle/Enemy/NormalEnemy2" />
+    <Enemy id="3" sp="50" hpIncreaseBySpawnCount="100" moveSpeed="80" hp="500" prefab="Prefabs/Battle/Enemy/MiddleEnemy1" />
+    <Enemy id="4" sp="100" hpIncreaseBySpawnCount="1000" moveSpeed="60" hp="12000" prefab="Prefabs/Battle/Enemy/Boss1">
+        <SkillList>
+            <Skill id="40000"/>
+            <Skill id="40001"/>
+            <Skill id="40002"/>
+        </SkillList>
+    </Enemy>
+    <Enemy id="5" sp="100" hpIncreaseBySpawnCount="1000" moveSpeed="60" hp="12000" prefab="Prefabs/Battle/Enemy/Boss2">
+        <SkillList>
+            <Skill id="50000"/>
+            <Skill id="40001"/>
+        </SkillList>
+    </Enemy>
+    <Enemy id="6" sp="100" hpIncreaseBySpawnCount="1000" moveSpeed="60" hp="12000" prefab="Prefabs/Battle/Enemy/Boss3">
+        <SkillList>
+            <Skill id="60000"/>
+            <Skill id="40001"/>
+        </SkillList>
+    </Enemy>
+</EnemyList>

@@ -1,176 +1,268 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
-public class FDiceInventory : FGroupMenuBase
+public class FDiceInventory : FUIBase
 {
     [SerializeField]
-    TextMeshProUGUI m_CriticalText;
+    TextMeshProUGUI criticalText;
     [SerializeField]
-    Transform m_AcquiredDiceListUI;
+    Transform acquiredDiceListUI;
     [SerializeField]
-    Transform m_NotAcquiredDiceListUI;
+    Transform notAcquiredDiceListUI;
     [SerializeField]
-    FAcquiredDiceSlot m_AcquiredDiceSlotPrefab;
+    FAcquiredDiceSlot acquiredDiceSlotPrefab;
     [SerializeField]
-    FNotAcquiredDiceSlot m_NotAcquiredDiceSlotPrefab;
+    FNotAcquiredDiceSlot notAcquiredDiceSlotPrefab;
     [SerializeField]
-    Transform m_PresetRegistUI;
+    GameObject presetRegistUI;
     [SerializeField]
-    FDicePreset m_DicePreset;
+    FDiceImage presetRegistUIDiceSlot;
     [SerializeField]
-    ScrollRect m_DiceScrollRect;
+    ScrollRect diceScrollRect;
+    [SerializeField]
+    List<Button> presetTabList;
+    [SerializeField]
+    List<FDicePresetSlot> presetSlotList;
 
-    int m_SelectedDiceID = 0;
-    Vector2 m_InitScrollPos = Vector2.zero;
+    int selectedDiceID = 0;
+    int selectedPresetIndex = 0;
+    Vector2 initScrollPos = Vector2.zero;
 
-    Dictionary<int, FAcquiredDiceSlot> m_AcquiredDiceMap = new Dictionary<int, FAcquiredDiceSlot>();
-    Dictionary<int, FNotAcquiredDiceSlot> m_NotAcquiredDiceList = new Dictionary<int, FNotAcquiredDiceSlot>();
+    Dictionary<int, FAcquiredDiceSlot> acquiredDiceMap = new Dictionary<int, FAcquiredDiceSlot>();
+    Dictionary<int, FNotAcquiredDiceSlot> notAcquiredDiceMap = new Dictionary<int, FNotAcquiredDiceSlot>();
+
+    public int Critical { set { criticalText.text = value.ToString() + "%"; } }
 
     private void Start()
     {
-        m_InitScrollPos = m_DiceScrollRect.content.anchoredPosition;
-        Critical = FUserDataController.Instance.Critical;
-        InitDiceSlot();
+        initScrollPos = diceScrollRect.content.anchoredPosition;
+        InitInventory();        
     }
 
-    public void On_S_USER_DATA()
+    public void InitInventory()
     {
-        Critical = FUserDataController.Instance.Critical;
-        InitDiceSlot();
-    }
-
-    public override void OnActive()
-    {
-        base.OnActive();
-        m_DicePreset.SetPreset(FUserDataController.Instance.SelectedPresetIndex);
-    }
-
-    public override void OnDeactive()
-    {
-        base.OnDeactive();
-        SetPresetRegistActive(false);
-
-        m_DiceScrollRect.velocity = Vector2.zero;
-        m_DiceScrollRect.content.anchoredPosition = m_InitScrollPos;
-    }
-
-    public void InitDiceSlot()
-    {
-        FDiceDataManager.Instance.ForeachDiceData((in FDiceData InData) =>
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
+        if (statController != null)
         {
-            FDice? acquiredDiceData = FUserDataController.Instance.FindAcquiredDice(InData.ID);
-            if (acquiredDiceData != null)
-                AddAcquiredDice(InData, acquiredDiceData.Value);
-            else
-                AddNotAcquiredDice(InData);
-        });
+            Critical = statController.Critical;
+        }
+
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (diceController != null)
+        {
+            ClearInventory();
+            FDiceDataManager.Instance.ForeachDiceData((in FDiceData InData) =>
+            {
+                FDice acquiredDiceData = diceController.FindAcquiredDice(InData.id);
+                if (acquiredDiceData != null)
+                    AddAcquiredDice(acquiredDiceData);
+                else
+                    AddNotAcquiredDice(InData);
+            });
+        }
+
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            SetPresetTab(presetController.SelectedPresetIndex);
+        }
     }
 
-    public int Critical { set { m_CriticalText.text = value.ToString() + "%"; } }
-
-    public void AcquireDice(in FDiceData InData, in FDice InAcquiredDiceData)
+    public void OnEnable()
     {
-        AddAcquiredDice(InData, InAcquiredDiceData);
-        RemoveNotAcquiredDice(InData.ID);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            SetPresetTab(presetController.SelectedPresetIndex);
+        }
     }
 
-    public void OnClickUpgrade()
+    public void OnDeactive()
     {
+        ClosePresetRegist();
 
-    }
-
-    public void OnClickPresetRegist()
-    {
-        SetPresetRegistActive(true);
-        FPopupManager.Instance.ClosePopup();
+        diceScrollRect.velocity = Vector2.zero;
+        diceScrollRect.content.anchoredPosition = initScrollPos;
     }
 
     public void OnClickPresetRegistCancel()
     {
-        SetPresetRegistActive(false);
+        ClosePresetRegist();
     }
 
     public void OnChangeDiceInPreset(int InIndex)
     {
-        FUserDataController.Instance.SetDicePreset(m_SelectedDiceID, InIndex);
-        SetPresetRegistActive(false);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.SetDicePreset(selectedDiceID, InIndex);
+        }
+        ClosePresetRegist();
     }
 
-    void AddAcquiredDice(in FDiceData InData, in FDice InAcquiredDiceData)
+    public void OnClickPresetTab(int InIndex)
     {
-        if (m_AcquiredDiceMap.ContainsKey(InData.ID))
+        if (selectedPresetIndex == InIndex)
             return;
 
-        FAcquiredDiceSlot slot = Instantiate(m_AcquiredDiceSlotPrefab, m_AcquiredDiceListUI);
-        slot.Init(InData, InAcquiredDiceData);
-        slot.OnClickHandler = OnClickAcquiredDiceSlot;
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.SetPreset(InIndex);
+        }
+    }
 
-        m_AcquiredDiceMap.Add(slot.ID, slot);
+    public void AcquireDice(in FDice InAcquiredDiceData)
+    {
+        AddAcquiredDice(InAcquiredDiceData);
+        RemoveNotAcquiredDice(InAcquiredDiceData.id);
+    }
 
-        List<int> sortList = m_AcquiredDiceMap.Keys.ToList();
+    public void SetDiceCount(int InID, int InCount)
+    {
+        if (!acquiredDiceMap.ContainsKey(InID))
+            return;
+
+        acquiredDiceMap[InID].CurrentCount = InCount;
+    }
+    
+    public void SetDiceMaxExp(int InID, int InMaxExp)
+    {
+        if (!acquiredDiceMap.ContainsKey(InID))
+            return;
+
+        acquiredDiceMap[InID].MaxCount = InMaxExp;
+    }
+
+    public void SetDiceLevel(int InID, int InLevel)
+    {
+        if (!acquiredDiceMap.ContainsKey(InID))
+            return;
+
+        acquiredDiceMap[InID].Level = InLevel;
+    }
+
+    public void OpenPresetRegist(int InDiceID)
+    {
+        selectedDiceID = InDiceID;
+        diceScrollRect.gameObject.SetActive(false);
+        foreach (FDicePresetSlot slot in presetSlotList)
+        {
+            slot.SetPresetRegistActive(true);
+        }
+        presetRegistUIDiceSlot.SetImage(InDiceID);
+        presetRegistUI.gameObject.SetActive(true);
+    }
+
+    public void ClosePresetRegist()
+    {
+        diceScrollRect.gameObject.SetActive(true);
+        foreach (FDicePresetSlot slot in presetSlotList)
+        {
+            slot.SetPresetRegistActive(false);
+        }
+        presetRegistUI.gameObject.SetActive(false);
+    }
+
+    public void SetPresetTab(int InTabIndex)
+    {
+        UnselectPresetTab(selectedPresetIndex);
+        SelectPresetTab(InTabIndex);
+
+        selectedPresetIndex = InTabIndex;
+
+        int i = 0;
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.ForeachDicePreset(InTabIndex, (int InID) =>
+            {
+                presetSlotList[i].SetSlot(InID);
+                ++i;
+            });
+        }
+    }
+
+    public void SetDicePreset(int InID, int InIndex)
+    {
+        if (0 <= InIndex && InIndex < presetSlotList.Count)
+        {
+            presetSlotList[InIndex].SetSlot(InID);
+        }
+    }
+
+    void SelectPresetTab(int InIndex)
+    {
+        if (0 <= InIndex && InIndex < presetTabList.Count)
+        {
+            presetTabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");
+        }
+    }
+
+    void UnselectPresetTab(int InIndex)
+    {
+        if(0 <= InIndex && InIndex < presetTabList.Count)
+        {
+            presetTabList[InIndex].GetComponent<Animator>().SetTrigger("Normal");
+        }
+    }
+
+    void AddAcquiredDice(in FDice InAcquiredDiceData)
+    {
+        if (acquiredDiceMap.ContainsKey(InAcquiredDiceData.id))
+            return;
+
+        FDiceData diceData = FDiceDataManager.Instance.FindDiceData(InAcquiredDiceData.id);
+        if (diceData == null)
+            return;
+
+        FAcquiredDiceSlot slot = Instantiate(acquiredDiceSlotPrefab, acquiredDiceListUI);
+        slot.Init(diceData, InAcquiredDiceData);
+
+        acquiredDiceMap.Add(slot.ID, slot);
+
+        List<int> sortList = acquiredDiceMap.Keys.ToList();
+        sortList.Sort();
         int index = sortList.IndexOf(slot.ID);
         slot.transform.SetSiblingIndex(index);
     }
 
     void AddNotAcquiredDice(in FDiceData InData)
     {
-        if (m_NotAcquiredDiceList.ContainsKey(InData.ID))
+        if (notAcquiredDiceMap.ContainsKey(InData.id))
             return;
 
-        FNotAcquiredDiceSlot slot = Instantiate(m_NotAcquiredDiceSlotPrefab, m_NotAcquiredDiceListUI);
+        FNotAcquiredDiceSlot slot = Instantiate(notAcquiredDiceSlotPrefab, notAcquiredDiceListUI);
         slot.Init(InData);
-        slot.OnClickHandler = OnClickNotAcquiredDiceSlot;
 
-        m_NotAcquiredDiceList.Add(InData.ID, slot);
+        notAcquiredDiceMap.Add(InData.id, slot);
     }
 
     void RemoveNotAcquiredDice(in int InID)
     {
-        if (m_NotAcquiredDiceList.ContainsKey(InID))
+        if (notAcquiredDiceMap.ContainsKey(InID))
         {
-            Destroy(m_NotAcquiredDiceList[InID]);
-            m_NotAcquiredDiceList.Remove(InID);
+            Destroy(notAcquiredDiceMap[InID].gameObject);
+            notAcquiredDiceMap.Remove(InID);
         }
     }
 
-    void OnClickAcquiredDiceSlot(int InID)
+    void ClearInventory()
     {
-        if (m_AcquiredDiceMap.ContainsKey(InID))
+        foreach (var iter in acquiredDiceMap)
         {
-            m_SelectedDiceID = InID;
-            FPopupManager.Instance.OpenAcquiredDiceInfoPopup(InID, OnClickUpgrade, OnClickPresetRegist);
+            Destroy(iter.Value.gameObject);
         }
-    }
+        acquiredDiceMap.Clear();
 
-    void OnClickNotAcquiredDiceSlot(int InID)
-    {
-        if (m_NotAcquiredDiceList.ContainsKey(InID))
+        foreach (var iter in notAcquiredDiceMap)
         {
-            FPopupManager.Instance.OpenNotAcquiredDiceInfoPopup(InID);
+            Destroy(iter.Value.gameObject);
         }
-    }
-
-    void SetPresetRegistActive(bool InActive)
-    {
-        m_DicePreset.SetPresetRegistActive(InActive);
-        m_DiceScrollRect.gameObject.SetActive(!InActive);
-
-        if (InActive)
-        {
-            FAcquiredDiceSlot slot = m_PresetRegistUI.Find("DiceSlot").GetComponent<FAcquiredDiceSlot>();
-
-            FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(m_SelectedDiceID);
-            FDice? dice = FUserDataController.Instance.FindAcquiredDice(m_SelectedDiceID);
-            if (diceData != null && dice != null)
-            {
-                slot.Init(diceData.Value, dice.Value);
-            }
-        }
-        m_PresetRegistUI.gameObject.SetActive(InActive);
+        notAcquiredDiceMap.Clear();
     }
 }

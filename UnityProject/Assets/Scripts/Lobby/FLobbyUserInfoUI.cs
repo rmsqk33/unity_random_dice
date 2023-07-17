@@ -1,72 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FLobbyUserInfoUI : MonoBehaviour
+public class FLobbyUserInfoUI : FUIBase
 {
     [SerializeField]
-    TextMeshProUGUI m_Name = null;
+    TextMeshProUGUI nameText = null;
     [SerializeField]
-    TextMeshProUGUI m_Gold = null;
+    TextMeshProUGUI gold = null;
     [SerializeField]
-    TextMeshProUGUI m_Dia = null;
+    TextMeshProUGUI dia = null;
     [SerializeField]
-    TextMeshProUGUI m_Exp = null;
+    TextMeshProUGUI exp = null;
     [SerializeField]
-    TextMeshProUGUI m_Level = null;
+    TextMeshProUGUI level = null;
     [SerializeField]
-    Image m_ClassIcon = null;
+    Image classIcon = null;
     [SerializeField]
-    Transform m_ExpGauge = null;
+    Transform expGauge = null;
 
-    int m_CurrentExp = 0;
-    int m_MaxExp = 0;
+    int currentExp = 0;
+    int maxExp = 0;
 
-    private void start()
-    {
-        InitUserInfo();
-    }
-
-    public void InitUserInfo()
-    {
-        Name = FUserDataController.Instance.Name;
-        Gold = FUserDataController.Instance.Gold;
-        Dia = FUserDataController.Instance.Dia;
-        Level = FUserDataController.Instance.Level;
-        SetExp(FUserDataController.Instance.Exp, FUserDataController.Instance.MaxExp);
-    }
-
-    public string Name { set { m_Name.text = value; } }
-    public int Gold { set { m_Gold.text = value.ToString(); } }
-    public int Dia { set { m_Dia.text = value.ToString(); } }
+    public string Name { set { nameText.text = value; } }
+    public int Gold { set { gold.text = value.ToString(); } }
+    public int Dia { set { dia.text = value.ToString(); } }
+    public Sprite ClassIcon { set{ classIcon.sprite = value; }}
+    
     public int Level
     {
         set
         {
-            m_Level.text = value.ToString();
-            Sprite classIcon = Resources.Load<Sprite>(FDataCenter.Instance.GetStringAttribute("UserClass.Class[@class=" + m_Level + "]@icon"));
+            level.text = value.ToString();
+            Sprite classIcon = Resources.Load<Sprite>(FDataCenter.Instance.GetStringAttribute("UserClass.Class[@class=" + value + "]@icon"));
             if (classIcon != null)
                 ClassIcon = classIcon;
         }
     }
 
-    public Sprite ClassIcon
+    public int Exp
     {
         set
         {
-            m_ClassIcon.sprite = value;
-        }
-    }
-
-    public int CurrentExp
-    {
-        set
-        {
-            m_CurrentExp = value;
+            currentExp = value;
             UpdateExp();
         }
     }
@@ -75,21 +51,44 @@ public class FLobbyUserInfoUI : MonoBehaviour
     {
         set
         {
-            m_MaxExp = value;
+            maxExp = value;
             UpdateExp();
+        }
+    }
+
+    private void Start()
+    {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        FLocalPlayerStatController statControler = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
+        if (statControler != null)
+        {
+            Name = statControler.Name;
+            Level = statControler.Level;
+            SetExp(statControler.Exp, statControler.MaxExp);
+        }
+
+        FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
+        if (inventoryController != null)
+        {
+            Gold = inventoryController.Gold;
+            Dia = inventoryController.Dia;
         }
     }
 
     public void SetExp(int InExp, int InMaxExp)
     {
-        m_CurrentExp = Mathf.Min(InExp, InMaxExp);
-        m_MaxExp = InMaxExp;
+        currentExp = Mathf.Min(InExp, InMaxExp);
+        maxExp = InMaxExp;
         UpdateExp();
     }
 
-    void UpdateExp()
+    private void UpdateExp()
     {
-        m_Exp.text = m_CurrentExp.ToString() + "/" + m_MaxExp.ToString();
-        m_ExpGauge.localScale = new Vector3(m_CurrentExp / m_MaxExp, 1, 1);
+        exp.text = currentExp.ToString() + "/" + maxExp.ToString();
+        expGauge.localScale = currentExp == 0 || maxExp == 0 ? new Vector3(0, 1, 1) : new Vector3(currentExp / maxExp, 1, 1);
     }
 }

@@ -1,0 +1,50 @@
+<DiceGradeList>
+	<DiceGrade grade="1" name="일반" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_normal" initialLevel="5" critical="4">
+		<Level level="1" diceCountCost="2" goldCost="2"></Level>
+		<Level level="2" diceCountCost="2" goldCost="2"></Level>
+		<Level level="3" diceCountCost="2" goldCost="2"></Level>
+		<Level level="4" diceCountCost="2" goldCost="2"></Level>
+		<Level level="5" diceCountCost="100" goldCost="100"></Level>
+		<Level level="6" diceCountCost="500" goldCost="500"></Level>
+		<Level level="7" diceCountCost="1000" goldCost="1000"></Level>
+		<Level level="8" diceCountCost="2000" goldCost="2500"></Level>
+		<Level level="9" diceCountCost="4000" goldCost="5000"></Level>
+		<Level level="10" diceCountCost="8000" goldCost="10000"></Level>
+	</DiceGrade>
+	<DiceGrade grade="2" name="희귀" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_blue" initialLevel="5" critical="4">
+		<Level level="1" diceCountCost="2" goldCost="2"></Level>
+		<Level level="2" diceCountCost="2" goldCost="2"></Level>
+		<Level level="3" diceCountCost="2" goldCost="2"></Level>
+		<Level level="4" diceCountCost="2" goldCost="2"></Level>
+		<Level level="5" diceCountCost="50" goldCost="100"></Level>
+		<Level level="6" diceCountCost="250" goldCost="500"></Level>
+		<Level level="7" diceCountCost="500" goldCost="1000"></Level>
+		<Level level="8" diceCountCost="1000" goldCost="2500"></Level>
+		<Level level="9" diceCountCost="2000" goldCost="5000"></Level>
+		<Level level="10" diceCountCost="4000" goldCost="10000"></Level>
+	</DiceGrade>
+	<DiceGrade grade="3" name="영웅" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_purple" initialLevel="5" critical="4">
+		<Level level="1" diceCountCost="2" goldCost="2"></Level>
+		<Level level="2" diceCountCost="2" goldCost="2"></Level>
+		<Level level="3" diceCountCost="2" goldCost="2"></Level>
+		<Level level="4" diceCountCost="2" goldCost="2"></Level>
+		<Level level="5" diceCountCost="25" goldCost="100"></Level>
+		<Level level="6" diceCountCost="125" goldCost="500"></Level>
+		<Level level="7" diceCountCost="250" goldCost="1000"></Level>
+		<Level level="8" diceCountCost="500" goldCost="2500"></Level>
+		<Level level="9" diceCountCost="1000" goldCost="5000"></Level>
+		<Level level="10" diceCountCost="2000" goldCost="10000"></Level>
+	</DiceGrade>
+	<DiceGrade grade="4" name="전설" invenSlotImage="Sprite/Lobby/Inventory/Dice/arcade_inventory_dice_diceboard_yellow" initialLevel="5" critical="4">
+		<Level level="1" diceCountCost="2" goldCost="2"></Level>
+		<Level level="2" diceCountCost="2" goldCost="2"></Level>
+		<Level level="3" diceCountCost="2" goldCost="2"></Level>
+		<Level level="4" diceCountCost="2" goldCost="2"></Level>
+		<Level level="5" diceCountCost="2" goldCost="100"></Level>
+		<Level level="6" diceCountCost="4" goldCost="500"></Level>
+		<Level level="7" diceCountCost="8" goldCost="1000"></Level>
+		<Level level="8" diceCountCost="16" goldCost="2500"></Level>
+		<Level level="9" diceCountCost="32" goldCost="5000"></Level>
+		<Level level="10" diceCountCost="64" goldCost="10000"></Level>
+	</DiceGrade>
+</DiceGradeList>
