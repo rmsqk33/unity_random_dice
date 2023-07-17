@@ -1,6 +1,6 @@
 namespace RandomDice
 {
-    public enum FieldNumber
+    public enum FIELD_NUMBER
     {
         Normal = 0,
         FieldNumber_End

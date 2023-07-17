@@ -1,0 +1,7 @@
+1. set bullet info - damage, target(enemy), speed
+2. input bulletinfo & create bullet
+2.1 calculate direction
+2.2 direction : To enemy position from dice position
+3. fire
+4. move : position = direction * speed
+5. if triger check( enemy rigidbody ) : Destroy bullet, target enemy take damage
