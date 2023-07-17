@@ -184,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchorMin.x
@@ -192,7 +192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_SizeDelta.x
@@ -236,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11169,8 +11169,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FMainMenu, Assembly-CSharp
+      - m_Target: {fileID: 724444848}
+        m_TargetAssemblyTypeName: FLobbyMenuUI, Assembly-CSharp
         m_MethodName: OnClickMenu
         m_Mode: 3
         m_Arguments:
@@ -13393,6 +13393,7 @@ GameObject:
   - component: {fileID: 694210954}
   - component: {fileID: 694210953}
   - component: {fileID: 694210952}
+  - component: {fileID: 694210955}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -13466,6 +13467,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &694210955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694210951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e201b9d01936025418c44476cf0e0a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &701061537
 GameObject:
   m_ObjectHideFlags: 0
@@ -14968,8 +14981,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FMainMenu, Assembly-CSharp
+      - m_Target: {fileID: 724444848}
+        m_TargetAssemblyTypeName: FLobbyMenuUI, Assembly-CSharp
         m_MethodName: OnClickMenu
         m_Mode: 3
         m_Arguments:
@@ -22049,8 +22062,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FMainMenu, Assembly-CSharp
+      - m_Target: {fileID: 724444848}
+        m_TargetAssemblyTypeName: FLobbyMenuUI, Assembly-CSharp
         m_MethodName: OnClickMenu
         m_Mode: 3
         m_Arguments:
@@ -32008,7 +32021,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchorMin.x
@@ -32016,7 +32029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4534574066714512167, guid: 803f67cb358a0654488a1b5803af8e80, type: 3}
       propertyPath: m_SizeDelta.x
