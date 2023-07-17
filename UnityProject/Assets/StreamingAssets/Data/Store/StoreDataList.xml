@@ -1,0 +1,44 @@
+<StoreDataList battleCardBoxID="4">
+	<CardList>
+		<Card grade="1" image="Sprite/Lobby/Store/rd_battle_cardbox_info_icon_card_1"/>
+		<Card grade="2" image="Sprite/Lobby/Store/rd_battle_cardbox_info_icon_card_2"/>
+		<Card grade="3" image="Sprite/Lobby/Store/rd_battle_cardbox_info_icon_card_3"/>
+		<Card grade="4" prefab="Prefabs/Store/LegendCard"/>
+	</CardList>
+	<DiceStoreData name="기본 상점" ResetTime="7200">
+		<Dice grade="1" count="100" price="500" drawMin="2" drawMax="2"></Dice>
+		<Dice grade="2" count="50" price="4000" drawMin="2" drawMax="2"></Dice>
+		<Dice grade="3" count="25" price="12000" drawMin="1" drawMax="1"></Dice>
+		<Dice grade="4" count="1" price="40000" drawMin="0" drawMax="1"></Dice>
+	</DiceStoreData>
+	<StoreData id="1" name="랜덤 상자">
+		<Box id="1" />
+		<Box id="2" />
+		<Box id="3" />
+	</StoreData>
+	<BoxList>
+		<Box id="1" name="플래티넘 상자" diaPrice="250" gold="568" image="Sprite/Lobby/Store/rd_chest_02">
+			<Dice grade="1" min="94" max="94" minPerOne="32" maxPerOne="94"></Dice>
+			<Dice grade="2" min="18" max="18" minPerOne="9" maxPerOne="18"></Dice>
+			<Dice grade="3" min="3" max="3" minPerOne="2" maxPerOne="3"></Dice>
+		</Box>
+		<Box id="2" name="다이아몬드 상자" diaPrice="750" gold="1760" image="Sprite/Lobby/Store/rd_chest_03">
+			<Dice grade="1" min="174" max="174" minPerOne="58" maxPerOne="174"></Dice>
+			<Dice grade="2" min="44" max="44" minPerOne="22" maxPerOne="44"></Dice>
+			<Dice grade="3" min="9" max="9" minPerOne="5" maxPerOne="9"></Dice>
+			<Dice grade="4" min="0" max="1" minPerOne="1" maxPerOne="1"></Dice>
+		</Box>
+		<Box id="3" name="왕의 유산" diaPrice="2500" gold="3680" image="Sprite/Lobby/Store/rd_chest_04">
+			<Dice grade="1" min="226" max="226" minPerOne="76" maxPerOne="226"></Dice>
+			<Dice grade="2" min="64" max="64" minPerOne="32" maxPerOne="64"></Dice>
+			<Dice grade="3" min="25" max="25" minPerOne="13" maxPerOne="25"></Dice>
+			<Dice grade="4" min="1" max="1" minPerOne="1" maxPerOne="1"></Dice>
+		</Box>
+		<Box id="4" name="배틀 카드 상자" cardPrice="40" gold="1000" image="Sprite/Lobby/Store/icon_reward_mimic-box">
+			<Dice grade="1" min="50" max="100" minPerOne="25" maxPerOne="50"></Dice>
+			<Dice grade="2" min="25" max="50" minPerOne="12" maxPerOne="25"></Dice>
+			<Dice grade="3" min="12" max="25" minPerOne="6" maxPerOne="12"></Dice>
+			<Dice grade="4" min="0" max="1" minPerOne="1" maxPerOne="1"></Dice>
+		</Box>
+	</BoxList>
+</StoreDataList>

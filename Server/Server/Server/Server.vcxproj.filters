@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{1f96cd0c-0d6c-43a0-b254-e4fb85e9912f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{1cb4aac6-77be-48b1-a329-6c1b9d5c976a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{51b67099-c1f5-469d-bbe2-2a037da30996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{3f67bef2-f2eb-4f7c-9cb8-c82a2a1e379e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{20fb8a80-5be2-4d7a-b5b6-83a587f04907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Database">
+      <UniqueIdentifier>{add2f327-7a0b-471f-900d-f183aa318c2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{22fa5feb-38a9-45ab-8ca3-30ef10ed7bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Account">
+      <UniqueIdentifier>{178b5e17-3413-4216-9c14-15983c2089aa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FDiceDataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FDataNode.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FDataCenter.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FServerManager.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="FConnectListener.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="FDiceController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="FControllerBase.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="FPlayer.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="FObjectManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="FInventoryController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="FDatabaseManager.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="FUtil.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="FTest.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FTimeManager.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="FAccountManager.cpp">
+      <Filter>Account</Filter>
+    </ClCompile>
+    <ClCompile Include="FBattlefieldController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="FStoreController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="FStoreDataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FUserDataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FStatController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="FBattleDataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FBattlefieldDataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FMatchingManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FDataCenter.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FDataNode.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FDiceDataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="FServerManager.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="FPacketHandler.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="FConnectListener.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="FControllerBase.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="FDiceController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="FPlayer.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="FUtil.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="FEnum.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="FSingleton.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="FObjectManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="FInventoryController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="FDatabaseManager.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="FTest.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FTimeManager.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="FAccountManager.h">
+      <Filter>Account</Filter>
+    </ClInclude>
+    <ClInclude Include="FBattlefieldController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="FStoreController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="FStoreDataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FUserDataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FStatController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="FBattleDataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FBattlefieldDataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FMatchingManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

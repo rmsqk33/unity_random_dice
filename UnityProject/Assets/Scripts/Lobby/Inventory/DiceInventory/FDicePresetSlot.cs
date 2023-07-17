@@ -1,6 +1,4 @@
-using RandomDice;
-using System.Collections;
-using System.Collections.Generic;
+using FEnum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,34 +6,30 @@ using UnityEngine.UI;
 public class FDicePresetSlot : MonoBehaviour
 {
     [SerializeField]
-    Image m_DiceIcon;
+    FDiceImage diceImage;
     [SerializeField]
-    Image m_DiceIcon_L;
+    TextMeshProUGUI level;
     [SerializeField]
-    TextMeshProUGUI m_Level;
-    [SerializeField]
-    Image m_PresetRegistGuide;
+    Image presetRegistGuideArrow;
 
-    public void SetSlot(in FDice InSlot)
+    public void SetSlot(int InDiceID)
     {
-        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InSlot.id);
-        if (diceData == null)
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if (diceController == null)
             return;
 
-        m_DiceIcon_L.gameObject.SetActive(diceData.Value.Grade == DiceGrade.DICE_GRADE_LEGEND);
-        m_DiceIcon.gameObject.SetActive(diceData.Value.Grade != DiceGrade.DICE_GRADE_LEGEND);
-        if (m_DiceIcon_L.IsActive())
-            m_DiceIcon_L.sprite = Resources.Load<Sprite>(diceData.Value.IconPath);
-        else
-            m_DiceIcon.sprite = Resources.Load<Sprite>(diceData.Value.IconPath);
+        FDice dice = diceController.FindAcquiredDice(InDiceID);
+        if (dice == null)
+            return;
 
-        m_Level.text = InSlot.level.ToString();
+        diceImage.SetImage(InDiceID);
+        level.text = dice.level.ToString();
     }
 
 
     public void SetPresetRegistActive(bool InActive)
     {
-        m_PresetRegistGuide.gameObject.SetActive(InActive);
+        presetRegistGuideArrow.gameObject.SetActive(InActive);
         GetComponent<Button>().interactable = InActive;
     }
 }

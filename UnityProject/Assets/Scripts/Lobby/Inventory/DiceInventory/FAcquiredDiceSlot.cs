@@ -3,42 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using RandomDice;
+using FEnum;
 
 public class FAcquiredDiceSlot : MonoBehaviour
 {
     [SerializeField]
-    Image Background;
+    Image background;
     [SerializeField]
-    Image DiceIcon;
+    FDiceImage diceImage;
     [SerializeField]
-    Image DiceIcon_L;
+    TextMeshProUGUI level;
     [SerializeField]
-    Image DiceEye;
+    Image expGauge;
     [SerializeField]
-    TextMeshProUGUI LevelText;
+    TextMeshProUGUI exp;
     [SerializeField]
-    Image ExpGauge;
-    [SerializeField]
-    TextMeshProUGUI ExpText;
-    [SerializeField]
-    Image LevelUpIcon;
+    Image levelUpIcon;
 
-    int m_CurrentCount = 1;
-    int m_MaxCount = 1;
+    int currentCount = 1;
+    int maxCount = 1;
 
-    public int Level { set { LevelText.text = value.ToString(); } }
+    public int Level { set { level.text = value.ToString(); } }
     public int ID { get; set; }
-
-    public delegate void ClickHandler(int InID);
-    ClickHandler m_ClickHandler;
-    public ClickHandler OnClickHandler { set { m_ClickHandler = value; } }
-
     public int CurrentCount
     {
         set
         {
-            m_CurrentCount = value;
+            currentCount = value;
             UpdateCount();
         }
     }
@@ -47,35 +38,27 @@ public class FAcquiredDiceSlot : MonoBehaviour
     {
         set
         {
-            m_MaxCount = value;
+            maxCount = value;
             UpdateCount();
         }
     }
-
+    
     public void Init(in FDiceData InDiceData, in FDice InDice)
     {
         ID = InDice.id;
         Level = InDice.level;
-        DiceEye.color = InDiceData.Color;
-     
-        DiceIcon_L.gameObject.SetActive(InDiceData.Grade == DiceGrade.DICE_GRADE_LEGEND);
-        DiceIcon.gameObject.SetActive(InDiceData.Grade != DiceGrade.DICE_GRADE_LEGEND);
+        diceImage.SetImage(InDiceData);
 
-        if (DiceIcon_L.IsActive())
-            DiceIcon_L.sprite = Resources.Load<Sprite>(InDiceData.IconPath);
-        else
-            DiceIcon.sprite = Resources.Load<Sprite>(InDiceData.IconPath);
-
-        FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(InDiceData.Grade);
+        FDiceGradeData gradeData = FDiceDataManager.Instance.FindGradeData(InDiceData.grade);
         if (gradeData != null)
         {
-            Background.sprite = Resources.Load<Sprite>(gradeData.Value.BackgroundPath);
+            background.sprite = Resources.Load<Sprite>(gradeData.backgroundPath);
 
-            FDiceLevelData levelData;
-            if (gradeData.Value.LevelDataMap.TryGetValue(InDice.level, out levelData))
+            FDiceLevelData levelData = gradeData.FindDiceLevelData(InDice.level);
+            if (levelData != null)
             {
-                m_CurrentCount = InDice.count;
-                m_MaxCount = levelData.DiceCountCost;
+                currentCount = InDice.count;
+                maxCount = levelData.diceCountCost;
                 UpdateCount();
             }
         }
@@ -83,17 +66,17 @@ public class FAcquiredDiceSlot : MonoBehaviour
 
     void UpdateCount()
     {
-        Vector3 scale = ExpGauge.transform.localScale;
-        scale.x = Mathf.Min((float)m_CurrentCount / (float)m_MaxCount, 1);
-        ExpGauge.transform.localScale = scale;
+        Vector3 scale = expGauge.transform.localScale;
+        scale.x = Mathf.Min((float)currentCount / (float)maxCount, 1);
+        expGauge.transform.localScale = scale;
 
-        ExpText.text = m_CurrentCount.ToString() + "/" + m_MaxCount.ToString();
+        exp.text = currentCount.ToString() + "/" + maxCount.ToString();
 
-        LevelUpIcon.gameObject.SetActive(m_MaxCount <= m_CurrentCount);
+        levelUpIcon.gameObject.SetActive(maxCount <= currentCount);
     }
 
     public void OnClickSlot()
     {
-        m_ClickHandler(ID);
+        FPopupManager.Instance.OpenAcquiredDiceInfoPopup(ID);
     }
 }

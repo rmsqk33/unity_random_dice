@@ -5,51 +5,40 @@ using UnityEngine.UI;
 public class FDiceUpgradeResultPopup : FPopupBase
 {
     [SerializeField]
-    TextMeshProUGUI DiceName;
+    TextMeshProUGUI diceName;
     [SerializeField]
-    TextMeshProUGUI DiceGrade;
+    TextMeshProUGUI diceGrade;
     [SerializeField]
-    Image DiceIcon;
+    FDiceImage diceImage;
     [SerializeField]
-    Image DiceIconL;
+    Image diceEye;
     [SerializeField]
-    Image DiceEye;
+    TextMeshProUGUI diceClass;
     [SerializeField]
-    TextMeshProUGUI DiceClass;
+    TextMeshProUGUI currentCritical;
     [SerializeField]
-    TextMeshProUGUI CurrentCritical;
-    [SerializeField]
-    TextMeshProUGUI IncreaseCritical;
+    TextMeshProUGUI increaseCritical;
 
     public void OpenPopup(FDice InDice)
     {
-        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InDice.id);
+        FDiceData diceData = FDiceDataManager.Instance.FindDiceData(InDice.id);
         if (diceData == null)
             return;
 
-        FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
+        FDiceGradeData gradeData = FDiceDataManager.Instance.FindGradeData(diceData.grade);
         if (gradeData == null)
             return;
 
-        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
         if (statController == null)
             return;
 
-        DiceName.text = diceData.Value.Name;
-        DiceGrade.text = gradeData.Value.GradeName;
+        diceName.text = diceData.name;
+        diceGrade.text = gradeData.gradeName;
+        diceImage.SetImage(diceData);
+        diceClass.text = "클래스 " + InDice.level;
 
-        DiceIcon.gameObject.SetActive(diceData.Value.Grade != RandomDice.DiceGrade.DICE_GRADE_LEGEND);
-        DiceIconL.gameObject.SetActive(diceData.Value.Grade == RandomDice.DiceGrade.DICE_GRADE_LEGEND);
-
-        if (diceData.Value.Grade != RandomDice.DiceGrade.DICE_GRADE_LEGEND)
-            DiceIcon.sprite = Resources.Load<Sprite>(diceData.Value.IconPath);
-        else
-            DiceIconL.sprite = Resources.Load<Sprite>(diceData.Value.IconPath);
-
-        DiceEye.color = diceData.Value.Color;
-        DiceClass.text = "클래스 " + InDice.level;
-
-        CurrentCritical.text = (statController.Critical - gradeData.Value.Critical) + "%";
-        IncreaseCritical.text = "+ " + gradeData.Value.Critical + "%";
+        currentCritical.text = (statController.Critical - gradeData.critical) + "%";
+        increaseCritical.text = "+ " + gradeData.critical + "%";
     }
 }

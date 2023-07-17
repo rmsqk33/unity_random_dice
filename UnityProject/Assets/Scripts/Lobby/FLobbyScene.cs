@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FLobbyScene : MonoBehaviour
@@ -7,9 +5,9 @@ public class FLobbyScene : MonoBehaviour
     private void Awake()
     {
 #if DEBUG
-        if(!FServerManager.Instance.IsConnectedServer)
+        if(!FServerManager.Instance.IsConnected)
         {
-            FServerManager.Instance.ConnectServer();
+            FServerManager.Instance.ConnectMainServer();
             FAccountMananger.Instance.TryLogin();
         }
 #endif

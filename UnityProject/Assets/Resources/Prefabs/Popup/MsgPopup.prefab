@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 1259791841792884246}
   - component: {fileID: 535210885}
   m_Layer: 5
-  m_Name: Bg
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 3903684881071597158}
   - component: {fileID: 1156802647043548312}
   m_Layer: 5
-  m_Name: TitleBg
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 1837805245349864369}
   - component: {fileID: 1640787964257420740}
   m_Layer: 5
-  m_Name: Title
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -851,8 +851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271ebe7d38dcd6f4784851e29c67908e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TitleTextMesh: {fileID: 1640787964257420740}
-  MsgTextMesh: {fileID: 5635346766002842017}
+  title: {fileID: 1640787964257420740}
+  message: {fileID: 5635346766002842017}
 --- !u!95 &5115152759081860204
 Animator:
   serializedVersion: 4

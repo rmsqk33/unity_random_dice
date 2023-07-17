@@ -35,12 +35,12 @@ RectTransform:
   m_Children:
   - {fileID: 5349483201064685436}
   - {fileID: 1819376284}
-  m_Father: {fileID: 6330757827357792369}
-  m_RootOrder: 2
+  m_Father: {fileID: 2393153113557758416}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -250.1}
+  m_AnchoredPosition: {x: 0, y: -386.1}
   m_SizeDelta: {x: 281.2953, y: 117.4779}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &431680822
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 5481241414426533767}
   - component: {fileID: 481434994917169895}
   m_Layer: 5
-  m_Name: Bg
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,8 +349,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3097851366685169953}
-  - {fileID: 6365707922158717435}
-  - {fileID: 431680818}
   m_Father: {fileID: 2393153113557758416}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -427,12 +425,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6330757827357792369}
-  m_RootOrder: 1
+  m_Father: {fileID: 2393153113557758416}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.9031982, y: -141.59}
+  m_AnchoredPosition: {x: 5.9031982, y: -277.59003}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1827528501741015641
@@ -466,7 +464,7 @@ MonoBehaviour:
   m_text: "\uAD6C\uB9E4 \uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aa47dc0d7c4b3a242b1f543a5cd88615, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: ca16f066193f95e48ad207631d051df6, type: 2}
+  m_sharedMaterial: {fileID: 3365016660689545898, guid: aa47dc0d7c4b3a242b1f543a5cd88615, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -850,7 +848,7 @@ GameObject:
   - component: {fileID: 6081227809193570199}
   - component: {fileID: 3804878522765409463}
   m_Layer: 5
-  m_Name: Dice
+  m_Name: InnerBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -928,7 +926,7 @@ GameObject:
   - component: {fileID: 9209733410314333424}
   - component: {fileID: 453369288207603038}
   m_Layer: 0
-  m_Name: Image
+  m_Name: ClickPrevention
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1004,7 +1002,7 @@ GameObject:
   - component: {fileID: 3903684881071597158}
   - component: {fileID: 1156802647043548312}
   m_Layer: 5
-  m_Name: TitleBg
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1026,7 +1024,7 @@ RectTransform:
   - {fileID: 653905668291441523}
   - {fileID: 164271264917891803}
   m_Father: {fileID: 2393153113557758416}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1083,7 +1081,7 @@ GameObject:
   - component: {fileID: 1837805245349864369}
   - component: {fileID: 1640787964257420740}
   m_Layer: 5
-  m_Name: Title
+  m_Name: DiceName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1238,6 +1236,8 @@ RectTransform:
   m_Children:
   - {fileID: 3954074076019990921}
   - {fileID: 6330757827357792369}
+  - {fileID: 6365707922158717435}
+  - {fileID: 431680818}
   - {fileID: 895349908219049260}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1279,11 +1279,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9311370756b7b54881b85fdb96cc1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DiceName: {fileID: 1640787964257420740}
-  m_DiceGrade: {fileID: 3566393161622607722}
-  m_DiceImage: {fileID: 8291520965999089709}
-  m_Count: {fileID: 6075966063639893519}
-  m_Price: {fileID: 1819376285}
+  diceName: {fileID: 1640787964257420740}
+  diceGrade: {fileID: 3566393161622607722}
+  diceImage: {fileID: 8291520965999089709}
+  count: {fileID: 6075966063639893519}
+  price: {fileID: 1819376285}
 --- !u!1 &7331590283616468728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,7 +1296,7 @@ GameObject:
   - component: {fileID: 4492031364130357877}
   - component: {fileID: 4826061508676982232}
   m_Layer: 5
-  m_Name: Grade
+  m_Name: DiceGrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1386,7 +1386,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7569095576715188205}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

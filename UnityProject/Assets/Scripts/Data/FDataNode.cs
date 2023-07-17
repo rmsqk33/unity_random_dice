@@ -10,46 +10,46 @@ public class FDataNode
     {
         public string StrValue;
         public int IntValue;
-        public double DoubleValue;
+        public float FloatValue;
         public bool BoolValue;
         public Color ColorValue;
     }
 
-    Dictionary<string, List<FDataNode>> m_ChildNodes = new Dictionary<string, List<FDataNode>>();
-    Dictionary<string, FDataAttribute> m_DataAttributes = new Dictionary<string, FDataAttribute>();
+    Dictionary<string, List<FDataNode>> childNodes = new Dictionary<string, List<FDataNode>>();
+    Dictionary<string, FDataAttribute> dataAttributes = new Dictionary<string, FDataAttribute>();
 
-    string m_Name;
+    string name;
 
-    public string Name { get { return m_Name; } } 
+    public string Name { get { return name; } } 
 
     public string GetStringAttr(in string InName)
     {
-        if(m_DataAttributes.ContainsKey(InName))
-            return m_DataAttributes[InName].StrValue;
+        if(dataAttributes.ContainsKey(InName))
+            return dataAttributes[InName].StrValue;
 
-        return "";
+        return null;
     }
 
     public int GetIntAttr(in string InName)
     {
-        if (m_DataAttributes.ContainsKey(InName))
-            return m_DataAttributes[InName].IntValue;
+        if (dataAttributes.ContainsKey(InName))
+            return dataAttributes[InName].IntValue;
 
         return 0;
     }
 
-    public double GetDoubleAttr(in string InName)
+    public float GetFloatAttr(in string InName)
     {
-        if (m_DataAttributes.ContainsKey(InName))
-            return m_DataAttributes[InName].DoubleValue;
+        if (dataAttributes.ContainsKey(InName))
+            return dataAttributes[InName].FloatValue;
 
         return 0f;
     }
 
     public bool GetBoolAttr(in string InName)
     {
-        if (m_DataAttributes.ContainsKey(InName))
-            return m_DataAttributes[InName].BoolValue;
+        if (dataAttributes.ContainsKey(InName))
+            return dataAttributes[InName].BoolValue;
 
         return false;
     }
@@ -57,8 +57,8 @@ public class FDataNode
     public Color GetColorAttr(in string InName)
     {
         Color color = new Color();
-        if (m_DataAttributes.ContainsKey(InName))
-            color = m_DataAttributes[InName].ColorValue;
+        if (dataAttributes.ContainsKey(InName))
+            color = dataAttributes[InName].ColorValue;
 
         return color;
     }
@@ -76,9 +76,9 @@ public class FDataNode
 
         FDataNode retNode = null;
 
-        if (m_ChildNodes.ContainsKey(nodeName))
+        if (childNodes.ContainsKey(nodeName))
         {
-            foreach (FDataNode node in m_ChildNodes[nodeName])
+            foreach (FDataNode node in childNodes[nodeName])
             {
                 if (attrName != null && attrValue != null)
                 {
@@ -114,9 +114,9 @@ public class FDataNode
 
         List<FDataNode> retNodeList = new List<FDataNode>();
 
-        if (m_ChildNodes.ContainsKey(nodeName))
+        if (childNodes.ContainsKey(nodeName))
         {
-            foreach (FDataNode node in m_ChildNodes[nodeName])
+            foreach (FDataNode node in childNodes[nodeName])
             {
                 if (attrName != null)
                 {
@@ -134,13 +134,21 @@ public class FDataNode
         return retNodeList;
     }
 
+    public FDataNode FindChildNode(in string InName)
+    {
+        if (childNodes.ContainsKey(InName))
+            return childNodes[InName][0];
+
+        return null;
+    }
+
     public delegate void ForeachChildNodesFunc(in FDataNode InNode);
     public void ForeachChildNodes(in string InName, in ForeachChildNodesFunc InFunc)
     {
-        if (m_ChildNodes.ContainsKey(InName) == false)
+        if (childNodes.ContainsKey(InName) == false)
             return;
 
-        foreach (FDataNode node in m_ChildNodes[InName])
+        foreach (FDataNode node in childNodes[InName])
         {
             if(node.Name == InName)
             {
@@ -151,19 +159,19 @@ public class FDataNode
 
     public void AddChild(in FDataNode InChild)
     {
-        if (m_ChildNodes.ContainsKey(InChild.Name))
-            m_ChildNodes[InChild.Name].Add(InChild);
+        if (childNodes.ContainsKey(InChild.Name))
+            childNodes[InChild.Name].Add(InChild);
         else
         {
             List<FDataNode> newDataNodes = new List<FDataNode>();
             newDataNodes.Add(InChild);
-            m_ChildNodes.Add(InChild.Name, newDataNodes);
+            childNodes.Add(InChild.Name, newDataNodes);
         }
     }
 
     public void ParseXmlData(in XmlNode InNode)
     {
-        m_Name = InNode.Name;
+        name = InNode.Name;
 
         ParseChild(InNode);
         ParseAttribute(InNode);
@@ -185,15 +193,17 @@ public class FDataNode
         foreach (XmlAttribute attr in InNode.Attributes)
         {
             FDataAttribute newAttr = new FDataAttribute();
-
-            if (bool.TryParse(attr.Value, out newAttr.BoolValue)) { }
-            else if (int.TryParse(attr.Value, out newAttr.IntValue)) { }
-            else if (double.TryParse(attr.Value, out newAttr.DoubleValue)) { }
-            else if (ColorUtility.TryParseHtmlString(attr.Value, out newAttr.ColorValue)) { }
-            
             newAttr.StrValue = attr.Value;
 
-            m_DataAttributes.Add(attr.Name, newAttr);
+            if (ColorUtility.TryParseHtmlString(attr.Value, out newAttr.ColorValue)) { }
+            else if (bool.TryParse(attr.Value, out newAttr.BoolValue)) { }
+            else
+            {
+                float.TryParse(attr.Value, out newAttr.FloatValue);
+                int.TryParse(attr.Value, out newAttr.IntValue);
+            }
+
+            dataAttributes.Add(attr.Name, newAttr);
         }
     }
 }

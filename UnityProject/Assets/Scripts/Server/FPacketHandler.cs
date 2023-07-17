@@ -1,5 +1,8 @@
+using FEnum;
 using Packet;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FPacketHandler
 {
@@ -12,11 +15,16 @@ public class FPacketHandler
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_STORE_DICE_LIST, Handle_S_STORE_DICE_LIST);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_GOLD, Handle_S_CHANGE_GOLD);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_DIA, Handle_S_CHANGE_DIA);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_CARD, Handle_S_CHANGE_CARD);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_EXP, Handle_S_CHANGE_EXP);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_LEVEL, Handle_S_CHANGE_LEVEL);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_PURCHASE_DICE, Handle_S_PURCHASE_DICE);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_PURCHASE_BOX, Handle_S_PURCHASE_BOX);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_PURCHASE_BATTLEFIELD, Handle_S_PURCHASE_BATTLEFIELD);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_ADD_DICE, Handle_S_ADD_DICE);
         FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_UPGRADE_DICE, Handle_S_UPGRADE_DICE);
-        
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_CHANGE_NAME, Handle_S_CHANGE_NAME);
+        FServerManager.Instance.AddPacketHandler(Packet.PacketType.PACKET_TYPE_S_BATTLE_MATCHING, Handle_S_BATTLE_MATCHING);
     }
 
     static void Handle_S_GUEST_LOGIN(in byte[] InBuffer)
@@ -61,7 +69,7 @@ public class FPacketHandler
             presetController.Handle_S_USER_DATA(pkt);
         }
 
-        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
         if (statController != null)
         {
             statController.Handle_S_USER_DATA(pkt);
@@ -123,6 +131,39 @@ public class FPacketHandler
         }
     }
 
+    static void Handle_S_CHANGE_CARD(in byte[] InBuffer)
+    {
+        S_CHANGE_CARD pkt = new S_CHANGE_CARD(InBuffer);
+
+        FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
+        if (inventoryController != null)
+        {
+            inventoryController.Handle_S_CHANGE_CARD(pkt);
+        }
+    }
+
+    static void Handle_S_CHANGE_EXP(in byte[] InBuffer)
+    {
+        S_CHANGE_EXP pkt = new S_CHANGE_EXP(InBuffer);
+
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
+        if (statController != null)
+        {
+            statController.Handle_S_CHANGE_EXP(pkt);
+        }
+    }
+
+    static void Handle_S_CHANGE_LEVEL(in byte[] InBuffer)
+    {
+        S_CHANGE_LEVEL pkt = new S_CHANGE_LEVEL(InBuffer);
+
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
+        if (statController != null)
+        {
+            statController.Handle_S_CHANGE_LEVEL(pkt);
+        }
+    }
+    
     static void Handle_S_PURCHASE_BOX(in byte[] InBuffer)
     {
         S_PURCHASE_BOX pkt = new S_PURCHASE_BOX(InBuffer);
@@ -144,5 +185,38 @@ public class FPacketHandler
             diceController.Handle_S_UPGRADE_DICE(pkt);
         }
     }
-    
+
+    static void Handle_S_PURCHASE_BATTLEFIELD(in byte[] InBuffer)
+    {
+        S_PURCHASE_BATTLEFIELD pkt = new S_PURCHASE_BATTLEFIELD(InBuffer);
+
+        FBattlefieldController battlefieldController = FLocalPlayer.Instance.FindController<FBattlefieldController>();
+        if (battlefieldController != null)
+        {
+            battlefieldController.Handle_S_PURCHASE_BATTLEFIELD(pkt);
+        }
+    }
+
+    static void Handle_S_CHANGE_NAME(in byte[] InBuffer)
+    {
+        S_CHANGE_NAME pkt = new S_CHANGE_NAME(InBuffer);
+
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
+        if(statController != null)
+        {
+            statController.Handle_S_CHANGE_NAME(pkt);
+        }
+    }
+
+    static void Handle_S_BATTLE_MATCHING(in byte[] InBuffer)
+    {
+        S_BATTLE_MATCHING matchingPkt = new S_BATTLE_MATCHING(InBuffer);
+
+        if(matchingPkt.isHost)
+        {
+        }
+        else
+        {
+        }
+    }
 }

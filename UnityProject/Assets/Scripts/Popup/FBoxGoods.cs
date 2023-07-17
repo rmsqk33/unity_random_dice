@@ -5,13 +5,20 @@ using UnityEngine.UI;
 public class FBoxGoods : MonoBehaviour
 {
     [SerializeField]
-    Image m_GoodsIcon;
+    Image goodsIcon;
     [SerializeField]
-    TextMeshProUGUI m_GoodsName;
+    TextMeshProUGUI goodsName;
     [SerializeField]
-    TextMeshProUGUI m_Count;
+    TextMeshProUGUI count;
 
-    public Sprite GoodsIcon { set { m_GoodsIcon.sprite = value; } }
-    public string GoodsName { set { m_GoodsName.text = value; } }
-    public string Count { set { m_Count.text = value; } }
+    public Sprite GoodsIcon { set { goodsIcon.sprite = value; } }
+    public string GoodsName { set { goodsName.text = value; } }
+    public string Count { set { count.text = value; } }
+
+    public void AddGoodsIconPrefab(Transform InIcon)
+    {
+        InIcon.SetParent(transform, false);
+
+        goodsIcon.gameObject.SetActive(false);
+    }
 }

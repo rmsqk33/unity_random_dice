@@ -1,36 +1,32 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class FStoreMenu : FLobbyScrollMenuBase
 {
     [SerializeField]
-    FGoodsGroup m_DiceList;
+    FStoreGoodsGroup diceList;
     [SerializeField]
-    FGoodsGroup m_BoxList;
+    FStoreGoodsGroup boxList;
     [SerializeField]
-    FGoodsSlot m_GoodsSlotPrefab;
+    FStoreGoodsSlot goodsSlotPrefab;
     [SerializeField]
-    GameObject m_Content;
+    GameObject content;
 
-    DateTime m_ElapsedTime;
+    DateTime elapsedTime;
 
     private void Start()
     {
         InitStore();
-        m_ElapsedTime = DateTime.Now;
+        elapsedTime = DateTime.Now;
     }
 
     private void Update()
     {
-        if(1 <= (DateTime.Now - m_ElapsedTime).Seconds)
+        if(1 <= (DateTime.Now - elapsedTime).Seconds)
         {
             UpdateResetTime();
-            m_ElapsedTime = DateTime.Now;
+            elapsedTime = DateTime.Now;
         }
     }
 
@@ -42,33 +38,33 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
     public void UpdateDiceGoodsList()
     {
-        m_DiceList.ClearGoods();
+        diceList.ClearGoods();
 
         FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
         if (storeController != null)
         {
             storeController.ForeachDiceGoodsList((in FDiceGoods InGoods) =>
             {
-                FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InGoods.id);
+                FDiceData diceData = FDiceDataManager.Instance.FindDiceData(InGoods.id);
                 if (diceData != null)
                 {
-                    FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab, m_DiceList.GoodsParent);
-                    slot.Name = diceData.Value.Name;
+                    FStoreGoodsSlot slot = GameObject.Instantiate<FStoreGoodsSlot>(goodsSlotPrefab, diceList.GoodsParent);
+                    slot.Name = diceData.name;
                     slot.Gold = InGoods.price;
                     slot.Count = InGoods.count;
                     slot.SoldOut = InGoods.soldOut;
-                    slot.GoodsImage = Resources.Load<Sprite>(diceData.Value.IconPath);
+                    slot.GoodsImage = Resources.Load<Sprite>(diceData.iconPath);
 
-                    FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
+                    FDiceGradeData gradeData = FDiceDataManager.Instance.FindGradeData(diceData.grade);
                     if(gradeData != null)
                     {
-                        slot.Background = Resources.Load<Sprite>(gradeData.Value.BackgroundPath);
+                        slot.Background = Resources.Load<Sprite>(gradeData.backgroundPath);
                     }
 
                     int diceID = InGoods.id;
                     slot.GetComponent<Button>().onClick.AddListener(() => { OnClickDice(diceID); });
 
-                    m_DiceList.AddGoods(diceID, slot);
+                    diceList.AddGoods(diceID, slot);
                 }
             });
         }
@@ -84,24 +80,26 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
     public void SetDiceSoldOut(int InID)
     {
-        m_DiceList.SetDiceSoldOut(InID);
+        diceList.SetDiceSoldOut(InID);
     }
 
     private void InitBoxList()
     {
-        m_BoxList.Title = FStoreDataManager.Instance.BoxStoreTitle;
-        FStoreDataManager.Instance.ForeachStoreBoxData((in FStoreBoxData InData) =>
+        FStoreDataManager.Instance.ForeachStoreData((in FStoreData InData) =>
         {
-            FGoodsSlot slot = GameObject.Instantiate<FGoodsSlot>(m_GoodsSlotPrefab, m_BoxList.GoodsParent);
-            slot.Name = InData.name;
-            slot.Dia = InData.price;
-            slot.GoodsImage = Resources.Load<Sprite>(InData.boxImagePath);
-            slot.Count = 1;
+            boxList.Title = InData.name;
+            InData.ForeachBoxData((in FStoreBoxData InBoxData) => {
+                FStoreGoodsSlot slot = GameObject.Instantiate<FStoreGoodsSlot>(goodsSlotPrefab, boxList.GoodsParent);
+                slot.Name = InBoxData.name;
+                slot.Dia = InBoxData.diaPrice;
+                slot.GoodsImage = Resources.Load<Sprite>(InBoxData.boxImagePath);
+                slot.Count = 1;
 
-            int boxID = InData.id;
-            slot.GetComponent<Button>().onClick.AddListener(() => { OnClickBox(boxID); });
-
-            m_BoxList.AddGoods(boxID, slot);
+                int boxID = InBoxData.id;
+                slot.GetComponent<Button>().onClick.AddListener(() => { OnClickBox(boxID); });
+           
+                boxList.AddGoods(boxID, slot);
+            });
         });
     }
 
@@ -127,35 +125,17 @@ public class FStoreMenu : FLobbyScrollMenuBase
 
             timeText += diff.Seconds + "√ ";
 
-            m_DiceList.Time = timeText;
+            diceList.Time = timeText;
         }
     }
 
     private void OnClickDice(int InID)
     {
-        FPopupManager.Instance.OpenDicePurchasePopup(InID, OnClickPurchaseDice);
+        FPopupManager.Instance.OpenDicePurchasePopup(InID);
     }
 
     private void OnClickBox(int InID)
     {
-        FPopupManager.Instance.OpenBoxPurchasePopup(InID, OnClickPurchaseBox);
-    }
-
-    private void OnClickPurchaseDice(int InID)
-    {
-        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
-        if(storeController != null)
-        {
-            storeController.RequestPurchaseDice(InID);
-        }
-    }
-
-    private void OnClickPurchaseBox(int InID)
-    {
-        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
-        if (storeController != null)
-        {
-            storeController.RequestPurchaseBox(InID);
-        }
+        FPopupManager.Instance.OpenBoxPurchasePopup(InID);
     }
 }

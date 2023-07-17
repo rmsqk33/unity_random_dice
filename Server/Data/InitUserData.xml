@@ -1,0 +1,9 @@
+<InitUserData gold="100000" dia="100000" card="100" diceIdList="1,2,3,4,5" battlefieldIdList="1,2">
+    <PresetList>
+        <Preset diceIdList="1,2,3,4,5" battlefieldId="1"/>
+        <Preset diceIdList="1,2,3,4,5" battlefieldId="1"/>
+        <Preset diceIdList="1,2,3,4,5" battlefieldId="1"/>
+        <Preset diceIdList="1,2,3,4,5" battlefieldId="1"/>
+        <Preset diceIdList="1,2,3,4,5" battlefieldId="1"/>
+    </PresetList>
+</InitUserData>

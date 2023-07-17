@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FPopupManager : FNonObjectSingleton<FPopupManager>
 {
-    FPopupBase m_Popup;
+    FPopupBase openedPopup;
 
     public void OpenMsgPopup(in string InTitle, in string InMsg, FMsgPopup.OKButtonFunc InFunc = null)
     {
@@ -18,77 +17,60 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         popup.OKButtonHandler = InFunc;
     }
 
-    public void OpenAcquiredDiceInfoPopup(int InID, FDiceInfoPopup.ButtonHandler InFunc, FDiceInfoPopup.ButtonHandler InFunc2)
+    public void OpenAcquiredDiceInfoPopup(int InID)
     {
         FDiceInfoPopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfoPopup");
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfo/DiceInfoPopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FDiceInfoPopup>();
 
-        popup.UpgradeHandler = InFunc;
-        popup.UseHandler = InFunc2;
         popup.OpenAcquiredDiceInfo(InID);
     }
 
     public void OpenNotAcquiredDiceInfoPopup(int InID)
     {
         FDiceInfoPopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfoPopup");
+        GameObject gameObject = CreatePopup("Prefabs/Popup/DiceInfo/DiceInfoPopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FDiceInfoPopup>();
 
         popup.OpenNotAcquiredDiceInfo(InID);
     }
 
-    public void OpenAcquiredBattleFieldInfoPopup(int InID, FBattleFieldInfoPopup.ButtonHandler InFunc, FBattleFieldInfoPopup.ButtonHandler InFunc2)
+    public void OpenBattleFieldInfoPopup(int InID)
     {
         FBattleFieldInfoPopup popup = null;
         GameObject gameObject = CreatePopup("Prefabs/Popup/BattleFieldInfoPopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FBattleFieldInfoPopup>();
 
-        popup.UpgradeHandler = InFunc;
-        popup.UseHandler = InFunc2;
-        popup.OpenAcquiredBattleFieldInfo(InID);
+        popup.OpenPopup(InID);
     }
 
-    public void OpenNotAcquiredBattleFieldInfoPopup(int InID, FBattleFieldInfoPopup.ButtonHandler InFunc)
-    {
-        FBattleFieldInfoPopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/BattleFieldInfoPopup");
-        if (gameObject != null)
-            popup = gameObject.GetComponent<FBattleFieldInfoPopup>();
-
-        popup.PurchaseBtnHandler = InFunc;
-        popup.OpenNotAcquiredBattleFieldInfo(InID);
-    }
-
-    public void OpenDicePurchasePopup(int InID, FDicePurchasePopup.ButtonHandler InFunc)
+    public void OpenDicePurchasePopup(int InID)
     {
         FDicePurchasePopup popup = null;
         GameObject gameObject = CreatePopup("Prefabs/Popup/DicePurchasePopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FDicePurchasePopup>();
 
-        popup.PurchaseBtnHandler = InFunc;
         popup.OpenPopup(InID);
     }
 
-    public void OpenBoxPurchasePopup(int InID, FBoxPurchasePopup.ButtonHandler InFunc)
+    public void OpenBoxPurchasePopup(int InID)
     {
         FBoxPurchasePopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/BoxPurchasePopup");
+        GameObject gameObject = CreatePopup("Prefabs/Popup/BoxPurchase/BoxPurchasePopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FBoxPurchasePopup>();
 
-        popup.PurchaseBtnHandler = InFunc;
         popup.OpenPopup(InID);
     }
 
     public void OpenAcquiredDicePopup(List<KeyValuePair<int, int>> InDiceList)
     {
         FAcquiredDicePopup popup = null;
-        GameObject gameObject = CreatePopup("Prefabs/Popup/AcquiredDicePopup");
+        GameObject gameObject = CreatePopup("Prefabs/Popup/AcquiredDice/AcquiredDicePopup");
         if (gameObject != null)
             popup = gameObject.GetComponent<FAcquiredDicePopup>();
 
@@ -105,34 +87,57 @@ public class FPopupManager : FNonObjectSingleton<FPopupManager>
         popup.OpenPopup(InDice);
     }
 
+    public void OpenAcquiredBattlefieldPopup(int InID)
+    {
+        FAcquiredBattlefieldPopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/AcquiredBattlefieldPopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FAcquiredBattlefieldPopup>();
+
+        popup.OpenPopup(InID);
+    }
+
+    public void OpenNamePopup()
+    {
+        FNamePopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/NamePopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FNamePopup>();
+
+        popup.OpenPopup();
+    }
+
+    public void OpenBattleMatchingPopup()
+    {
+        FBattleMatchingPopup popup = null;
+        GameObject gameObject = CreatePopup("Prefabs/Popup/BattleMatchingPopup");
+        if (gameObject != null)
+            popup = gameObject.GetComponent<FBattleMatchingPopup>();
+
+        popup.OpenPopup();
+    }
+
     public void ClosePopup()
     {
-        if(m_Popup != null)
+        if(openedPopup != null)
         {
-            m_Popup.Close();
-            m_Popup = null;
+            openedPopup.Close();
+            openedPopup = null;
         }
     }
 
     GameObject CreatePopup(in string InPath)
     {
-        if (m_Popup != null)
-            GameObject.Destroy(m_Popup.gameObject);
+        if (openedPopup != null)
+            GameObject.Destroy(openedPopup.gameObject);
 
         GameObject popup = Resources.Load<GameObject>(InPath);
         if (popup == null)
             return null;
 
-        GameObject canvas = GameObject.Find("UI");
-        if (canvas == null)
-        {
-            GameObject.Destroy(popup);
-            return null;
-        }
-
-        popup = GameObject.Instantiate(popup, canvas.transform);
-        m_Popup = popup.GetComponent<FPopupBase>();
-
+        popup = GameObject.Instantiate(popup, FUIManager.Instance.TopSiblingCanvas.transform);
+        openedPopup = popup.GetComponent<FPopupBase>();
+        
         return popup;
     }
 }

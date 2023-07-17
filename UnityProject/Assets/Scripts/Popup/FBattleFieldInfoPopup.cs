@@ -6,52 +6,60 @@ using UnityEngine.UI;
 public class FBattleFieldInfoPopup : FPopupBase
 {
     [SerializeField]
-    TextMeshProUGUI m_NameText;
+    TextMeshProUGUI nameText;
     [SerializeField]
-    Image m_BattleFieldImage;
+    Image battleFieldImage;
+    [SerializeField]
+    GameObject useBtn;
+    [SerializeField]
+    GameObject purchaseBtn;
+    [SerializeField]
+    TextMeshProUGUI price;
 
-    public delegate void ButtonHandler();
-    ButtonHandler m_UpgradeBtnHandler;
-    ButtonHandler m_UseBtnHandler;
-    ButtonHandler m_PurchaseBtnHandler;
+    int battlefieldID;
     
-    public ButtonHandler UpgradeHandler { set { m_UpgradeBtnHandler = value; } }
-    public ButtonHandler UseHandler { set { m_UseBtnHandler = value; } }
-    public ButtonHandler PurchaseBtnHandler { set { m_PurchaseBtnHandler = value; } }
-    
-    public void OpenAcquiredBattleFieldInfo(int InID)
+    public void OpenPopup(int InID)
     {
-        FBattleFieldData? data = FBattleFieldDataManager.Instance.FindBattleFieldData(InID);
+        battlefieldID = InID;
+
+        FBattleFieldData data = FBattleFieldDataManager.Instance.FindBattleFieldData(InID);
         if (data == null)
             return;
 
-        m_NameText.text = data.Value.Name;
-        m_BattleFieldImage.sprite = Resources.Load<Sprite>(data.Value.SkinImage);
-    }
-
-    public void OpenNotAcquiredBattleFieldInfo(int InID)
-    {
-        FBattleFieldData? data = FBattleFieldDataManager.Instance.FindBattleFieldData(InID);
-        if (data == null)
+        FBattlefieldController battlefieldController = FLocalPlayer.Instance.FindController<FBattlefieldController>();
+        if (battlefieldController == null)
             return;
 
-        m_NameText.text = data.Value.Name;
-        m_BattleFieldImage.sprite = Resources.Load<Sprite>(data.Value.SkinImage);
-    }
+        nameText.text = data.name;
+        battleFieldImage.sprite = Resources.Load<Sprite>(data.skinImagePath);
 
-    public void OnClickUpgrade()
-    {
-        m_UpgradeBtnHandler();
+        bool isAcquired = battlefieldController.IsAcquiredBattleField(InID);
+
+        useBtn.SetActive(isAcquired);
+        purchaseBtn.SetActive(isAcquired == false);
+
+        if (isAcquired == false)
+            price.text = data.price.ToString();
     }
 
     public void OnClickUse()
     {
-        m_UseBtnHandler();
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.SetBattleFieldPreset(battlefieldID);
+        }
+        FPopupManager.Instance.ClosePopup();
     }
 
     public void OnClickPurchase()
     {
-        m_PurchaseBtnHandler();
+        FBattlefieldController battlefieldController = FLocalPlayer.Instance.FindController<FBattlefieldController>();
+        if(battlefieldController != null)
+        {
+            battlefieldController.RequestPurchaseBattlefield(battlefieldID);
+        }
+        FPopupManager.Instance.ClosePopup();
     }
 
     public void OnClose()

@@ -1,34 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T m_Instance = null;
+    private static T instance = null;
 
     public static T Instance 
     {
         get 
         {
-            if(m_Instance == null)
+            if(instance == null)
             {
                 GameObject gameObject = new GameObject(typeof(T).Name);
-                m_Instance = gameObject.AddComponent<T>();
+                instance = gameObject.AddComponent<T>();
                 DontDestroyOnLoad(gameObject);
             }
 
-            return m_Instance;
+            return instance;
         } 
     }
 
     protected virtual void Awake()
     {
-        if (m_Instance == null)
+        if (instance == null)
         {
-            m_Instance = GetComponent<T>();
-            DontDestroyOnLoad(gameObject);
+            instance = GetComponent<T>();
         }
-        else if(m_Instance.gameObject != gameObject) 
+        else if(instance.gameObject != gameObject) 
         {
             GameObject.Destroy(gameObject);
         }

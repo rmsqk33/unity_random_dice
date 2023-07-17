@@ -1,0 +1,146 @@
+<BattleData id="1" life="1" summonInterval="1.0">
+    <Wave wave="1" card="1" exp="10">
+        <Enemy id="5"/>
+    </Wave>
+    <Wave wave="2" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="3" card="2" exp="20">
+        <Enemy id="3" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="4" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="5" card="3" exp="30">
+        <Enemy id="4"/>
+    </Wave>
+    <Wave wave="6" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="7" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="8" card="2" exp="20">
+        <Enemy id="3" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="9" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="10" card="3" exp="30">
+        <Enemy id="5" />
+    </Wave>
+    <Wave wave="11" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="12" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="13" card="2" exp="20">
+        <Enemy id="3" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="14" card="1" exp="10">
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="2" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+        <Enemy id="1" />
+    </Wave>
+    <Wave wave="15" card="3" exp="30">
+        <Enemy id="6" />
+    </Wave>
+</BattleData>

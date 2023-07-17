@@ -1,24 +1,15 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginScene : MonoBehaviour
 {
     [SerializeField]
     float PreWorkMinSec = 0f; // ���� �۾��� UI �ּ� ǥ�ýð�
-    [SerializeField]
-    Button LoginButton;
     [SerializeField]
     GameObject LoadingUI;
     [SerializeField]
@@ -32,7 +23,7 @@ public class LoginScene : MonoBehaviour
 
     void Start()
     {
-        AddPreWork("serverConnect", FServerManager.Instance.ConnectServer);
+        AddPreWork("serverConnect", FServerManager.Instance.ConnectMainServer);
         AddPreWork("login", FAccountMananger.Instance.TryLogin);
 
         LoadPreWork();
@@ -90,11 +81,6 @@ public class LoginScene : MonoBehaviour
         m_PreWorkMap.Remove(m_PreWorkMap.Keys.First());
         if (0 < m_PreWorkMap.Count)
             LoadPreWork();
-        else
-        {
-           //LoginButton.gameObject.SetActive(true);
-           //LoadingUI.SetActive(false);
-        }
     }
 
     void OnFailPreWork()

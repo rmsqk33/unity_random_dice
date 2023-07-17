@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FPopupBase : MonoBehaviour
+public class FPopupBase : FUIBase
 {
     public void Close()
     {

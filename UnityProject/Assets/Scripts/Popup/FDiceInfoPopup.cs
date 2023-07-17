@@ -1,3 +1,4 @@
+using FEnum;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,37 +7,34 @@ using UnityEngine.UI;
 public class FDiceInfoPopup : FPopupBase
 {
     [SerializeField]
-    FAcquiredDiceSlot m_AcquiredDiceSlot;
+    FAcquiredDiceSlot acquiredDiceSlot;
     [SerializeField]
-    FNotAcquiredDiceSlot m_NotAcquiredDiceSlot;
+    FNotAcquiredDiceSlot notAcquiredDiceSlot;
     [SerializeField]
-    TextMeshProUGUI m_NameText;
+    TextMeshProUGUI nameText;
     [SerializeField]
-    TextMeshProUGUI m_Grade;
+    TextMeshProUGUI grade;
     [SerializeField]
-    TextMeshProUGUI m_Description;
+    TextMeshProUGUI description;
     [SerializeField]
-    List<FDiceStatInfo> m_StatInfoList;
+    List<FDiceStatInfo> statInfoList;
     [SerializeField]
-    TextMeshProUGUI m_Critical;
+    TextMeshProUGUI critical;
     [SerializeField]
-    TextMeshProUGUI m_UpgradeCritical;
+    TextMeshProUGUI upgradeCritical;
     [SerializeField]
-    TextMeshProUGUI m_UpgradeCost;
+    TextMeshProUGUI upgradeCost;
     [SerializeField]
-    Button m_UpgradeBtn;
+    Button upgradeBtn;
     [SerializeField]
-    Button m_UseBtn;
+    Button useBtn;
 
-    public delegate void ButtonHandler();
-    ButtonHandler m_UpgradeBtnHandler;
-    ButtonHandler m_UseBtnHandler;
-
-    public ButtonHandler UpgradeHandler { set { m_UpgradeBtnHandler = value; } }
-    public ButtonHandler UseHandler { set { m_UseBtnHandler = value; } }
+    int diceID;
 
     public void OpenAcquiredDiceInfo(int InID)
     {
+        diceID = InID;
+
         FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
         if (diceController == null)
             return;
@@ -45,81 +43,154 @@ public class FDiceInfoPopup : FPopupBase
         if (dice == null)
             return;
 
-        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InID);
+        FDiceData diceData = FDiceDataManager.Instance.FindDiceData(InID);
         if (diceData == null)
             return;
 
-        m_UpgradeBtn.gameObject.SetActive(true);
-        m_UseBtn.gameObject.SetActive(true);
-        m_NotAcquiredDiceSlot.gameObject.SetActive(false);
-        m_AcquiredDiceSlot.gameObject.SetActive(true);
-        m_AcquiredDiceSlot.Init(diceData.Value, dice);
-        
-        FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
+        upgradeBtn.gameObject.SetActive(true);
+        useBtn.gameObject.SetActive(true);
+        notAcquiredDiceSlot.gameObject.SetActive(false);
+        acquiredDiceSlot.gameObject.SetActive(true);
+        acquiredDiceSlot.Init(diceData, dice);
+        InitStat(diceData);
+
+        FDiceGradeData gradeData = FDiceDataManager.Instance.FindGradeData(diceData.grade);
         if (gradeData != null)
         {
-            if(gradeData.Value.LevelDataMap.ContainsKey(dice.level))
+            FDiceLevelData levelData = gradeData.FindDiceLevelData(dice.level);
+            if(levelData != null)
             {
-                FDiceLevelData levelData = gradeData.Value.LevelDataMap[dice.level];
-                m_UpgradeCost.text = levelData.GoldCost.ToString();
-                SetUpgradable(levelData.DiceCountCost <= dice.count);
-                SetCommonDiceInfo(diceData.Value, gradeData.Value);
+                upgradeCost.text = levelData.goldCost.ToString();
+                SetUpgradable(levelData.diceCountCost <= dice.count);
+                SetCommonDiceInfo(diceData, gradeData);
             }
         }
     }
 
     public void OpenNotAcquiredDiceInfo(int InID)
     {
-        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InID);
+        diceID = InID;
+
+        FDiceData diceData = FDiceDataManager.Instance.FindDiceData(InID);
         if (diceData == null)
             return;
 
-        m_UpgradeBtn.gameObject.SetActive(false);
-        m_UseBtn.gameObject.SetActive(false);
-        m_AcquiredDiceSlot.gameObject.SetActive(false);
-        m_NotAcquiredDiceSlot.gameObject.SetActive(true);
-        m_NotAcquiredDiceSlot.Init(diceData.Value);
+        upgradeBtn.gameObject.SetActive(false);
+        useBtn.gameObject.SetActive(false);
+        acquiredDiceSlot.gameObject.SetActive(false);
+        notAcquiredDiceSlot.gameObject.SetActive(true);
+        notAcquiredDiceSlot.Init(diceData);
+        InitStat(diceData);
         SetUpgradable(false);
 
-        FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
+        FDiceGradeData gradeData = FDiceDataManager.Instance.FindGradeData(diceData.grade);
         if(gradeData != null)
-            SetCommonDiceInfo(diceData.Value, gradeData.Value);
+            SetCommonDiceInfo(diceData, gradeData);
+    }
+
+    void InitStat(FDiceData InDiceData, FDice InDice = null)
+    {
+        int slotIndex = (int)AbilitySlotType.Max;
+        InDiceData.ForeachSkillID((int InSkillID) => {
+            FSkillData skillData = FSkillDataManager.Instance.FindSkillData(InSkillID);
+            if (skillData == null)
+                return;
+
+            FEffectData effectData = null;
+            FAbnormalityData abnormalityData = null;
+
+            if (skillData.abnormalityID != 0)
+                abnormalityData = FAbnormalityDataManager.Instance.FindAbnormalityData(skillData.abnormalityID);
+
+            if (skillData.skillType == FEnum.SkillType.Basic)
+            {
+                FProjectileData projectileData = FEffectDataManager.Instance.FindProjectileData(skillData.projectileID);
+                if (projectileData != null)
+                {
+                    int damage = InDice == null ? projectileData.damage : projectileData.damage + projectileData.damagePerLevel * InDice.level;
+                    SetStat((int)AbilitySlotType.BasicAttackDamage, AbilityType.BasicAttackDamage, damage.ToString(), projectileData.damagePerLevel.ToString());
+                    SetStat((int)AbilitySlotType.BasicAttackSpeed, AbilityType.BasicAttackSpeed, skillData.interval.ToString(), "");
+                    SetStat((int)AbilitySlotType.BasicAttackTarget, AbilityType.BasicAttackTarget, FAbilityDataManager.Instance.GetTargetTypeString(skillData.targetType), "");
+
+                    effectData = FEffectDataManager.Instance.FindEffectData(projectileData.effectID);
+
+                    if (projectileData.abnormalityID != 0)
+                        abnormalityData = FAbnormalityDataManager.Instance.FindAbnormalityData(projectileData.abnormalityID);
+                }
+            }
+
+            if (effectData != null && effectData.abilityType != AbilityType.None)
+            {
+                SetStat(slotIndex++, effectData.abilityType, effectData.value.ToString(), effectData.valuePerLevel.ToString());
+            }
+
+            if (abnormalityData != null && abnormalityData.abilityType != AbilityType.None)
+            {
+                SetStat(slotIndex++, abnormalityData.abilityType, abnormalityData.value.ToString(), abnormalityData.valuePerLevel.ToString());
+            }
+        });
+
+        for(int i = slotIndex; i < statInfoList.Count; ++i)
+        {
+            SetStat(i, AbilityType.None, "-", "-");
+        }
+    }
+
+    void SetStat(int InIndex, AbilityType InType, string InValue, string InUpgradeValue)
+    {
+        if (InIndex < 0 || statInfoList.Count <= InIndex)
+            return;
+
+        statInfoList[InIndex].Title = FAbilityDataManager.Instance.GetAbilityTitle(InType);
+        statInfoList[InIndex].Value = InValue;
+        statInfoList[InIndex].UpgradeValue = InUpgradeValue;
+        statInfoList[InIndex].StatIcon = Resources.Load<Sprite>(FAbilityDataManager.Instance.GetAbilityIcon(InType));
     }
 
     void SetUpgradable(bool InUpgradable)
     {
-        foreach(FDiceStatInfo stat in m_StatInfoList)
+        foreach(FDiceStatInfo stat in statInfoList)
         {
             stat.Upgradable = InUpgradable;
         }
-        m_UpgradeCritical.gameObject.SetActive(InUpgradable);
-        m_UpgradeBtn.enabled = InUpgradable;
-        m_UpgradeBtn.GetComponent<Animator>().SetTrigger(InUpgradable ? "Normal" : "Disabled");
+
+        upgradeCritical.gameObject.SetActive(InUpgradable);
+        upgradeBtn.enabled = InUpgradable;
+        upgradeBtn.GetComponent<Animator>().SetTrigger(InUpgradable ? "Normal" : "Disabled");
     }
 
     void SetCommonDiceInfo(in FDiceData InDiceData, in FDiceGradeData InGradeData)
     {
-        m_NameText.text = InDiceData.Name;
-        m_Description.text = InDiceData.Description;
+        nameText.text = InDiceData.name;
+        description.text = InDiceData.description;
 
-        FStatController statController = FLocalPlayer.Instance.FindController<FStatController>();
+        FLocalPlayerStatController statController = FLocalPlayer.Instance.FindController<FLocalPlayerStatController>();
         if(statController != null)
         {
-            m_Critical.text = statController.Critical + "%";
+            critical.text = statController.Critical + "%";
         }
 
-        m_Grade.text = InGradeData.GradeName;
-        m_UpgradeCritical.text = InGradeData.Critical + "%";
+        grade.text = InGradeData.gradeName;
+        upgradeCritical.text = InGradeData.critical + "%";
     }
 
     public void OnClickUpgrade()
     {
-        m_UpgradeBtnHandler();
+        FDiceController diceController = FLocalPlayer.Instance.FindController<FDiceController>();
+        if(diceController != null)
+        {
+            diceController.RequestUpgradeDice(diceID);
+        }
     }
 
     public void OnClickUse()
     {
-        m_UseBtnHandler();
+        FDiceInventory diceInventory = FUIManager.Instance.FindUI<FDiceInventory>();
+        if(diceInventory != null)
+        {
+            diceInventory.OpenPresetRegist(diceID);
+            Close();
+        }
     }
 
     public void OnClose()

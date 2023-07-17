@@ -1,34 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
-using System.Text;
 using System;
 using UnityEngine;
 using Packet;
 using System.Linq;
-using Unity.VisualScripting;
+using System.Net;
 
-public class FServerManager : Singleton<FServerManager>
+public class FServerManager : FSingleton<FServerManager>
 {
     const string SERVER_IP = "127.0.0.1";
-    const int SERVER_PORT = 7777;
+    const int SERVER_PORT = 5642;
+    const int P2P_SERVER_PORT = 9456;
     const int PACKET_MAX = 10240;
 
-    private TcpClient m_TcpClient = null;
-    private NetworkStream m_NetStream = null;
-    private Thread m_ReceiveMessageThread = null;
-    public bool IsConnectedServer { get; private set; } = false;
+    private TcpListener tcpListener = null;
+
+    private TcpClient tcpClient = null;
+    private NetworkStream netStream = null;
+    private Thread receiveMessageThread = null;
+    private bool isConnected = false;
 
     public delegate void PacketHandler(in byte[] InBuffer);
-    private Dictionary<PacketType, PacketHandler> m_PacketHandlerMap = new Dictionary<PacketType, PacketHandler>();
+
+    private Dictionary<PacketType, PacketHandler> packetHandlerMap = new Dictionary<PacketType, PacketHandler>();
 
     struct MessageData
     {
         public PacketType type;
         public byte[] buffer;
     }
-    private List<MessageData> m_MessageQueue = new List<MessageData>();
+    private List<MessageData> messageQueue = new List<MessageData>();
+
+    public bool IsConnected { get { return isConnected; }}
 
     void Update()
     {
@@ -37,16 +41,16 @@ public class FServerManager : Singleton<FServerManager>
 
     void ExecuteMessage()
     {
-        if (m_MessageQueue.Count == 0)
+        if (messageQueue.Count == 0)
             return;
 
-        MessageData messageData = m_MessageQueue[0];
-        m_MessageQueue.RemoveAt(0);
+        MessageData messageData = messageQueue[0];
+        messageQueue.RemoveAt(0);
 
-        if (!m_PacketHandlerMap.ContainsKey(messageData.type))
+        if (!packetHandlerMap.ContainsKey(messageData.type))
             return;
 
-        m_PacketHandlerMap[messageData.type](messageData.buffer);
+        packetHandlerMap[messageData.type](messageData.buffer);
     }
 
     void OnApplicationQuit()
@@ -54,39 +58,106 @@ public class FServerManager : Singleton<FServerManager>
         DisconnectServer();
     }
 
-    void DisconnectServer()
+    public void DisconnectServer()
     {
-        if(IsConnectedServer)
+        if (isConnected == false)
+            return;
+
+        isConnected = false;
+
+        if (receiveMessageThread != null)
         {
-            IsConnectedServer = false;
-            m_ReceiveMessageThread.Join();
-            m_NetStream.Close();
-            m_TcpClient.Close();
+            receiveMessageThread.Join();
+            receiveMessageThread = null;
+        }
+
+        if (netStream != null)
+        {
+            netStream.Close();
+            netStream = null;
+        }
+
+        if (tcpClient != null)
+        {
+            tcpClient.Close();
+            tcpClient = null;
         }
     }
 
-    public bool ConnectServer()
+    public bool OpenP2PServer()
     {
-        if (IsConnectedServer)
-            return false;
-
         try
         {
-            m_TcpClient = new TcpClient(SERVER_IP, SERVER_PORT);
-            m_NetStream = m_TcpClient.GetStream();
+            tcpListener = new TcpListener(IPAddress.Any, P2P_SERVER_PORT);
+            tcpListener.Start();
 
-            m_ReceiveMessageThread = new Thread(ReceiveMessage);
-            m_ReceiveMessageThread.Start();
-
-            IsConnectedServer = true;
+            TcpClient client = tcpListener.AcceptTcpClient();
+            if (client != null)
+            {
+                DisconnectServer();
+                OnConnectedServer(client);
+                return true;
+            }
         }
         catch (Exception e)
         {
             Debug.Log("Server Connect Fail: " + e);
-            return false;
         }
 
-        return true;
+        return false;
+    }
+
+    public void CloseP2PServer()
+    {
+        if (tcpListener != null)
+        {
+            tcpListener.Stop();
+            tcpListener = null;
+        }
+    }
+
+    public bool ConnectMainServer()
+    {
+        return ConnectServer(SERVER_IP, SERVER_PORT);
+    }
+
+    public bool ConnectP2PServer(string InIP)
+    {
+        return ConnectServer(InIP, P2P_SERVER_PORT);
+    }
+
+    private bool ConnectServer(string InIP, int InPort)
+    {
+        try
+        {
+            TcpClient client = new TcpClient(InIP, InPort);
+            if (client != null)
+            {
+                DisconnectServer();
+                OnConnectedServer(client);
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Server Connect Fail: " + e);
+        }
+
+        return false;
+    }
+
+    private void OnConnectedServer(TcpClient InClient)
+    {
+        if (isConnected)
+            return;
+
+        isConnected = true;
+
+        tcpClient = InClient;
+        netStream = InClient.GetStream();
+
+        receiveMessageThread = new Thread(ReceiveMessage);
+        receiveMessageThread.Start();
     }
 
     async void ReceiveMessage()
@@ -95,9 +166,15 @@ public class FServerManager : Singleton<FServerManager>
         int packetSize = 0;
         int readSize = 0;
 
-        while (IsConnectedServer)
+        while (isConnected)
         {
-            readSize += await m_NetStream.ReadAsync(buffer, readSize, PACKET_MAX - readSize);
+            readSize += await netStream.ReadAsync(buffer, readSize, PACKET_MAX - readSize);
+            if (readSize == 0)
+            {
+                DisconnectServer();
+
+                return;
+            }
 
             // 한번에 여러 패킷이 오는 경우를 대비하여 반복처리
             while (0 < readSize)
@@ -118,7 +195,7 @@ public class FServerManager : Singleton<FServerManager>
                 int commonDataLength = sizeof(int) + sizeof(PacketType);
                 Array.Copy(buffer, commonDataLength, messageData.buffer, 0, packetSize - commonDataLength);
 
-                m_MessageQueue.Add(messageData);
+                messageQueue.Add(messageData);
 
                 readSize -= packetSize;
 
@@ -133,16 +210,16 @@ public class FServerManager : Singleton<FServerManager>
 
     public void SendMessage(in PacketBase InPacket)
     {
-        if (m_NetStream == null)
+        if (netStream == null)
             return;
 
         try
         {
-            if (m_NetStream.CanWrite)
+            if (netStream.CanWrite)
             {
                 List<byte> buffer = new List<byte>();
                 InPacket.Serialize(buffer);
-                m_NetStream.Write(buffer.ToArray(), 0, buffer.Count());
+                netStream.Write(buffer.ToArray(), 0, buffer.Count());
             }
         }
         catch (SocketException e)
@@ -153,7 +230,7 @@ public class FServerManager : Singleton<FServerManager>
 
     public void AddPacketHandler(PacketType InType, PacketHandler InHandler)
     {
-        m_PacketHandlerMap.Add(InType, InHandler);
+        packetHandlerMap.Add(InType, InHandler);
     }
 
 }

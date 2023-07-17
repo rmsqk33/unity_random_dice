@@ -7,31 +7,21 @@ using UnityEngine.UI;
 public class FDicePurchasePopup : FPopupBase
 {
     [SerializeField]
-    TextMeshProUGUI m_DiceName;
+    TextMeshProUGUI diceName;
     [SerializeField]
-    TextMeshProUGUI m_DiceGrade;
+    TextMeshProUGUI diceGrade;
     [SerializeField]
-    Image m_DiceImage;
+    Image diceImage;
     [SerializeField]
-    TextMeshProUGUI m_Count;
+    TextMeshProUGUI count;
     [SerializeField]
-    TextMeshProUGUI m_Price;
+    TextMeshProUGUI price;
 
-    public int ID { get; set; }
-    public string Name { set { m_DiceName.text = value; } }
-    public string Grade { set { m_DiceGrade.text = value; } }
-    public Sprite DiceImage { set { m_DiceImage.sprite = value; } }
-    public int Count { set { m_Count.text = "x" + value; } }
-    public int Price { set { m_Price.text = value.ToString(); } }
-
-    public delegate void ButtonHandler(int InID);
-    ButtonHandler m_PurchaseBtnHandler;
-    
-    public ButtonHandler PurchaseBtnHandler { set { m_PurchaseBtnHandler = value; } }
+    int diceID;
 
     public void OpenPopup(int InID)
     {
-        ID = InID;
+        diceID = InID;
 
         FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
         if(storeController == null)
@@ -40,33 +30,41 @@ public class FDicePurchasePopup : FPopupBase
             return;
         }
 
-        FDiceGoods? diceGoods = storeController.FindDiceGoods(InID);
+        FDiceGoods diceGoods = storeController.FindDiceGoods(InID);
         if(diceGoods == null)
         {
             Close();
             return;
         }
 
-        FDiceData? diceData = FDiceDataManager.Instance.FindDiceData(InID);
+        FDiceData diceData = FDiceDataManager.Instance.FindDiceData(InID);
         if(diceData == null)
         {
             Close();
             return;
         }
 
-        Name = diceData.Value.Name;
-        DiceImage = Resources.Load<Sprite>(diceData.Value.IconPath);
-        Count = diceGoods.Value.count;
-        Price = diceGoods.Value.price;
+        FDiceGradeData gradeData = FDiceDataManager.Instance.FindGradeData(diceData.grade);
+        if (gradeData == null)
+        {
+            Close();
+            return;
+        }
 
-        FDiceGradeData? gradeData = FDiceDataManager.Instance.FindGradeData(diceData.Value.Grade);
-        if (gradeData != null)
-            Grade = gradeData.Value.GradeName;
+        diceName.text = diceData.name;
+        diceImage.sprite = Resources.Load<Sprite>(diceData.iconPath);
+        diceGrade.text = gradeData.gradeName;
+        count.text = "x" + diceGoods.count;
+        price.text = diceGoods.price.ToString();
     }
 
     public void OnClickPurchase()
     {
-        m_PurchaseBtnHandler(ID);
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            storeController.RequestPurchaseDice(diceID);
+        }
     }
 
     public void OnClose()

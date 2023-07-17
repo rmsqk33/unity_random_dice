@@ -184,9 +184,9 @@ GameObject:
   - component: {fileID: 4690569644535467953}
   - component: {fileID: 539780919012028324}
   - component: {fileID: 6173996619647463570}
-  - component: {fileID: 3973671685363678253}
   - component: {fileID: 7697374583403670112}
   - component: {fileID: 3402789735822869088}
+  - component: {fileID: 6524889292760548163}
   m_Layer: 5
   m_Name: Goods
   m_TagString: Untagged
@@ -256,25 +256,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3973671685363678253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629655191622481713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38cdba5c9f384ec44b771284697fc319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NameText: {fileID: 1217062489091255550}
-  m_CountText: {fileID: 4601612425699097400}
-  m_PriceText: {fileID: 1942068926881677068}
-  m_GoldIcon: {fileID: 1302758588342603337}
-  m_DiaIcon: {fileID: 1997543630088983859}
-  m_Background: {fileID: 6173996619647463570}
-  m_GoodsImage: {fileID: 4232478017842256576}
 --- !u!114 &7697374583403670112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +320,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6524889292760548163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629655191622481713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3bede991284cd46af6c746214680e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 1217062489091255550}
+  countText: {fileID: 4601612425699097400}
+  priceText: {fileID: 1942068926881677068}
+  goldIcon: {fileID: 1302758588342603337}
+  diaIcon: {fileID: 1997543630088983859}
+  background: {fileID: 6173996619647463570}
+  goodsImage: {fileID: 4232478017842256576}
 --- !u!1 &1323592024878777626
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 5980295693686662472}
   - component: {fileID: 1942068926881677068}
   m_Layer: 5
-  m_Name: PriceText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

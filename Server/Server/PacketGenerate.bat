@@ -1,0 +1,1 @@
+call "%~dp0..\..\PacketGenerator\x64\Release\PacketGenerator.exe" "%~dp0Packet.txt"  "%~dp0Server\Packet.h"  "%~dp0..\..\Randomdice_Portfolio\UnityProject\Assets\Scripts\Server\Packet.cs"

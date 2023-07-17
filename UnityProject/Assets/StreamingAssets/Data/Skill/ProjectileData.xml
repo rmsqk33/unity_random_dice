@@ -1,0 +1,8 @@
+<ProjectileDataList>
+    <ProjectileData id="1" damage="5" damagePerLevel="5" damagePerBattleLevel="5" effectID="1" speed="2000" prefab="Prefabs/Projectile/BasicAttack"/>
+    <ProjectileData id="2" damage="5" damagePerLevel="5" damagePerBattleLevel="5" effectID="2" speed="2000" prefab="Prefabs/Projectile/BasicAttack"/>
+    <ProjectileData id="3" damage="5" damagePerLevel="5" damagePerBattleLevel="5" effectID="3" speed="2000" prefab="Prefabs/Projectile/BasicAttack"/>
+    <ProjectileData id="4" damage="5" damagePerLevel="5" damagePerBattleLevel="5" effectID="4" abnormalityID="4" speed="2000" prefab="Prefabs/Projectile/BasicAttack"/>
+    <ProjectileData id="5" damage="5" damagePerLevel="5" damagePerBattleLevel="5" effectID="5" abnormalityID="5" speed="2000" prefab="Prefabs/Projectile/BasicAttack"/>
+    <ProjectileData id="12" collisionObjectID="12" speed="1500" moveType="1" prefab="Prefabs/Projectile/Thorn"/>
+</ProjectileDataList>

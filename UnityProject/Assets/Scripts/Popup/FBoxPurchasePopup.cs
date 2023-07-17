@@ -2,68 +2,104 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using FEnum;
 
 public class FBoxPurchasePopup : FPopupBase
 {
     [SerializeField]
-    TextMeshProUGUI m_Title;
+    TextMeshProUGUI title;
     [SerializeField]
-    TextMeshProUGUI m_Price;
+    TextMeshProUGUI price;
     [SerializeField]
-    Image m_BoxImage;
+    List<Image> priceIconList;
     [SerializeField]
-    List<FBoxGoods> m_GoodsList;
+    Image boxImage;
     [SerializeField]
-    List<Transform> m_LineList;
+    List<FBoxGoods> goodsList;
+    [SerializeField]
+    List<Transform> lineList;
 
-    private int id { get; set; }
-
-    public delegate void ButtonHandler(int InID);
-    ButtonHandler m_PurchaseBtnHandler;
-
-    public ButtonHandler PurchaseBtnHandler { set { m_PurchaseBtnHandler = value; } }
+    private int boxID;
 
     public void OpenPopup(int InID)
     {
-        id = InID;
+        boxID = InID;
 
-        FStoreBoxData boxData = FStoreDataManager.Instance.FindStoreBoxData(InID).Value;
-        m_Title.text = boxData.name;
-        m_Price.text = "x " + boxData.price;
-        m_BoxImage.sprite = Resources.Load<Sprite>(boxData.boxImagePath);
-
-        m_GoodsList[0].Count = "x" + boxData.gold;
-        for(int i = 1; i < m_GoodsList.Count; ++i)
+        FStoreBoxData boxData = FStoreDataManager.Instance.FindStoreBoxData(InID);
+        if(boxData == null)
         {
-            FBoxGoods boxGoods = m_GoodsList[i];
-            
-            bool isActiveGoods = i <= boxData.diceList.Count;
-            boxGoods.gameObject.SetActive(isActiveGoods);
+            Close();
+            return;
+        }
 
-            if (isActiveGoods)
+        title.text = boxData.name;
+        boxImage.sprite = Resources.Load<Sprite>(boxData.boxImagePath);
+
+        price.text = "x ";
+        switch (boxData.priceType)
+        {
+            case StorePriceType.Gold: price.text += boxData.goldPrice; break;
+            case StorePriceType.Dia: price.text += boxData.diaPrice; break;
+            case StorePriceType.Card: price.text += boxData.cardPrice; break;
+        }
+
+        for(int i = 0; i < (int)StorePriceType.Max; ++i)
+        {
+            if (i < priceIconList.Count)
+                priceIconList[i].gameObject.SetActive((int)boxData.priceType == i);
+        }
+        
+
+        goodsList[0].Count = "x" + boxData.gold;
+
+        int goodsCount = 1;
+        boxData.ForeachGoodsData((FBoxGoodsData InData) => {
+            FBoxGoods boxGoods = goodsList[goodsCount];
+            boxGoods.gameObject.SetActive(true);
+            boxGoods.Count = "x " + (InData.min == InData.max ? InData.min : InData.min + " ~ " + InData.max);
+
+            FBoxGoodsImageData imageData = FStoreDataManager.Instance.GetBoxGoodsImageData(InData.grade);
+            if (imageData != null)
             {
-                FBoxGoodsData boxGoodsData = boxData.diceList[i - 1];
-                boxGoods.GoodsIcon = Resources.Load<Sprite>(FStoreDataManager.Instance.GetBoxGoodsImage(boxGoodsData.grade));
-                boxGoods.Count = "x " + (boxGoodsData.min == boxGoodsData.max ? boxGoodsData.min : boxGoodsData.min + " ~ " + boxGoodsData.max);
-
-                FDiceGradeData? diceGradeData = FDiceDataManager.Instance.FindGradeData(boxGoodsData.grade);
-                if (diceGradeData != null)
-                {
-                    boxGoods.GoodsName = diceGradeData.Value.GradeName;
-                }
+                if (imageData.image != null) boxGoods.GoodsIcon = Resources.Load<Sprite>(imageData.image);
+                else if (imageData.prefab != null) boxGoods.AddGoodsIconPrefab(Instantiate(Resources.Load<Transform>(imageData.prefab)));
             }
 
-            if(i % 2 == 0)
+            FDiceGradeData diceGradeData = FDiceDataManager.Instance.FindGradeData(InData.grade);
+            if (diceGradeData != null)
+            {
+                boxGoods.GoodsName = diceGradeData.gradeName;
+            }
+
+            if (goodsCount % 2 == 0)
+            {
+                int lineIndex = goodsCount / 2 - 1;
+                lineList[lineIndex].gameObject.SetActive(true);
+                boxGoods.transform.parent.gameObject.SetActive(true);
+            }
+
+            ++goodsCount;
+        });
+
+        for(int i = goodsCount; i < goodsList.Count; ++i)
+        {
+            FBoxGoods boxGoods = goodsList[i];
+            boxGoods.gameObject.SetActive(false);
+            if (i % 2 == 0)
             {
                 int lineIndex = i / 2 - 1;
-                m_LineList[lineIndex].gameObject.SetActive(isActiveGoods);
-                boxGoods.transform.parent.gameObject.SetActive(isActiveGoods);
+                lineList[lineIndex].gameObject.SetActive(false);
+                boxGoods.transform.parent.gameObject.SetActive(false);
             }
         }
     }
 
     public void OnClickPurchase()
     {
-        m_PurchaseBtnHandler(id);
+        FStoreController storeController = FLocalPlayer.Instance.FindController<FStoreController>();
+        if (storeController != null)
+        {
+            storeController.RequestPurchaseBox(boxID);
+        }
     }
 }

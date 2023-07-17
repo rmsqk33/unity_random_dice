@@ -1,28 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class FMsgPopup : FPopupBase
 {
     [SerializeField]
-    TextMeshProUGUI TitleTextMesh;
+    TextMeshProUGUI title;
     [SerializeField]
-    TextMeshProUGUI MsgTextMesh;
+    TextMeshProUGUI message;
 
     public delegate void OKButtonFunc();
-    OKButtonFunc m_OKButtonHandler = null;
+    OKButtonFunc okButtonHandler = null;
 
-    public string Title { set { TitleTextMesh.text = value; } }
-    public string Message { set { MsgTextMesh.text = value; } }
-    public bool Visible { set { foreach (Transform child in transform) child.gameObject.SetActive(value); } }
+    public string Title { set { title.text = value; } }
+    public string Message { set { message.text = value; } }
 
-    public OKButtonFunc OKButtonHandler { set { m_OKButtonHandler = value; } }
+    public OKButtonFunc OKButtonHandler { set { okButtonHandler = value; } }
 
     public void OnClickOK()
     {
-        if (m_OKButtonHandler != null)
-            m_OKButtonHandler();
+        if (okButtonHandler != null)
+            okButtonHandler();
 
         FPopupManager.Instance.ClosePopup();
     }

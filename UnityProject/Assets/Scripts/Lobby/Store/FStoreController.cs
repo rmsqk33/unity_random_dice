@@ -2,20 +2,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Packet;
 using System;
-using RandomDice;
-using UnityEditor;
+using FEnum;
 
-public struct FDiceGoods
+public class FDiceGoods
 {
-    public int id;
-    public int count;
-    public int price;
-    public bool soldOut;
+    public readonly int id;
+    public readonly int count;
+    public readonly int price;
+    public bool soldOut = false;
+
+    public FDiceGoods(int id, int count, int price, bool soldOut)
+    {
+        this.id = id;
+        this.count = count;
+        this.price = price;
+        this.soldOut = soldOut;
+    }
 }
 
 public class FStoreController : FControllerBase
 {
-    Dictionary<int, FDiceGoods> DiceGoodsMap = new Dictionary<int, FDiceGoods>();
+    Dictionary<int, FDiceGoods> diceGoodsMap = new Dictionary<int, FDiceGoods>();
+
     public Int64 ResetTime { get; private set; }
 
     public FStoreController(FLocalPlayer InOwner) : base(InOwner)
@@ -24,16 +32,16 @@ public class FStoreController : FControllerBase
 
     public void Handle_S_STORE_DICE_LIST(S_STORE_DICE_LIST InPacket)
     {
-        DiceGoodsMap.Clear();
+        diceGoodsMap.Clear();
         for (int i = 0; i < InPacket.diceCount; ++i)
         {
-            FDiceGoods goods = new FDiceGoods();
-            goods.id = InPacket.diceList[i].id;
-            goods.count = InPacket.diceList[i].count;
-            goods.price = InPacket.diceList[i].price;
-            goods.soldOut = InPacket.diceList[i].soldOut;
+            int id = InPacket.diceList[i].id;
+            int count = InPacket.diceList[i].count;
+            int price = InPacket.diceList[i].price;
+            bool soldOut = InPacket.diceList[i].soldOut;
 
-            DiceGoodsMap.Add(goods.id, goods);
+            FDiceGoods goods = new FDiceGoods(id, count, price, soldOut);
+            diceGoodsMap.Add(goods.id, goods);
         }
 
         ResetTime = InPacket.resetTime;
@@ -52,9 +60,9 @@ public class FStoreController : FControllerBase
             return;
         }
 
-        if (DiceGoodsMap.ContainsKey(InPacket.id))
+        if (diceGoodsMap.ContainsKey(InPacket.id))
         {
-            FDiceGoods diceGoods = DiceGoodsMap[InPacket.id];
+            FDiceGoods diceGoods = diceGoodsMap[InPacket.id];
             diceGoods.soldOut = true;
 
             FStoreMenu storeMenu = FindStoreUI();
@@ -76,21 +84,21 @@ public class FStoreController : FControllerBase
 
     public void RequestPurchaseDice(int InID)
     {
-        FDiceGoods? goods = FindDiceGoods(InID);
+        FDiceGoods goods = FindDiceGoods(InID);
         if (goods == null)
         {
             OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS);
             return;
         }
 
-        if (goods.Value.soldOut)
+        if (goods.soldOut)
         {
             OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_SOLDOUT);
             return;
         }
 
         FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
-        if (inventoryController == null || inventoryController.Gold < goods.Value.price)
+        if (inventoryController == null || inventoryController.Gold < goods.price)
         {
             OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY);
             return;
@@ -104,7 +112,7 @@ public class FStoreController : FControllerBase
 
     public void RequestPurchaseBox(int InID)
     {
-        FStoreBoxData? boxData = FStoreDataManager.Instance.FindStoreBoxData(InID);
+        FStoreBoxData boxData = FStoreDataManager.Instance.FindStoreBoxData(InID);
         if(boxData == null)
         {
             OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_INVALID_GOODS);
@@ -112,10 +120,14 @@ public class FStoreController : FControllerBase
         }
 
         FInventoryController inventoryController = FLocalPlayer.Instance.FindController<FInventoryController>();
-        if (inventoryController == null || inventoryController.Gold < boxData.Value.price)
+        if (inventoryController == null)
         {
-            OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY);
-            return;
+            switch (boxData.priceType)
+            {
+                case StorePriceType.Gold: if(inventoryController.Gold < boxData.goldPrice) OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY); return;
+                case StorePriceType.Dia: if(inventoryController.Dia < boxData.diaPrice) OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY); return;
+                case StorePriceType.Card: if(inventoryController.Card < boxData.cardPrice) OpenPurchaseResultPopup(StorePurchaseResult.STORE_PURCHASE_RESULT_NOT_ENOUGH_MONEY); return;
+            }
         }
 
         C_PURCHASE_BOX packet = new C_PURCHASE_BOX();
@@ -145,23 +157,23 @@ public class FStoreController : FControllerBase
     public delegate void ForeachDiceGoodsListFunc(in FDiceGoods InGoods);
     public void ForeachDiceGoodsList(in ForeachDiceGoodsListFunc InFunc)
     {
-        foreach (var pair in DiceGoodsMap)
+        foreach (var pair in diceGoodsMap)
         {
             InFunc(pair.Value);
         }
     }
 
-    public FDiceGoods? FindDiceGoods(int InID)
+    public FDiceGoods FindDiceGoods(int InID)
     {
-        if(DiceGoodsMap.ContainsKey(InID))
-            return DiceGoodsMap[InID];
+        if(diceGoodsMap.ContainsKey(InID))
+            return diceGoodsMap[InID];
 
         return null;
     }
 
-    private FStoreMenu FindStoreUI()
+    FStoreMenu FindStoreUI()
     {
-        return GameObject.FindObjectOfType<FStoreMenu>();
+        return FUIManager.Instance.FindUI<FStoreMenu>();
     }
 
 

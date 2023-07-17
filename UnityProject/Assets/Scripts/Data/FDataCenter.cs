@@ -1,25 +1,27 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using System.Xml.Schema;
 using UnityEngine;
 
 public class FDataCenter : FNonObjectSingleton<FDataCenter>
 {
-    FDataNode m_RootNode = new FDataNode();
+    FDataNode rootNode = new FDataNode();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Initialize() 
     {
-        string dataPath = Application.dataPath + "/Resources/Data/";
-        Instance.ParseXML(dataPath  + "PreLoadData");
-        Instance.ParseXML(dataPath + "PostLoadData");
+        string dataPath = Application.streamingAssetsPath + "/Data/";
+        Instance.ParseXML(dataPath);
 
         FDiceDataManager.Instance.Initialize();
         FBattleFieldDataManager.Instance.Initialize();
         FStoreDataManager.Instance.Initialize();
+        FBattleDataManager.Instance.Initialize();
+        FEffectDataManager.Instance.Initialize();
+        FSkillDataManager.Instance.Initialize();
+        FAbnormalityDataManager.Instance.Initialize();
+        FAbilityDataManager.Instance.Initialize();
+        FObjectDataManager.Instance.Initialize();
     }
 
     void ParseXML(in string InPath)
@@ -35,18 +37,18 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
 
                 FDataNode newNode = new FDataNode();
                 newNode.ParseXmlData(xmlDocument.FirstChild);
-                m_RootNode.AddChild(newNode);
+                rootNode.AddChild(newNode);
         }
     }
 
     public FDataNode GetDataNodeWithQuery(in string InQuery)
     {
-        return m_RootNode.GetDataNodeWithQuery(InQuery);
+        return rootNode.GetDataNodeWithQuery(InQuery);
     }
 
     public List<FDataNode> GetDataNodesWithQuery(in string InQuery)
     {
-        return m_RootNode.GetDataNodesWithQuery(InQuery);
+        return rootNode.GetDataNodesWithQuery(InQuery);
     }
 
     public int GetIntAttribute(in string InQuery)
@@ -69,14 +71,14 @@ public class FDataCenter : FNonObjectSingleton<FDataCenter>
         return node.GetBoolAttr(attrName);
     }
 
-    public double GetDoubleAttribute(in string InQuery)
+    public float GetFloatAttribute(in string InQuery)
     {
         FDataNode node = GetDataNodeWithQuery(InQuery);
         if (node == null)
             return 0f;
 
         string attrName = GetAttrNameInQuery(InQuery);
-        return node.GetDoubleAttr(attrName);
+        return node.GetFloatAttr(attrName);
     }
 
     public string GetStringAttribute(in string InQuery)

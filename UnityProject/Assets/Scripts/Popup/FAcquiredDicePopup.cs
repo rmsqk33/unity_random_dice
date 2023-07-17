@@ -6,30 +6,30 @@ using UnityEngine;
 public class FAcquiredDicePopup : FPopupBase
 {
     [SerializeField]
-    Transform DiceListParent;
+    Transform diceListParent;
     [SerializeField]
-    FAcquiredDicePopupSlot DicePrefab;
+    FAcquiredDicePopupSlot dicePrefab;
     [SerializeField]
-    float DelaySec;
+    float delaySec;
 
-    private List<KeyValuePair<int, int>> DiceList;
+    private List<KeyValuePair<int, int>> diceList;
     
     public void OpenPopup(List<KeyValuePair<int, int>> InDiceList)
     {
-        DiceList = InDiceList;
+        diceList = InDiceList;
         AddDice();
     }
 
     private void AddDice()
     {
-        FAcquiredDicePopupSlot slot = Instantiate(DicePrefab, DiceListParent);
-        slot.SetSlot(DiceList[0].Key, DiceList[0].Value);
+        FAcquiredDicePopupSlot slot = Instantiate(dicePrefab, diceListParent);
+        slot.SetSlot(diceList[0].Key, diceList[0].Value);
 
-        DiceList.RemoveAt(0);
+        diceList.RemoveAt(0);
 
-        if (DiceList.Count != 0)
+        if (diceList.Count != 0)
         {
-            Invoke("AddDice", DelaySec);
+            Invoke("AddDice", delaySec);
         }
     }
 }

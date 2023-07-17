@@ -8,91 +8,98 @@ using UnityEngine.UIElements;
 public class FLobbyScrollView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField]
-    FMainMenuUI m_MainMenu = null;
+    FLobbyMenuUI mainMenu = null;
     [SerializeField]
-    float m_ViewChangeDistance; // 해당 거리이상 드래그 시 메뉴 변경
+    float viewChangeDistance;
     [SerializeField]
-    float m_ScrollSec; // 스크롤 시간
+    float scrollSec;
     [SerializeField]
-    int m_InitViewIndex; // 초기 메뉴, 제일 왼쪽이 1
+    int initViewIndex;
     [SerializeField]
-    List<FLobbyScrollMenuBase> m_ScrollMenuList;
+    List<FLobbyScrollMenuBase> scrollMenuList;
 
-    ScrollRect m_ScrollRect = null;
-    Vector2 m_PrevViewPosition = Vector2.zero;
-    Vector2 m_MoveViewPosition = Vector2.zero;
-    float m_DragStartX = 0f;
-    float m_DragDeltaTime = 0f;
-    int m_CurrentViewIndex = -1;
-    bool m_Dragging = false;
+    ScrollRect scrollRect = null;
+    Vector2 prevViewPosition = Vector2.zero;
+    Vector2 moveViewPosition = Vector2.zero;
+    float dragStartX = 0f;
+    float dragDeltaTime = 0f;
+    int currentViewIndex = -1;
+    bool dragging = false;
 
     void Awake()
     {
-        m_ScrollRect = GetComponent<ScrollRect>();
+        scrollRect = GetComponent<ScrollRect>();
     }
 
     void Start()
     {
-        SelectView(m_InitViewIndex);
+        SelectView(initViewIndex, true);
     }
 
     void Update()
     {
-        if(m_Dragging)
+        if(dragging)
         {
-            m_DragDeltaTime -= Time.deltaTime;
-            if (m_DragDeltaTime <= 0f)
+            dragDeltaTime -= Time.deltaTime;
+            if (dragDeltaTime <= 0f)
             {
-                m_ScrollRect.content.anchoredPosition = m_MoveViewPosition;
-                m_Dragging = false;
+                scrollRect.content.anchoredPosition = moveViewPosition;
+                dragging = false;
             }
             else
             {
-                Vector2 newPos = Vector2.Lerp(m_MoveViewPosition, m_PrevViewPosition, m_DragDeltaTime / m_ScrollSec);
-                m_ScrollRect.content.anchoredPosition = newPos;
+                Vector2 newPos = Vector2.Lerp(moveViewPosition, prevViewPosition, dragDeltaTime / scrollSec);
+                scrollRect.content.anchoredPosition = newPos;
             }
         }
     }
 
-    public void SelectView(int InIndex)
+    public void SelectView(int InIndex, bool immediately=false)
     {
-        if(0 <= InIndex && InIndex < m_ScrollMenuList.Count)
+        if(0 <= InIndex && InIndex < scrollMenuList.Count)
         {
-            if(m_CurrentViewIndex != InIndex)
+            if(currentViewIndex != InIndex)
             {
-                if (m_CurrentViewIndex != -1)
-                    m_ScrollMenuList[m_CurrentViewIndex].OnDeactive();
+                if (currentViewIndex != -1)
+                    scrollMenuList[currentViewIndex].OnDeactive();
 
-                m_ScrollMenuList[InIndex].OnActive();
+                scrollMenuList[InIndex].OnActive();
             }
 
-            m_PrevViewPosition.x = m_ScrollRect.content.anchoredPosition.x;
-            m_MoveViewPosition.x = m_ScrollMenuList[InIndex].GetComponent<RectTransform>().anchoredPosition.x * -1;
-            m_CurrentViewIndex = InIndex;
-            m_Dragging = true;
-            m_DragDeltaTime = m_ScrollSec;
+            currentViewIndex = InIndex;
+            moveViewPosition.x = scrollMenuList[InIndex].GetComponent<RectTransform>().anchoredPosition.x * -1;
+            if (immediately)
+            {
+                scrollRect.content.anchoredPosition = moveViewPosition;
+            }
+            else
+            {
+                prevViewPosition.x = scrollRect.content.anchoredPosition.x;
+                dragging = true;
+                dragDeltaTime = scrollSec;
+            }
         }
     }
 
     public void OnBeginDrag(PointerEventData InData)
     {
-        m_DragStartX = InData.position.x;
-        m_Dragging = false;
+        dragStartX = InData.position.x;
+        dragging = false;
     }
 
     public void OnEndDrag(PointerEventData InData)
     {
         // 스크롤 거리 측정, 양수면 좌측 메뉴로, 음수면 우측 메뉴로 변경
-        float dragDistance = InData.position.x - m_DragStartX;
+        float dragDistance = InData.position.x - dragStartX;
 
         // 정해진 만큼 스크롤 시 다른 메뉴로 변경, 메뉴를 넘어가거나 스크롤량이 모자를 경우 원래 메뉴 위치로 돌아간다.
         int changeViewIndex = -1;
-        if (m_ViewChangeDistance <= Mathf.Abs(dragDistance))
-            changeViewIndex = Mathf.Clamp(dragDistance > 0 ? m_CurrentViewIndex - 1 : m_CurrentViewIndex + 1, 0, m_ScrollMenuList.Count - 1);
+        if (viewChangeDistance <= Mathf.Abs(dragDistance))
+            changeViewIndex = Mathf.Clamp(dragDistance > 0 ? currentViewIndex - 1 : currentViewIndex + 1, 0, scrollMenuList.Count - 1);
 
-        if (changeViewIndex != -1 && changeViewIndex != m_CurrentViewIndex)
-            m_MainMenu.SelectMenu(changeViewIndex);
+        if (changeViewIndex != -1 && changeViewIndex != currentViewIndex)
+            mainMenu.SelectMenu(changeViewIndex);
 
-        SelectView(changeViewIndex == -1 ? m_CurrentViewIndex : changeViewIndex);
+        SelectView(changeViewIndex == -1 ? currentViewIndex : changeViewIndex);
     }
 }

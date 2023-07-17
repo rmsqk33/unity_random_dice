@@ -1,0 +1,9 @@
+<BattleCommonData initSP="100" initDiceSummonCost="10" diceSummonCostIncrease="10" maxEyeCount="7" coopBattleID="1" battleStartInterval="3.0" waveEndInterval="2.0">
+	<DiceUpgrade>
+		<Dice level="1" cost="100" />
+		<Dice level="2" cost="200" />
+		<Dice level="3" cost="400" />
+		<Dice level="4" cost="700" />
+		<Dice level="5" cost="0" />
+	</DiceUpgrade>
+</BattleCommonData>

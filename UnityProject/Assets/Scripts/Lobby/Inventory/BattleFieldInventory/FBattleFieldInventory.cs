@@ -1,141 +1,192 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FBattleFieldInventory : FGroupMenuBase
+public class FBattleFieldInventory : FUIBase
 {
     [SerializeField]
-    private FBattleFieldPreset m_BattleFieldPreset;
+    ScrollRect battleFieldScrollRect;
     [SerializeField]
-    ScrollRect m_BattleFieldScrollRect;
+    Transform acquiredBattleFieldListUI;
     [SerializeField]
-    Transform m_AcquiredBattleFieldListUI;
+    Transform notAcquiredBattleFieldListUI;
     [SerializeField]
-    Transform m_NotAcquiredBattleFieldListUI;
+    FBattleFieldSlot battleFieldPrefab;
     [SerializeField]
-    FBattleFieldSlot m_BattleFieldPrefab;
+    List<Button> presetTabList;
+    [SerializeField]
+    Image registedBattlefieldImage;
+    [SerializeField]
+    TextMeshProUGUI registedBattlefieldName;
 
-    int m_SelectedBattleFieldID;
-    Vector2 m_InitScrollPos;
+    int selectedPresetIndex = 0;
 
-    Dictionary<int, FBattleFieldSlot> m_AcquiredBattleFieldMap = new Dictionary<int, FBattleFieldSlot>();
-    Dictionary<int, FBattleFieldSlot> m_NotAcquiredBattleFieldMap = new Dictionary<int, FBattleFieldSlot>();
+    Vector2 initScrollPos;
+
+    Dictionary<int, FBattleFieldSlot> acquiredBattleFieldMap = new Dictionary<int, FBattleFieldSlot>();
+    Dictionary<int, FBattleFieldSlot> notAcquiredBattleFieldMap = new Dictionary<int, FBattleFieldSlot>();
 
     private void Start()
     {
-        m_InitScrollPos = m_BattleFieldScrollRect.content.anchoredPosition;
-        InitBattleFieldList();
+        initScrollPos = battleFieldScrollRect.content.anchoredPosition;
+        InitInventory();
     }
 
-    public override void OnActive()
-    {
-        base.OnActive();
-
-        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
-        if(presetController != null)
-        {
-            m_BattleFieldPreset.SetPreset(presetController.SelectedPresetIndex);
-        }
-    }
-
-    public override void OnDeactive()
-    {
-        base.OnDeactive();
-
-        m_BattleFieldScrollRect.velocity = Vector2.zero;
-        m_BattleFieldScrollRect.content.anchoredPosition = m_InitScrollPos;
-    }
-
-    public void OnClickAcquiredBattleFieldSlot(int InID)
-    {
-        if(m_AcquiredBattleFieldMap.ContainsKey(InID))
-        {
-            m_SelectedBattleFieldID = InID;
-            FPopupManager.Instance.OpenAcquiredBattleFieldInfoPopup(InID, OnUpgradeBattleField, OnClickUseBattleField);
-        }
-    }
-
-    public void OnClickNotAcquiredBattleFieldSlot(int InID)
-    {
-        //if(m_NotAcquiredBattleFieldMap.ContainsKey(InID))
-        //{
-        //    m_SelectedBattleFieldID = InID;
-        //    FPopupManager.Instance.OpenNotAcquiredBattleFieldInfoPopup(InID, OnPurchaseBattleField);
-        //}
-    }
-
-    public void OnClickUseBattleField()
-    {
-        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
-        if(presetController != null)
-        {
-            presetController.SetBattleFieldPreset(m_SelectedBattleFieldID);
-        }
-
-        FPopupManager.Instance.ClosePopup();
-    }
-
-    public void OnUpgradeBattleField()
+    public void InitInventory()
     {
 
-    }
 
-    public void OnPurchaseBattleField()
-    {
-
-    }
-
-    public void InitBattleFieldList()
-    {
         FBattlefieldController battlefieldController = FLocalPlayer.Instance.FindController<FBattlefieldController>();
         if (battlefieldController != null)
         {
+            ClearInventory();
             FBattleFieldDataManager.Instance.ForeachBattleFieldData((FBattleFieldData InData) =>
             {
-                if (battlefieldController.IsAcquiredBattleField(InData.ID))
+                if (battlefieldController.IsAcquiredBattleField(InData.id))
                     AddAcquiredBattleField(InData);
                 else
                     AddNotAcquiredBattleField(InData);
             });
         }
+
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            SetPresetTab(presetController.SelectedPresetIndex);
+        }
     }
 
-    private void AddAcquiredBattleField(FBattleFieldData InData)
+    public void OnEnable()
     {
-        if (m_AcquiredBattleFieldMap.ContainsKey(InData.ID))
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if(presetController != null)
+        {
+            SetPresetTab(presetController.SelectedPresetIndex);
+        }
+    }
+
+    public void OnDeactive()
+    {
+        battleFieldScrollRect.velocity = Vector2.zero;
+        battleFieldScrollRect.content.anchoredPosition = initScrollPos;
+    }
+
+    public void OnClickBattleFieldSlot(int InID)
+    {
+        FPopupManager.Instance.OpenBattleFieldInfoPopup(InID);
+    }
+
+    public void OnClickPresetTab(int InIndex)
+    {
+        if (selectedPresetIndex == InIndex)
             return;
 
-        FBattleFieldSlot slot = Instantiate(m_BattleFieldPrefab, m_AcquiredBattleFieldListUI);
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            presetController.SetPreset(InIndex);
+        }
+    }
+
+    public void AcquiredBattlefield(FBattleFieldData InData)
+    {
+        AddAcquiredBattleField(InData);
+        RemoveNotAcquiredBattleField(InData.id);
+    }
+
+    public void SetPresetTab(int InTabIndex)
+    {
+        UnselectPresetTab(selectedPresetIndex);
+        SelectPresetTab(InTabIndex);
+
+        FPresetController presetController = FLocalPlayer.Instance.FindController<FPresetController>();
+        if (presetController != null)
+        {
+            int battleFieldID = presetController.GetBattleFieldPresetID(InTabIndex);
+            SetBattleFieldPreset(battleFieldID);
+        }
+
+        selectedPresetIndex = InTabIndex;
+    }
+
+    public void SetBattleFieldPreset(int InID)
+    {
+        FBattleFieldData battleFieldData = FBattleFieldDataManager.Instance.FindBattleFieldData(InID);
+        if (battleFieldData != null)
+        {
+            registedBattlefieldName.text = battleFieldData.name;
+            registedBattlefieldImage.sprite = Resources.Load<Sprite>(battleFieldData.skinImagePath);
+        }
+    }
+
+    void SelectPresetTab(int InIndex)
+    {
+        if(0 <= InIndex && InIndex < presetTabList.Count)
+        {
+            presetTabList[InIndex].GetComponent<Animator>().SetTrigger("Selected");
+        }
+    }
+
+    void UnselectPresetTab(int InIndex)
+    {
+        if (0 <= InIndex && InIndex < presetTabList.Count)
+        {
+            presetTabList[InIndex].GetComponent<Animator>().SetTrigger("Normal");
+        }
+    }
+
+    void AddAcquiredBattleField(FBattleFieldData InData)
+    {
+        if (acquiredBattleFieldMap.ContainsKey(InData.id))
+            return;
+
+        FBattleFieldSlot slot = Instantiate(battleFieldPrefab, acquiredBattleFieldListUI);
         slot.Init(InData);
-        slot.GetComponent<Button>().onClick.AddListener(() => { OnClickAcquiredBattleFieldSlot(InData.ID); });
+        slot.GetComponent<Button>().onClick.AddListener(() => { OnClickBattleFieldSlot(InData.id); });
 
-        m_AcquiredBattleFieldMap.Add(InData.ID, slot);
+        acquiredBattleFieldMap.Add(InData.id, slot);
 
-        List<int> sortList = m_AcquiredBattleFieldMap.Keys.ToList();
-        int index = sortList.IndexOf(InData.ID);
+        List<int> sortList = acquiredBattleFieldMap.Keys.ToList();
+        sortList.Sort();
+        int index = sortList.IndexOf(InData.id);
         slot.transform.SetSiblingIndex(index);
     }
 
-    private void AddNotAcquiredBattleField(FBattleFieldData InData)
+    void AddNotAcquiredBattleField(FBattleFieldData InData)
     {
-        if (m_NotAcquiredBattleFieldMap.ContainsKey(InData.ID))
+        if (notAcquiredBattleFieldMap.ContainsKey(InData.id))
             return;
 
-        FBattleFieldSlot slot = Instantiate(m_BattleFieldPrefab, m_NotAcquiredBattleFieldListUI);
+        FBattleFieldSlot slot = Instantiate(battleFieldPrefab, notAcquiredBattleFieldListUI);
         slot.Init(InData);
-        slot.GetComponent<Button>().onClick.AddListener(() => { OnClickNotAcquiredBattleFieldSlot(InData.ID); });
+        slot.GetComponent<Button>().onClick.AddListener(() => { OnClickBattleFieldSlot(InData.id); });
 
-        m_NotAcquiredBattleFieldMap.Add(InData.ID, slot);
+        notAcquiredBattleFieldMap.Add(InData.id, slot);
     }
 
-    private void RemoveNotAcquiredBattleField(in int InID)
+    void RemoveNotAcquiredBattleField(in int InID)
     {
-        if (m_NotAcquiredBattleFieldMap.ContainsKey(InID))
+        if (notAcquiredBattleFieldMap.ContainsKey(InID))
         {
-            Destroy(m_NotAcquiredBattleFieldMap[InID]);
-            m_NotAcquiredBattleFieldMap.Remove(InID);
+            Destroy(notAcquiredBattleFieldMap[InID].gameObject);
+            notAcquiredBattleFieldMap.Remove(InID);
         }
+    }
+
+    void ClearInventory()
+    {
+        foreach (var pair in acquiredBattleFieldMap)
+        {
+            Destroy(pair.Value.gameObject);
+        }
+        acquiredBattleFieldMap.Clear();
+
+        foreach (var pair in notAcquiredBattleFieldMap)
+        {
+            Destroy(pair.Value.gameObject);
+        }
+        notAcquiredBattleFieldMap.Clear();
     }
 }
